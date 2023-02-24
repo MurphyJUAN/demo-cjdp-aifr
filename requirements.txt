@@ -1,6 +1,7 @@
 # http://download.pytorch.org/whl/cpu/torch-0.4.1-cp36-cp36m-linux_x86_64.whl
 --find-links https://download.pytorch.org/whl/torch_stable.html
 torch==1.13.0+cpu
+gdown
 certifi==2022.12.7
 charset-normalizer==3.0.1
 click==8.1.3
