@@ -15,13 +15,23 @@ import torch.nn.functional as F
 import numpy as np
 from model.MyJointBert import MyJointBert
 from transformers import BertTokenizer
-PRETRAINED_MODEL_NAME = "bert-base-chinese" 
-NUM_LABELS = 3
-MAX_LENGTH = 512
-EMB_MODEL_NAME = ""
-tokenizer = BertTokenizer.from_pretrained(PRETRAINED_MODEL_NAME)
-model = MyJointBert.from_pretrained(PRETRAINED_MODEL_NAME, num_labels=NUM_LABELS, emb_name=EMB_MODEL_NAME)
-model.load_state_dict(torch.load('./ckpt/best.pt', map_location='cpu'))
+# import gdown
+
+# os.makedirs('./ckpt', exist_ok=True)
+# model_path = './ckpt/best.pt'
+# if os.path.isfile(model_path):
+#   print("檔案存在。")
+# else:
+#     url = 'https://drive.google.com/file/d/1wk_Fvcky0M4pQOs7RiEwei_dIZCHjXxh/view?usp=sharing'
+#     gdown.download(url, model_path, quiet=False)
+
+# PRETRAINED_MODEL_NAME = "bert-base-chinese" 
+# NUM_LABELS = 3
+# MAX_LENGTH = 512
+# EMB_MODEL_NAME = ""
+# tokenizer = BertTokenizer.from_pretrained(PRETRAINED_MODEL_NAME)
+# model = MyJointBert.from_pretrained(PRETRAINED_MODEL_NAME, num_labels=NUM_LABELS, emb_name=EMB_MODEL_NAME)
+# model.load_state_dict(torch.load(model_path, map_location='cpu'))
 
 def get_predict(data):
     AA = tokenizer(data['AA']['Feature'], data['AA']['Sentence'], \
