@@ -14,8 +14,8 @@ Vue.use(ElementUI);
 Vue.config.productionTip = false;
 
 Vue.prototype.$testApi = 'http://127.0.0.1:8000';
-Vue.prototype.$globalApi = 'http://127.0.0.1:5001/api/';
-Vue.prototype.$api = Vue.prototype.$testApi;
+Vue.prototype.$globalApi = 'https://demo-cjdp-aifr.herokuapp.com/api/';
+Vue.prototype.$api = Vue.prototype.$globalApi;
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
