@@ -19,8 +19,11 @@ import gdown
 
 os.makedirs('./ckpt', exist_ok=True)
 model_path = './ckpt/best.pt'
-url = 'https://drive.google.com/uc?export=download&id=1wk_Fvcky0M4pQOs7RiEwei_dIZCHjXxh'
-gdown.download(url, model_path, quiet=False)
+if os.path.isfile(model_path):
+  print(">>>>>檔案存在。")
+else:
+    url = 'https://drive.google.com/uc?export=download&id=1wk_Fvcky0M4pQOs7RiEwei_dIZCHjXxh'
+    gdown.download(url, model_path, quiet=False)
 
 PRETRAINED_MODEL_NAME = "bert-base-chinese" 
 NUM_LABELS = 3
