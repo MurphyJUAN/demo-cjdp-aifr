@@ -18,20 +18,23 @@ from transformers import BertTokenizer
 import gdown
 
 os.makedirs('./ckpt', exist_ok=True)
-model_path = './ckpt/best.pt'
-if os.path.isfile(model_path):
+best_model_path = './ckpt/best.pt'
+deploy_model_path = './ckpt/deploy.pt'
+if os.path.isfile(best_model_path):
   print(">>>>>檔案存在。")
 else:
     url = 'https://drive.google.com/uc?export=download&id=1wk_Fvcky0M4pQOs7RiEwei_dIZCHjXxh'
-    gdown.download(url, model_path, quiet=False)
+    gdown.download(url, best_model_path, quiet=False)
 
 PRETRAINED_MODEL_NAME = "bert-base-chinese" 
 NUM_LABELS = 3
 MAX_LENGTH = 512
 EMB_MODEL_NAME = ""
 tokenizer = BertTokenizer.from_pretrained(PRETRAINED_MODEL_NAME)
-model = MyJointBert.from_pretrained(PRETRAINED_MODEL_NAME, num_labels=NUM_LABELS, emb_name=EMB_MODEL_NAME)
-model.load_state_dict(torch.load(model_path, map_location='cpu'))
+best_model = MyJointBert.from_pretrained(PRETRAINED_MODEL_NAME, num_labels=NUM_LABELS, emb_name=EMB_MODEL_NAME)
+best_model.load_state_dict(torch.load(best_model_path, map_location='cpu'))
+deploy_model = MyJointBert.from_pretrained(PRETRAINED_MODEL_NAME, num_labels=NUM_LABELS, emb_name=EMB_MODEL_NAME)
+deploy_model.load_state_dict(torch.load(deploy_model_path, map_location='cpu'))
 
 def get_predict(data):
     AA = tokenizer(data['AA']['Feature'], data['AA']['Sentence'], \
@@ -43,9 +46,15 @@ def get_predict(data):
     RD = tokenizer(data['RD']['Feature'], data['RD']['Sentence'], \
         padding="max_length", max_length=MAX_LENGTH, truncation="longest_first", return_tensors='pt')
 
-    outputs = model(AA, AD, RA, RD)
-    logits = outputs['logits']
-    prob = F.softmax(logits.data, dim = 1).squeeze().numpy().tolist()
+    best_outputs = best_model(AA, AD, RA, RD)
+    best_logits = best_outputs['logits']
+    best_prob = F.softmax(best_logits.data, dim = 1).squeeze().numpy()
+
+
+    deploy_outputs = deploy_model(AA, AD, RA, RD)
+    deploy_logits = deploy_outputs['logits']
+    deploy_prob = F.softmax(deploy_logits.data, dim = 1).squeeze().numpy()
+    prob = (best_prob + deploy_prob) / 2
     return prob
 
     
