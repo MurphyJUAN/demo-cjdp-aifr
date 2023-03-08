@@ -17,24 +17,24 @@ from model.MyJointBert import MyJointBert
 from transformers import BertTokenizer
 import gdown
 
-os.makedirs('./ckpt', exist_ok=True)
-best_model_path = './ckpt/best.pt'
-deploy_model_path = './ckpt/deploy.pt'
-if os.path.isfile(best_model_path):
-  print(">>>>>檔案存在。")
-else:
-    url = 'https://drive.google.com/uc?export=download&id=1wk_Fvcky0M4pQOs7RiEwei_dIZCHjXxh'
-    gdown.download(url, best_model_path, quiet=False)
+# os.makedirs('./ckpt', exist_ok=True)
+# best_model_path = './ckpt/best.pt'
+# deploy_model_path = './ckpt/deploy.pt'
+# if os.path.isfile(best_model_path):
+#   print(">>>>>檔案存在。")
+# else:
+#     url = 'https://drive.google.com/uc?export=download&id=1wk_Fvcky0M4pQOs7RiEwei_dIZCHjXxh'
+#     gdown.download(url, best_model_path, quiet=False)
 
-PRETRAINED_MODEL_NAME = "bert-base-chinese" 
-NUM_LABELS = 3
-MAX_LENGTH = 512
-EMB_MODEL_NAME = ""
-tokenizer = BertTokenizer.from_pretrained(PRETRAINED_MODEL_NAME)
-best_model = MyJointBert.from_pretrained(PRETRAINED_MODEL_NAME, num_labels=NUM_LABELS, emb_name=EMB_MODEL_NAME)
-best_model.load_state_dict(torch.load(best_model_path, map_location='cpu'))
-deploy_model = MyJointBert.from_pretrained(PRETRAINED_MODEL_NAME, num_labels=NUM_LABELS, emb_name=EMB_MODEL_NAME)
-deploy_model.load_state_dict(torch.load(deploy_model_path, map_location='cpu'))
+# PRETRAINED_MODEL_NAME = "bert-base-chinese" 
+# NUM_LABELS = 3
+# MAX_LENGTH = 512
+# EMB_MODEL_NAME = ""
+# tokenizer = BertTokenizer.from_pretrained(PRETRAINED_MODEL_NAME)
+# best_model = MyJointBert.from_pretrained(PRETRAINED_MODEL_NAME, num_labels=NUM_LABELS, emb_name=EMB_MODEL_NAME)
+# best_model.load_state_dict(torch.load(best_model_path, map_location='cpu'))
+# deploy_model = MyJointBert.from_pretrained(PRETRAINED_MODEL_NAME, num_labels=NUM_LABELS, emb_name=EMB_MODEL_NAME)
+# deploy_model.load_state_dict(torch.load(deploy_model_path, map_location='cpu'))
 
 def get_predict(data):
     AA = tokenizer(data['AA']['Feature'], data['AA']['Sentence'], \
