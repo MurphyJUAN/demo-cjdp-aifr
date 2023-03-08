@@ -17,22 +17,21 @@ from model.MyJointBert import MyJointBert
 from transformers import BertTokenizer
 import gdown
 
-# os.makedirs('./ckpt', exist_ok=True)
-# model_path = './ckpt/best.pt'
-# if os.path.isfile(model_path):
-#   print(">>>>>檔案存在。")
-# else:
-#     url = 'https://drive.google.com/uc?export=download&id=1wk_Fvcky0M4pQOs7RiEwei_dIZCHjXxh'
-#     gdown.download(url, model_path, quiet=False)
+os.makedirs('./ckpt', exist_ok=True)
+model_path = './ckpt/best.pt'
+if os.path.isfile(model_path):
+  print(">>>>>檔案存在。")
+else:
+    url = 'https://drive.google.com/uc?export=download&id=1wk_Fvcky0M4pQOs7RiEwei_dIZCHjXxh'
+    gdown.download(url, model_path, quiet=False)
 
 PRETRAINED_MODEL_NAME = "bert-base-chinese" 
 NUM_LABELS = 3
 MAX_LENGTH = 512
 EMB_MODEL_NAME = ""
 tokenizer = BertTokenizer.from_pretrained(PRETRAINED_MODEL_NAME)
-# model = MyJointBert.from_pretrained(PRETRAINED_MODEL_NAME, num_labels=NUM_LABELS, emb_name=EMB_MODEL_NAME)
-# model.load_state_dict(torch.load(model_path, map_location='cpu'))
-model = None
+model = MyJointBert.from_pretrained(PRETRAINED_MODEL_NAME, num_labels=NUM_LABELS, emb_name=EMB_MODEL_NAME)
+model.load_state_dict(torch.load(model_path, map_location='cpu'))
 
 def get_predict(data):
     AA = tokenizer(data['AA']['Feature'], data['AA']['Sentence'], \
@@ -85,10 +84,28 @@ def test():
 @app.route('/api/predict', methods=['POST', 'GET'])
 def predict():
     data = request.get_json()
-    # print('>>>>>data:', data)
+    print('>>>>>data:', data)
     test_data = data
+    
     for key in data:
-        data[key]['Feature'] = f'該方具有{" ".join(test_data[key]["Feature"])}'
+        if len(data[key]['Feature']) > 0:
+            str = "該方具有"
+            for idx, feature in enumerate(data[key]['Feature']):
+                if idx < len(data[key]['Feature']) - 1:
+                    str += feature['value'] + '，'
+                else:
+                    str += feature['value']
+
+            if 'AA' in key or 'RA' in key:
+                str += "等有利的判決因子"
+            else:
+                str += "等不利的判決因子"
+        else:
+            str = ""
+        data[key]['Feature'] = str
+    print('>>>>>data:', data)
+
+
     prob = get_predict((data))
     result = { 'Applicant': prob[0]*100, \
     'Respondent': prob[1]*100, \

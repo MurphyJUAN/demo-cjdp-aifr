@@ -83,7 +83,6 @@ export default {
   name: 'PredictResult',
   data() {
     return {
-      maxResult: 0,
       completedSteps: 5,
       totalSteps: 10,
     };
@@ -94,22 +93,7 @@ export default {
     isLoading: Boolean,
     errorPrompt: Boolean,
     errorCode: Error,
-  },
-  methods: {
-    findMaxResult(predictResult) {
-      if (predictResult.Applicant > this.maxResult) {
-        this.maxResult = predictResult.Applicant;
-      }
-      if (predictResult.Respondent > this.maxResult) {
-        this.maxResult = predictResult.Respondent;
-      }
-      if (predictResult.Both > this.maxResult) {
-        this.maxResult = predictResult.Both;
-      }
-    },
-  },
-  created() {
-    this.findMaxResult(this.predict_result);
+    maxResult: Number,
   },
 };
 </script>

@@ -12,12 +12,15 @@
                     <div class="ins-3 p-1">Please note that we currently only support Chinese input.</div>
                   </div>
                 <div class="col">
-                    <div class="ins-1 p-1">Part II : Select the sentencing factors which are close to your case.</div>
+                    <div class="ins-1 p-1">Part II : Select the custody factors which are close to your case.</div>
                 </div>
             </div>
             <div v-loading="isLoading">
               <div v-for="config in resultConfig" :key='config.key'>
-                <div class="ins-1" >{{config.title}}</div>
+                <div class="row">
+                  <div class="col"><div class="ins-1" >{{config.title}}</div></div>
+                  <div class="col"><div class="ins-1" >{{config.title_f}}</div></div>
+                </div>
                   <div class="row">
                       <div class="col">
                         <div class="row">
@@ -65,6 +68,7 @@
                 :isLoading="isLoading"
                 :errorPrompt="errorPrompt"
                 :errorCode="errorCode"
+                :maxResult="maxResult"
               />
             </div>
         </div>
@@ -87,15 +91,16 @@ export default {
     return {
       predict_result: { Applicant: 0, Respondent: 0, Both: 0 },
       elapsedTime: 0,
+      maxResult: 0,
       isLoading: false,
       isStartPredict: false,
       errorPrompt: false,
       errorCode: new Error(),
       resultConfig: [
-        { title: 'The statements favorable to the party(you)', type: 'A', key: 'AA', dialog: false },
-        { title: 'The statements unfavorable to the party(you)', type: 'D', key: 'AD', dialog: false },
-        { title: 'The statements favorable to the other party', type: 'A', key: 'RA', dialog: false },
-        { title: 'The statements unfavorable to the other party', type: 'D', key: 'RD', dialog: false },
+        { title: 'The statements favorable to the party(you)', title_f: 'The factors favorable to the party(you)', type: 'A', key: 'AA', dialog: false },
+        { title: 'The statements unfavorable to the party(you)', title_f: 'The factors unfavorable to the party(you)', type: 'D', key: 'AD', dialog: false },
+        { title: 'The statements favorable to the other party', title_f: 'The factors favorable to the other party', type: 'A', key: 'RA', dialog: false },
+        { title: 'The statements unfavorable to the other party', title_f: 'The factors unfavorable to the other party', type: 'D', key: 'RD', dialog: false },
       ],
       features: [
         { label: '親子感情 Parent-Child Affection', value: '親子感情' },
@@ -208,6 +213,7 @@ export default {
     addStatement(resultKey, statement) {
       this.isStartPredict = false;
       this.isLoading = false;
+      this.maxResult = 0;
       if (this.checkStatement(resultKey, statement)) {
         this.result.data[resultKey].Sentence = this.result.data[resultKey].Sentence.replace(statement, '');
       } else {
@@ -231,12 +237,12 @@ export default {
     },
     checkInputValid(data) {
       let isLenValid = false;
+      let isLanguageValid = true;
       Object.keys(data).forEach((key) => {
         if (data[key].Sentence.length > 0) {
           isLenValid = true;
           if (!this.checkContainChinese(data[key].Sentence)) {
-            alert('Now we only support chinese input.');
-            return false;
+            isLanguageValid = false;
           }
         }
         if (data[key].Feature.length > 0) {
@@ -245,10 +251,27 @@ export default {
         return null;
       });
       if (!isLenValid) {
-        alert("You haven't input any senencing factors or rationale statements.");
+        alert("You haven't input any custody factors or rationale statements.");
         return false;
       }
+      if (!isLanguageValid) {
+        alert('Now we only support chinese input.');
+        return false;
+      }
+
+
       return true;
+    },
+    findMaxResult(predictResult) {
+      if (predictResult.Applicant > this.maxResult) {
+        this.maxResult = predictResult.Applicant;
+      }
+      if (predictResult.Respondent > this.maxResult) {
+        this.maxResult = predictResult.Respondent;
+      }
+      if (predictResult.Both > this.maxResult) {
+        this.maxResult = predictResult.Both;
+      }
     },
     startPredict() {
       console.log('>>>>>start predict:', this.result.data);
@@ -262,14 +285,27 @@ export default {
           console.log('res.data:', res.data);
           // predict_result: { Applicant: 0, Respondent: 0, Both: 0 }
           this.predict_result = res.data;
+          this.findMaxResult(this.predict_result);
           this.isStartPredict = true;
           this.isLoading = false;
         });
       } else {
         this.isStartPredict = false;
         this.isLoading = false;
+        this.maxResult = 0;
       }
       // eslint-disable-next-line no-alert
+    },
+  },
+  watch: {
+    result: {
+      handler(val) {
+        // do stuff
+        this.isStartPredict = false;
+        this.isLoading = false;
+        this.maxResult = 0;
+      },
+      deep: true,
     },
   },
 };
