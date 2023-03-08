@@ -2,7 +2,7 @@
   <div class="jumbotron content" id="Home">
     <div class="Home-container">
       <div class="Home-subtitle">Demo Landing Page</div>
-      <div class="Home-title">Predicting Judicial Decision on Post-Divorce Child Custody through Natural Language Processing</div>
+      <div class="Home-title">Predicting Judicial Decisions on Post-Divorce Child Custody by Intermediate Self-Supervised Learning Method</div>
     </div>
     <UserGuide :guide="guide_en" :isHome="true"></UserGuide>
     <!-- <a href="/userPredict" class="btn-lg btn-default btn-navigate">Start Predict →</a> -->
