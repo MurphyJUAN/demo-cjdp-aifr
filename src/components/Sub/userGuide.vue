@@ -1,7 +1,6 @@
 <template>
-  <div id="container-guide" class="container Home-intro" style="z-index: 100;">
+  <div id="container-guide" class="Home-intro" style="z-index: 100;">
     <div id="guide">
-        <h4 class="user-instruction-title">Instructions:</h4>
         <h6 class="user-instruction">
           <div v-html="guide"></div>
         </h6>
@@ -22,19 +21,6 @@ export default {
 
 <style lang="scss" scoped>
 
-#mainIntro {
-  position: relative;
-  font-family: 標楷體, DFKai-SB, 楷體, STKaiti, cwTeXKai;
-  font-size: 20pt;
-  text-align: center;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 90%;
-  padding: 20px;
-  margin-top: 30px;
-}
-
 .Home-intro {
   overflow-y: auto;
   overflow-x: hidden;
@@ -48,8 +34,8 @@ export default {
   border: 2px solid #cfbf84;
 }
 
-#container-guide[data-v-78a326ce] {
-  width: 85%;
+#container-guide {
+  width: 100%;
 }
 .description {
   letter-spacing: 4px;

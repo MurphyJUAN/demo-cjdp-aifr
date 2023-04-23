@@ -2,8 +2,9 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import HomePage from '@/components/Main/homePage';
 import PastCase from '@/components/Main/pastCase';
-// import UserPredict from '@/components/Main/userPredict';
-import UserPredict from '@/components/Main/userPredict2';
+import UserPredict from '@/components/Main/userPredict';
+import UserPredict1 from '@/components/Main/userPredict1';
+import UserInputGroup from '@/components/Sub/userInputGroup';
 import GenderSelect from '@/components/Sub/genderAndCountrySelect';
 import CheckboxGroup from '@/components/Sub/checkboxGroup';
 import SupplementDescription from '@/components/Sub/supplementDescription';
@@ -30,13 +31,19 @@ export default new Router({
       name: 'UserPredict',
       component: UserPredict,
       children: [
-        { path: '/userPredict/genderSelect', component: GenderSelect },
-        { path: '/userPredict/checkboxGroup', component: CheckboxGroup },
-        { path: '/userPredict/supplementDescription', component: SupplementDescription },
-        { path: '/userPredict/predictResult', component: PredictResult },
-        { path: '/userPredict/resultFeedback', component: ResultFeedback },
+        // { path: '/userPredict/genderSelect', component: GenderSelect },
+        // { path: '/userPredict/checkboxGroup', component: CheckboxGroup },
+        // { path: '/userPredict/supplementDescription', component: SupplementDescription },
+        // { path: '/userPredict/predictResult', component: PredictResult },
+        // { path: '/userPredict/resultFeedback', component: ResultFeedback },
+        { path: ':mode', component: UserInputGroup }
       ],
     },
+    {
+      path: '/userPredict1',
+      name: 'UserPredict1',
+      component: UserPredict1,
+    }
   ],
   scrollBehavior() {
     return { x: 0, y: 0 };

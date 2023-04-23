@@ -8,19 +8,22 @@
       <appNavbar id="appNavbar"/>
     </div>
     <router-view :currentApi="currentApi" class="content" />
-    <!-- <appFooter :currentApi="currentApi" /> -->
+    <appLinks />
+    <appFooter :currentApi="currentApi" />
   </div>
 </template>
 
 <script>
 import Navbar from './components/Sub/navbar';
 import Footer from './components/Sub/footer';
+import Link from './components/Sub/links.vue';
 
 export default {
   name: 'App',
   components: {
     appNavbar: Navbar,
     appFooter: Footer,
+    appLinks: Link
   },
   data() {
     // test api
@@ -45,7 +48,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import url(https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap);
 
 body {
@@ -60,6 +63,19 @@ body {
 }
 .headerContainer {
   background-color: #fff;
+}
+.page-container {
+    width: calc( 90% - 40px );
+    max-width: 1680px;
+    margin: 0px auto 50px auto;
+}
+.Home-title {
+  font-size: 2.4rem;
+  font-weight: 700;
+  max-width: 1170px;
+  padding: 1rem 10px;
+  text-align: left;
+  color: #FFF;
 }
 #appNavbar {
   width: 90%;
@@ -102,7 +118,5 @@ body {
   bottom: 20vh;
   transform: rotate(-20deg);
 }
-.content {
-  min-height: calc(100vh - 56px - 120px);
-}
+
 </style>

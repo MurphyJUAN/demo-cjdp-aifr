@@ -1,14 +1,19 @@
 <template>
-  <footer class="footer">
-    <div class="row">
-      <div class="col">
-        <p class="mt-2">聯絡方式：custodyprediction@gmail.com</p>
+  <div>
+    <footer class="footer">
+      <div class="footer-inner">
+        <el-row :gutter="20" justify="space-around">
+            <el-col :span="12">
+              <p style="line-height: 2rem">聯絡我們：custodyprediction@gmail.com</p>
+            </el-col>
+            <el-col :span="12">
+              <div style="text-align: right"><a href="http://www.phys.nthu.edu.tw/~aicmt/index.html" target="_blank">清華大學AIFR研究群</a></div>
+              <div style="text-align: right"><a href="https://nthuhssai.site.nthu.edu.tw/" target="_blank">清華大學人文社會AI應用與發展研究中心</a></div>
+            </el-col>
+          </el-row>
       </div>
-      <div class="col">
-        <p class="mt-2">版本：v0.3.3 後端版本：{{getVersion()}}</p>
-      </div>
-    </div>
-  </footer>
+    </footer>
+  </div>
 </template>
 
 <script>
@@ -48,9 +53,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+a {
+  color: #000;
+}
 .footer {
-  line-height: 35px;
-  text-align: center;
+  padding: 20px;
   color: #1f191b;
   background-color: #fff;
   position: relative;
@@ -58,5 +65,9 @@ export default {
   @media (max-width: 768px) {
     height: 100%;
   }
+}
+.footer-inner {
+  width: calc( 90% - 40px );
+  margin: auto;
 }
 </style>

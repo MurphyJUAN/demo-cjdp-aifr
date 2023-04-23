@@ -1,44 +1,57 @@
 <template>
-    <nav class="navbar navbar-expand-md" style="background-color: rgb(255, 255, 255);">
-      <div class="mx-auto order-0">
-        <a class="navbar-brand mx-auto" href="/">
-          <img src="https://jerry914.github.io/nlp-judgement-frontend/static/img/dlogo.d370639.jpeg" alt="Logo" width="30" height="34" class="d-inline-block align-text-center">
-          <!-- AI輔助親權判決預測網頁 -->
-        </a>
-      </div>
-      <div class="navbar-collapse collapse order-3 dual-collapse2">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <router-link class="nav-link" to="/" data-toggle="collapse" data-target=".dual-collapse2">Home</router-link>
-            <div v-if="$route.name == 'HomePage'" class="underline"></div>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/userPredict" data-toggle="collapse" data-target=".dual-collapse2">Predict</router-link>
-            <div v-if="$route.name == 'UserPredict'" class="underline"></div>
-          </li>
-        </ul>
-      </div>
-    </nav>
+  <div>
+    <div class="web-header">
+      <img src="/static/icon.jpg" width="151" height="85" class="d-inline-block align-top" alt="" loading="lazy">
+      <span class="web-title">AI輔助親權酌定預測系統</span>
+      <el-divider></el-divider>
+    </div>
+    <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" :router="true" text-color="#000" active-text-color="#F3BB5C">
+      <!-- <el-menu-item index="0">LOGO</el-menu-item>
+      <div class="flex-grow" /> -->
+      <el-menu-item index="/">首頁</el-menu-item>
+      <el-menu-item index="/userPredict/mode1">模式一：選項</el-menu-item>
+      <el-menu-item index="/userPredict/mode2">模式二：文字</el-menu-item>
+      <el-menu-item index="/userPredict/mode3">模式三：選項加文字</el-menu-item>
+      <el-menu-item index="/techDoc">技術說明</el-menu-item>
+      <el-menu-item index="/contactUs">聯絡我們</el-menu-item>
+    </el-menu>
   </div>
 </template>
 
 <script>
 export default {
   name: 'Navbar',
+  data() {
+    return {
+      activeIndex: '/',
+    };
+  },
 };
 </script>
 
+<style>
+.el-menu {
+  display: flex;
+  justify-content: center;
+}
+.el-menu--horizontal>.el-menu-item {
+  font-size: 1rem;
+}
+</style>
 <style scoped>
-a {
-  color: #1F191B;
+.flex-grow {
+  flex-grow: 1;
 }
-.underline {
-  height: 4px;
-  margin: auto;
-  background-color: #F3BB5C;
-  -webkit-transition: all .3s ease-Out;
-  transition: all .3s ease-Out;
-  border-radius: 10px;
+.web-header {
+  width: 100%;
+  background-color: #fff;
+  padding-top: 10px;
+  text-align: center;
 }
-
+.web-title {
+  font-size: 1.5rem;
+  line-height: 80px;
+  font-weight: bold;
+  padding-left: 20px;
+}
 </style>

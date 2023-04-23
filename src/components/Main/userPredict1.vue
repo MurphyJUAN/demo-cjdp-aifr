@@ -1,9 +1,7 @@
 <template>
     <div class="page-container">
-        <div class="page-title">
-            Predict
-        </div>
         <div class="predict-container">
+            <div class="page-title">模式一：選項輸入</div>
             <div class="shadow-none p-2 mb-2 rounded quote">You can choose to do either Part I or Part II, or both.</div>
             <div class="row">
                 <div class="col">
@@ -77,14 +75,14 @@
 
 <script>
 import axios from 'axios';
-import Multiselect from 'vue-multiselect';
+// import Multiselect from 'vue-multiselect';
 import PredictResult from '../Sub/predictResult';
 
 
 export default {
   name: 'UserPredict',
   components: {
-    Multiselect,
+    // Multiselect,
     PredictResult,
   },
   data() {
@@ -322,8 +320,8 @@ export default {
     font-size: 1.5rem;
     font-weight: bold;
     width: fit-content;
-    border-bottom: 2px solid #F3BB5C;
-    color: white;
+    // border-bottom: 2px solid #F3BsB5C;
+    // color: white;
     margin: 30px 0 20px 0;
     padding: 0 5px;
 }
@@ -334,29 +332,12 @@ export default {
     padding: 35px 40px;
     margin-bottom: 50px;
 }
-.ins-1 {
-    font-size: 1.2rem;
-    font-weight: bold;
-    padding-top: 15px;
-}
+
 .quote {
     background-color: rgba(90,77,88,0.12);
     text-align: center;
     font-size: 1.2rem;
     font-weight: bold;
-}
-.example-btn {
-    border-radius: 4px;
-    background-color: #5A4D30;
-    width: 100%;
-    height: 100%;
-    color: #fff;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.4s;
-    &:hover {
-        opacity: 0.8;
-    }
 }
 .predict-btn {
     border-radius: 4px;
@@ -371,24 +352,5 @@ export default {
     &:hover {
         opacity: 0.8;
     }
-}
-.statement-card {
-  word-break: break-word;
-  padding: 5px;
-  margin-bottom: 5px;
-  border: 1px solid #5A4D30;
-  border-radius: 2px;
-  cursor: pointer;
-  transition: 0.4s;
-  &:hover {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
-  }
-}
-.isActive {
-  background: #5A4D30;
-  color: #fff;
-}
-.ins-3 {
-  font-weight: bold
 }
 </style>
