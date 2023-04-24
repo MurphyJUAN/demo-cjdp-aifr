@@ -1,26 +1,26 @@
 <template>
-  <el-row :gutter="2">
-    <el-col :span="20">
-      <textarea class="form-control border-secondary" rows="5" v-model="result"></textarea>
-    </el-col>
-    <el-col :span="4">
-      <el-dialog title="Sample Statement" :visible.sync="configKey.dialog">
-        <div v-for="statementGroup in sentencesExample[configKey.type]" :key="statementGroup.type" style="padding-bottom:20px;">
-          <div style="padding-bottom: 5px;">{{statementGroup.type}}</div>
-          <div v-for="statement in statementGroup.item" :key="statement.value">
-            <div class='statement-card' :class="checkStatement(configKey.key, statement.value)?'isActive':''" @click="addStatement(configKey.key, statement.value)">
-              {{statement.label}}
+  <div class="pb-2">
+    <el-row :gutter="2">
+      <el-col :span="20">
+        <textarea class="form-control border-secondary" rows="3" v-model="result"></textarea>
+      </el-col>
+      <el-col :span="4">
+        <el-dialog title="範例文字" :visible.sync="dialogState[configKey.key]">
+          <div v-for="statementGroup in sentencesExample[configKey.type]" :key="statementGroup.type" style="padding-bottom:20px;">
+            <div style="padding-bottom: 5px;">{{statementGroup.type}}</div>
+            <div v-for="statement in statementGroup.item" :key="statement.value">
+              <div class='statement-card' :class="checkStatement(statement.value)?'isActive':''" @click="addStatement(statement.value)">
+                {{statement.label}}
+              </div>
             </div>
           </div>
+        </el-dialog>
+        <div class="example-btn" @click="dialogState[configKey.key]=true">
+          <div class="example-btn-item">新增範例文字</div>
         </div>
-      </el-dialog>
-      <div class="example-btn" @click="configKey.dialog=true">
-        <table style="height: 100%;">
-          <td class="align-middle text-center">新增範例文字</td>
-        </table>
-      </div>
-    </el-col>
-  </el-row>
+      </el-col>
+    </el-row>
+</div>
 </template>
 
 <script>
@@ -28,7 +28,13 @@ export default {
   name: "InputDescription",
   data() {
     return {
-      result: [],
+      result: '',
+      dialogState: {
+        AA: false,
+        AD: false,
+        RA: false,
+        RD: false,
+      },
       sentencesExample: {
         A: [
           {
@@ -120,29 +126,30 @@ export default {
     };
   },
   props: {
-    configKey: String
+    configKey: Object,
+    rowIdx: Number
   },
   watch: {
     result: {
       handler(val) {
-        this.$emit('updateDescription', { key: this.configKey, value: val})
+        this.$emit('descriptionUpdate', { key: this.configKey.key, rowIdx: this.rowIdx, value: val})
       },
       deep: true,
     },
   },
   methods: {
-    addStatement(resultKey, statement) {
+    addStatement(statement) {
       this.isStartPredict = false;
       this.isLoading = false;
       this.maxResult = 0;
-      if (this.checkStatement(resultKey, statement)) {
-        this.result.data[resultKey].Sentence = this.result.data[resultKey].Sentence.replace(statement, '');
+      if (this.checkStatement(statement)) {
+        this.result = this.result.replace(statement, '');
       } else {
-        this.result.data[resultKey].Sentence += statement;
+        this.result += statement;
       }
     },
-    checkStatement(resultKey, statement) {
-      if (this.result.data[resultKey].Sentence.indexOf(statement) >= 0) return true;
+    checkStatement(statement) {
+      if (this.result.indexOf(statement) >= 0) return true;
       return false;
     },
     clearAll() {
@@ -153,70 +160,44 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
-  @media (min-width: 1400px) {
-    max-width: 1200px;
-  }
-  @media (min-width: 1000px) and (max-width: 1400px) {
-    max-width: 900px;
-  }
-  @media (max-width: 1000px) {
-    max-width: 700px;
+.form-control {
+  height: 5rem !important;
+}
+.example-btn {
+    border-radius: 4px;
+    background-color: #5A4D30;
+    width: 100%;
+    height: 5rem !important;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    padding: 0 5px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.4s;
+    &:hover {
+        opacity: 0.8;
+    }
+}
+.example-btn-item {
+  height: fit-content;
+}
+.statement-card {
+  word-break: break-word;
+  padding: 5px;
+  margin-bottom: 5px;
+  border: 1px solid #5A4D30;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: 0.4s;
+  &:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
   }
 }
-
-.column-container {
-  @media (max-width: 768px) {
-    max-width: 95%;
-  }
-}
-.check-common-sentence {
-  max-height: 400px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  border: solid 1px;
-  border-color: lightgray;
-}
-.category-title {
-  text-align: left;
-  @media (min-width: 500px) {
-    margin-left: 10%;
-    min-width: 0px;
-  }
-  @media (max-width: 400px) {
-    margin-left: -10%;
-    min-width: 0px;
-  }
-  font-weight: 500;
-  font-size: 20px;
-}
-.checkbox-box {
-  width: 10%;
-}
-.checkbox-content {
-  min-width: 70%;
-  max-width: 70%;
-  line-height: 40px;
-  margin-left: 10%;
-  @media (max-width: 400px) {
-    margin-left: -20%;
-    min-width: 0px;
-    max-width: 90%;
-  }
-  li {
-    text-align: left;
-    font-size: 20px;
-  }
-}
-
-// input[type="checkbox"] {
-//   zoom: 180%;
-// }
-
-.custom-control-label::before,
-.custom-control-label::after {
-  top: 0.5rem;
-  width: 1.5rem;
-  height: 1.5rem;
+.isActive {
+  background: #5A4D30;
+  color: #fff;
 }
 </style>

@@ -2,13 +2,13 @@
   <div>
     <footer class="footer">
       <div class="footer-inner">
-        <el-row :gutter="20" justify="space-around">
+        <el-row :gutter="20" :justify="'space-around'" :align="'middle'">
             <el-col :span="12">
-              <p style="line-height: 2rem">聯絡我們：custodyprediction@gmail.com</p>
+              <p>聯絡我們：custodyprediction@gmail.com</p>
             </el-col>
             <el-col :span="12">
-              <div style="text-align: right"><a href="http://www.phys.nthu.edu.tw/~aicmt/index.html" target="_blank">清華大學AIFR研究群</a></div>
-              <div style="text-align: right"><a href="https://nthuhssai.site.nthu.edu.tw/" target="_blank">清華大學人文社會AI應用與發展研究中心</a></div>
+              <div class="footer-link"><a href="http://www.phys.nthu.edu.tw/~aicmt/index.html" target="_blank">清華大學AIFR研究群</a></div>
+              <div class="footer-link"><a href="https://nthuhssai.site.nthu.edu.tw/" target="_blank">清華大學人文社會AI應用與發展研究中心</a></div>
             </el-col>
           </el-row>
       </div>
@@ -62,12 +62,20 @@ a {
   background-color: #fff;
   position: relative;
   z-index: 99;
-  @media (max-width: 768px) {
-    height: 100%;
-  }
+  font-size: 1rem;
 }
 .footer-inner {
   width: calc( 90% - 40px );
   margin: auto;
+}
+.footer-link {
+  text-align: right;
+  a {
+    text-decoration: none;
+    transition: 0.4s;
+    &:hover {
+      color: #F3BB5C;
+    }
+  }
 }
 </style>

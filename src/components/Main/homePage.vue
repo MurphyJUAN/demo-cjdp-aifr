@@ -97,17 +97,20 @@ export default {
   border-radius: 12px;
   border: 2px solid #cfbf84;
 }
+a {
+  text-decoration: none !important;
+}
 .grid-content {
   border-radius: 4px;
-  height: 7rem;
+  height: 8.5rem;
   margin: 30px;
   padding: 2rem;
   font-size: 1.5rem;
   color: #000;
-  text-decoration: none;
   transition: 0.4s;
-  &hover {
+  &:hover {
     opacity: 0.8;
+    font-size: 1.6rem;
   }
 }
 .bg-white{

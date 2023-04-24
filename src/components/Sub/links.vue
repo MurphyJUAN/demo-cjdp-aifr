@@ -69,6 +69,15 @@
     font-weight: bold;
     font-size: 1.4rem;
     margin: 20px;
+    transition: 0.4s;
+    &:hover {
+        text-decoration: none;
+        background-color: #F3BB5C;
+        color: #FFF;
+    }
+}
+a {
+    text-decoration: none;
 }
 </style>
   

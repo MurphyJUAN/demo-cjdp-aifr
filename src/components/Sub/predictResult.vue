@@ -1,76 +1,25 @@
 <template>
-  <section id="predict-result">
-    <div id="btn-det">
-      <div class="w-100 justify-content-center"></div>
-    </div>
-    <div class="d-none d-md-block" style="z-index: 100">
-      <div class="w-100 justify-content-center mt-4" style="z-index: 100">Here are the predicted results from our model:</div>
-      <div class="d-inline-flex w-100 justify-content-center mt-4" style="z-index: 100">
-        <div>
-          <p class="justify-content-center bold" style="text-align: center;">To the party(You):</p>
-          <radial-progress-bar :diameter="180"
-                       :completed-steps="Math.round(predict_result['Applicant'] * 100) / 100"
-                       :total-steps="100"
-                       :strokeWidth=20
-                       :innerStrokeWidth=10
-                       >
-            <p style="text-align: center;" :style= "[predict_result['Applicant'] == maxResult ? {'color': '#FF5C59', 'font-weight': 'bold', 'text-decoration': 'underline'} : {'color': 'black', 'font-weight': 'normal', 'text-decoration': 'none'}]">{{Math.round(predict_result['Applicant'] * 100) / 100}}% </p>
-          </radial-progress-bar>
-        </div>
-
-
-        <div class="ml-6">
-          <p class="justify-content-center bold" style="text-align: center;">To Both:</p>
-          <radial-progress-bar :diameter="180"
-                       :completed-steps="Math.round(predict_result['Both'] * 100) / 100"
-                       :total-steps="100"
-                       :strokeWidth=20
-                       :innerStrokeWidth=10
-                       startColor=#42FCFF
-                       stopColor=#6A37E1>
-            <p style="text-align: center;" :style= "[predict_result['Both'] == maxResult ? {'color': '#FF5C59', 'font-weight': 'bold', 'text-decoration': 'underline'} : {'color': 'black', 'font-weight': 'normal', 'text-decoration': 'none'}]">{{Math.round(predict_result['Both'] * 100) / 100}}% </p>
-          </radial-progress-bar>
-        </div>
-
-        <div class="ml-6">
-          <p class="justify-content-center bold" style="text-align: center;">To the other party:</p>
-          <radial-progress-bar :diameter="180"
-                       :completed-steps="Math.round(predict_result['Respondent'] * 100) / 100"
-                       :total-steps="100"
-                       :strokeWidth=20
-                       :innerStrokeWidth=10
-                       startColor=#F9BC67
-                       stopColor=#A44404>
-            <p style="text-align: center;" :style= "[predict_result['Respondent'] == maxResult ? {'color': '#FF5C59', 'font-weight': 'bold', 'text-decoration': 'underline'} : {'color': 'black', 'font-weight': 'normal', 'text-decoration': 'none'}]">{{Math.round(predict_result['Respondent'] * 100) / 100}}% </p>
-          </radial-progress-bar>
-        </div>
-
-
-        <!-- <h5 :style= "[predict_result['Applicant'] == maxResult ? {'color': '#FF5C59', 'font-weight': 'bold', 'text-decoration': 'underline'} : {'color': 'black', 'font-weight': 'normal', 'text-decoration': 'none'}]">Custody awarded to the party(you): {{Math.round(predict_result['Applicant'] * 100) / 100}}%</h5>
-        <h5 class="ml-3" :style= "[predict_result['Respondent'] == maxResult ? {'color': '#FF5C59', 'font-weight': 'bold', 'text-decoration': 'underline'} : {'color': 'black', 'font-weight': 'normal', 'text-decoration': 'none'}]">Custody awarded to the other party: {{Math.round(predict_result['Respondent']*100) / 100}}%</h5>
-        <h5 class="ml-3" :style= "[predict_result['Both'] == maxResult ? {'color': '#FF5C59', 'font-weight': 'bold', 'text-decoration': 'underline'} : {'color': 'black', 'font-weight': 'normal', 'text-decoration': 'none'}]">Custody awarded to both： {{Math.round(predict_result['Both']*100) / 100}}%</h5> -->
+  <div id="predict-result" class="text-center">
+    <div style="z-index: 100">
+      <div class="p-10 justify-content-center mt-4 mx-20" style="z-index: 100">
+        <el-row :gutter="10">
+          <el-col :offset="4" :span="5">母親贏得親權的機率</el-col>
+          <el-col :span="5">雙方共享親權的機率</el-col>
+          <el-col :span="5">父親贏得親權的機率</el-col>
+          <el-col :span="5">誤差範圍</el-col>
+        </el-row>
+        <el-row v-for="model in modelUsed[$route.params.mode]" :key="model" :gutter="10">
+          <el-col :span="4">AI模型-{{ model }}</el-col>
+          <el-col :span="5">{{Math.round(predict_result['Applicant']*100) / 100}}%</el-col>
+          <el-col :span="5">{{Math.round(predict_result['Both']*100) / 100}}%</el-col>
+          <el-col :span="5">{{Math.round(predict_result['Respondent']*100) / 100}}%</el-col>
+          <el-col :span="5">+-5%</el-col>
+        </el-row>
       </div>
       <!-- <div v-if="isLoading">Calculating... {{elapsedTime}} seconds have elapsed.</div> -->
       <div v-if="errorPrompt">{{errorCode}}</div>
-      <h6 class="mt-2">(We suggest trying different phrasing or enlisting the help of an impartial third party for input. If you have any feedback or suggestions, please feel free to email us.)</h6>
     </div>
-    <div class="d-md-none" style="z-index: 100">
-      <div class="w-100 justify-content-center mt-4" style="z-index: 100">
-        <h5 :style= "[predict_result['Applicant'] == maxResult ? {'color': '#FF5C59', 'font-weight': 'bold', 'text-decoration': 'underline'} : {'color': 'black', 'font-weight': 'normal', 'text-decoration': 'none'}]">
-          Custody awarded to the party(you): {{Math.round(predict_result['Applicant']*100) / 100}}%
-        </h5>
-        <h5 class="ml-3 mt-3" :style= "[predict_result['Respondent'] == maxResult ? {'color': '#FF5C59', 'font-weight': 'bold', 'text-decoration': 'underline'} : {'color': 'black', 'font-weight': 'normal', 'text-decoration': 'none'}]">
-          Custody awarded to the other party: {{Math.round(predict_result['Respondent']*100) / 100}}%
-        </h5>
-        <h5 class="ml-3 mt-3" :style= "[predict_result['Both'] == maxResult ? {'color': '#FF5C59', 'font-weight': 'bold', 'text-decoration': 'underline'} : {'color': 'black', 'font-weight': 'normal', 'text-decoration': 'none'}]">
-          Custody awarded to both： {{Math.round(predict_result['Both']*100) / 100}}%
-        </h5>
-      </div>
-      <!-- <div v-if="isLoading">Calculating... {{elapsedTime}} seconds have elapsed.</div> -->
-      <div v-if="errorPrompt">{{errorCode}}</div>
-      <h6 class="mt-2">(We suggest trying different phrasing or enlisting the help of an impartial third party for input. If you have any feedback or suggestions, please feel free to email us.)</h6>
-    </div>
-  </section>
+  </div>
 </template>
 
 <script>
@@ -85,6 +34,11 @@ export default {
     return {
       completedSteps: 5,
       totalSteps: 10,
+      modelUsed: {
+        mode1: ['L1', 'L2'],
+        mode2: ['S1', 'S2'],
+        mode3: ['C1', 'C2'],
+      },
     };
   },
   props: {

@@ -1,9 +1,11 @@
 <template>
   <div>
     <div class="web-header">
-      <img src="/static/icon.jpg" width="151" height="85" class="d-inline-block align-top" alt="" loading="lazy">
-      <span class="web-title">AI輔助親權酌定預測系統</span>
-      <el-divider></el-divider>
+      <router-link to="/">
+        <img src="/static/icon.jpg" width="151" height="85" class="d-inline-block align-top" alt="" loading="lazy">
+        <span class="web-title">AI輔助親權酌定預測系統</span>
+      </router-link>
+      <div class="head-divider"></div>
     </div>
     <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" :router="true" text-color="#000" active-text-color="#F3BB5C">
       <!-- <el-menu-item index="0">LOGO</el-menu-item>
@@ -53,5 +55,16 @@ export default {
   line-height: 80px;
   font-weight: bold;
   padding-left: 20px;
+}
+.head-divider {
+  width: 80%;
+  margin: auto;
+  height: 1px;
+  margin-top: 10px;
+  background-color: #ddd;
+}
+a {
+  color: #000;
+  text-decoration: none !important;
 }
 </style>

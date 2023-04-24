@@ -1,17 +1,41 @@
 <template>
-  <el-row justify="space-between" :gutter="1">
+  <el-row justify="space-between" :gutter="5">
     <el-col :xs="24" :sm="12" v-for="(colConfigs, idx) in resultConfig" :key="idx">
-      <div class="p-3 w-100" v-for="config in colConfigs" :key="config.title" :class="idx==0?'brown-divider':''">
+      <div class="px-3 pb-3 w-100" v-for="config in colConfigs" :key="config.title" :class="idx==0?'brown-divider':''">
         <div v-if="$route.params.mode == 'mode1'" class="ins-1">對{{config.title}}的因素選項</div>
         <div v-if="$route.params.mode == 'mode2'" class="ins-1">對{{config.title}}的理由文字</div>
         <div v-if="$route.params.mode == 'mode3'" class="ins-1">對{{config.title}}的因素與理由</div>
 
         <div v-if="$route.params.mode == 'mode1'">
-          <select-features :configKey="config.key" @featureUpdate="updateFeature" ref="selectForm"></select-features>
+          <select-features :configKey="config" :rowIdx="0" :allowMultiple="true" @featureUpdate="updateFeature" ref="selectForm"></select-features>
         </div>
 
         <div v-if="$route.params.mode == 'mode2'">
-          <input-description :configKey="config.key" @descriptionUpdate="updateDescription" ref="inputForm"></input-description>
+          <input-description :configKey="config" :rowIdx="0" @descriptionUpdate="updateDescription" ref="inputForm"></input-description>
+        </div>
+
+        <div v-if="$route.params.mode == 'mode3'">
+          <div v-for="(inputRow, rowIdx) in result.data[config.key]" :key="inputRow.rowIdx">
+            <el-row :gutter="5">
+              <el-col :span="1">
+                {{ rowIdx+1 }}.
+              </el-col>
+              <el-col :span="21" >
+                <select-features :configKey="config" :rowIdx="rowIdx" :allowMultiple="false" @featureUpdate="updateFeature" ref="selectForm"></select-features>
+                <input-description :configKey="config" :rowIdx="rowIdx" @descriptionUpdate="updateDescription" ref="inputForm"></input-description>
+              </el-col>
+              <el-col v-if="result.data[config.key].length > 1 && rowIdx == result.data[config.key].length-1" :span="2">
+                <el-button type="danger" icon="el-icon-delete" circle @click="deleteInputRow(config.key, rowIdx)"></el-button>
+              </el-col>
+            </el-row>
+          </div>
+          <div>
+          <el-row :gutter="1">
+            <el-col :offset="1" :span="23">
+              <el-button type="warning" @click="addInputRow(config.key)">新增欄位</el-button>
+            </el-col>
+          </el-row>
+          </div>
         </div>
       </div>
     </el-col>
@@ -34,20 +58,20 @@ export default {
     return {
       resultConfig: [
         [
-          { title: '父親有利', type: 'A', key: 'AA', dialog: false },
-          { title: '父親不利', type: 'D', key: 'AD', dialog: false },
+          { title: '父親有利', type: 'A', key: 'AA'},
+          { title: '父親不利', type: 'D', key: 'AD'},
         ],
         [
-          { title: '母親有利', type: 'A', key: 'RA', dialog: false },
-          { title: '母親不利', type: 'D', key: 'RD', dialog: false },
+          { title: '母親有利', type: 'A', key: 'RA'},
+          { title: '母親不利', type: 'D', key: 'RD'},
         ]
       ],
       result: {
         data: {
-          AA: { Sentence: '', Feature: [] },
-          AD: { Sentence: '', Feature: [] },
-          RA: { Sentence: '', Feature: [] },
-          RD: { Sentence: '', Feature: [] },
+          AA: [{ Sentence: '', Feature: [] }],
+          AD: [{ Sentence: '', Feature: [] }],
+          RA: [{ Sentence: '', Feature: [] }],
+          RD: [{ Sentence: '', Feature: [] }],
         },
       }
     };
@@ -61,27 +85,55 @@ export default {
     },
   },
   methods: {
+    deleteInputRow(key, rowIdx) {
+      let resultAry = JSON.parse(JSON.stringify(this.result.data[key]))
+      if (rowIdx > -1) {
+        resultAry.splice(rowIdx, 1)
+      }
+      this.$set(this.result.data, key, resultAry);
+      console.log(rowIdx, this.result.data)
+    },
+    addInputRow(key) {
+      this.result.data[key].push({ Sentence: '', Feature: [] })
+      console.log(this.result.data)
+    },
     updateFeature(val) {
       console.log('updateFeature', val)
-      this.result.data[val.key].Feature = []
-      for(let i=0;i<val.val.value.length;i++) {
-        this.result.data[val.key].Feature.push(val.val.value[i].label)
+      let features = []
+      if (!val.value.value) {
+        for(let i=0;i<val.value.length;i++) {
+          features.push(val.value[i].label)
+        }
       }
+      else {
+        features.push(val.value.label)
+      }
+      
+      this.result.data[val.key][val.rowIdx].Feature = features
       console.log(this.result)
     },
     updateDescription(val) {
       console.log('updateDescription', val)
-      this.result.data[val.key].Sentence = val.val
+      this.result.data[val.key][val.rowIdx].Sentence = val.value
     },
     clearAllStatement() {
+      console.log('clearAllStatement')
       this.result.data = {
-        AA: { Sentence: '', Feature: [] },
-        AD: { Sentence: '', Feature: [] },
-        RA: { Sentence: '', Feature: [] },
-        RD: { Sentence: '', Feature: [] },
+        AA: [{ Sentence: '', Feature: [] }],
+        AD: [{ Sentence: '', Feature: [] }],
+        RA: [{ Sentence: '', Feature: [] }],
+        RD: [{ Sentence: '', Feature: [] }],
       };
-      this.$refs.selectForm.clearAll()
-      this.$refs.inputForm.clearAll()
+      if (this.$refs.selectForm) {
+        for (let i = 0; i < this.$refs.selectForm.length; i++) {
+          this.$refs.selectForm[i].clearAll()
+        }
+      }
+      if (this.$refs.inputForm) {
+        for (let i = 0; i < this.$refs.inputForm.length; i++) {
+          this.$refs.inputForm[i].clearAll()
+        }
+      }
     },
   },
 };
@@ -95,34 +147,5 @@ export default {
     font-size: 1.2rem;
     font-weight: bold;
     padding-top: 15px;
-}
-.example-btn {
-    border-radius: 4px;
-    background-color: #5A4D30;
-    width: 100%;
-    height: 100%;
-    color: #fff;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.4s;
-    &:hover {
-        opacity: 0.8;
-    }
-}
-.statement-card {
-  word-break: break-word;
-  padding: 5px;
-  margin-bottom: 5px;
-  border: 1px solid #5A4D30;
-  border-radius: 2px;
-  cursor: pointer;
-  transition: 0.4s;
-  &:hover {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
-  }
-}
-.isActive {
-  background: #5A4D30;
-  color: #fff;
 }
 </style>

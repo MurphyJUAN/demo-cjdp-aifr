@@ -46,7 +46,7 @@ export default {
       elapsedTime: 0,
       maxResult: 0,
       isLoading: false,
-      isStartPredict: false,
+      isStartPredict: true,
       errorPrompt: false,
       errorCode: new Error(),
       pageText: {
@@ -181,9 +181,8 @@ export default {
   },
   methods: {
     updateResult(val) {
-      console.log(val)
-      console.log(this.result)
       this.result = val
+      console.log('result:', this.result)
     },
     addStatement(resultKey, statement) {
       this.isStartPredict = false;
@@ -200,6 +199,7 @@ export default {
       return false;
     },
     clearAllStatement() {
+      console.log(this.$refs.groupForm)
       this.$refs.groupForm.clearAllStatement()
     },
     checkContainChinese(str) {
