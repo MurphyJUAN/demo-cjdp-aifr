@@ -3,7 +3,6 @@ import Router from 'vue-router';
 import HomePage from '@/components/Main/homePage';
 import PastCase from '@/components/Main/pastCase';
 import UserPredict from '@/components/Main/userPredict';
-import UserPredict1 from '@/components/Main/userPredict1';
 import UserInputGroup from '@/components/Sub/userInputGroup';
 import GenderSelect from '@/components/Sub/genderAndCountrySelect';
 import CheckboxGroup from '@/components/Sub/checkboxGroup';
@@ -39,11 +38,6 @@ export default new Router({
         { path: ':mode', component: UserInputGroup }
       ],
     },
-    {
-      path: '/userPredict1',
-      name: 'UserPredict1',
-      component: UserPredict1,
-    }
   ],
   scrollBehavior() {
     return { x: 0, y: 0 };
