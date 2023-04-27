@@ -1,3 +1,4 @@
+<!-- eslint-disable max-len -->
 <template>
   <div class="page-container">
     <div class="predict-container">

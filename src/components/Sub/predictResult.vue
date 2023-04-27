@@ -1,3 +1,4 @@
+<!-- eslint-disable max-len -->
 <template>
   <div id="predict-result" class="text-center">
     <div style="z-index: 100">

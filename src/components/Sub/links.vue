@@ -10,53 +10,53 @@
         </el-row>
     </div>
 </template>
-  
+
 <script>
-  export default {
-    name: 'Links',
-    data() {
-      return {
-        links: [
-            { 
-                name: '婚姻諮商服務',
-                src: ''
-            },
-            { 
-                name: '法律諮詢服務',
-                src: ''
-            },
-            { 
-                name: '孩童照顧服務',
-                src: ''
-            },
-            { 
-                name: '就業輔導服務',
-                src: ''
-            },
-            { 
-                name: '社區支援服務',
-                src: ''
-            },
-            { 
-                name: '警政便民服務',
-                src: ''
-            },
-            { 
-                name: '戶政便民服務',
-                src: ''
-            },
-            { 
-                name: '新住民服務',
-                src: ''
-            }
-        ]
-      };
-    },
-    props: {
-    },
-    methods: {
-    },
-  };
+export default {
+  name: 'Links',
+  data() {
+    return {
+      links: [
+        {
+          name: '婚姻諮商服務',
+          src: '',
+        },
+        {
+          name: '法律諮詢服務',
+          src: '',
+        },
+        {
+          name: '孩童照顧服務',
+          src: '',
+        },
+        {
+          name: '就業輔導服務',
+          src: '',
+        },
+        {
+          name: '社區支援服務',
+          src: '',
+        },
+        {
+          name: '警政便民服務',
+          src: '',
+        },
+        {
+          name: '戶政便民服務',
+          src: '',
+        },
+        {
+          name: '新住民服務',
+          src: '',
+        },
+      ],
+    };
+  },
+  props: {
+  },
+  methods: {
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -80,4 +80,4 @@ a {
     text-decoration: none;
 }
 </style>
-  
+

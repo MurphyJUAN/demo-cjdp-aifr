@@ -1,3 +1,4 @@
+<!-- eslint-disable max-len -->
 <template>
   <div class="jumbotron content" id="Home">
     <div class="Home-container">
