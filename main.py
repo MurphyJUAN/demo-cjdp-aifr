@@ -21,11 +21,11 @@ os.makedirs('./ckpt', exist_ok=True)
 best_model_path = './ckpt/best.pt'
 deploy_model_path = './ckpt/aug.pt'
 model_path = './ckpt/aug_last.pt'
-if os.path.isfile(best_model_path):
-  print(">>>>>檔案存在。")
-else:
-    url = 'https://drive.google.com/uc?export=download&id=1wk_Fvcky0M4pQOs7RiEwei_dIZCHjXxh'
-    gdown.download(url, best_model_path, quiet=False)
+# if os.path.isfile(best_model_path):
+#   print(">>>>>檔案存在。")
+# else:
+#     url = 'https://drive.google.com/uc?export=download&id=1wk_Fvcky0M4pQOs7RiEwei_dIZCHjXxh'
+#     gdown.download(url, best_model_path, quiet=False)
 
 PRETRAINED_MODEL_NAME = "bert-base-chinese" 
 NUM_LABELS = 3
