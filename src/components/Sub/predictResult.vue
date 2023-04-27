@@ -10,10 +10,12 @@
         </el-row>
         <el-row v-for="model in modelUsed[$route.params.mode]" :key="model" :gutter="10">
           <el-col :span="4">AI模型-{{ model }}</el-col>
-          <el-col :span="5">{{Math.round(predict_result['Applicant']*100) / 100}}%</el-col>
-          <el-col :span="5">{{Math.round(predict_result['Both']*100) / 100}}%</el-col>
-          <el-col :span="5">{{Math.round(predict_result['Respondent']*100) / 100}}%</el-col>
-          <el-col :span="5">+-5%</el-col>
+          <div v-if="predict_result[model]">
+            <el-col :span="5">{{Math.round(predict_result[model]['Applicant']*100) / 100}}%</el-col>
+            <el-col :span="5">{{Math.round(predict_result[model]['Both']*100) / 100}}%</el-col>
+            <el-col :span="5">{{Math.round(predict_result[model]['Respondent']*100) / 100}}%</el-col>
+            <el-col :span="5">+-5%</el-col>
+          </div>
         </el-row>
       </div>
       <!-- <div v-if="isLoading">Calculating... {{elapsedTime}} seconds have elapsed.</div> -->

@@ -18,6 +18,7 @@ Vue.config.productionTip = false;
 Vue.prototype.$testApi = 'http://127.0.0.1:8000';
 Vue.prototype.$globalApi = ' https://f799-140-114-80-196.jp.ngrok.io';
 Vue.prototype.$api = Vue.prototype.$globalApi;
+// Vue.prototype.$api = Vue.prototype.$testApi;
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

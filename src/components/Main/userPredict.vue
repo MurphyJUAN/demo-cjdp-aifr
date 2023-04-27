@@ -53,18 +53,18 @@ export default {
         mode1: {
           title: '模式一：選項輸入',
           instruction: '使用者須勾選父親或母親對於爭取親權的有利或不利因素選項，讓AI模型作親權酌定判決預測。使用者可從表單中勾選13項參考因素中相符的(可複選)來作輸入資料。此因素的排列順序是依過往親權酌定案件中最常出現的依次來排，僅為方便使用者選擇，與重要性無關，亦不必完全選出。',
-          note: '提醒：本系統目前提供兩種AI模型預測，若結果差異過大可能代表此個案不容易有效預測，請再嘗試提供更細緻的描述，重新預測。兩個模型的原理與比較請見技術說明分頁。'
+          note: '提醒：本系統目前提供兩種AI模型預測，若結果差異過大可能代表此個案不容易有效預測，請再嘗試提供更細緻的描述，重新預測。兩個模型的原理與比較請見技術說明分頁。',
         },
         mode2: {
           title: '模式二：文字輸入',
           instruction: '使用者須針對父親或母親對於爭取親權的有利或不利的相關理由作文字輸入，讓AI模型作親權酌定判決預測。使用者可先從輸入框中的範例文字來選擇最接近的作輸入資料，然後調整成最接近使用者個案的狀況描述。為避免誤導，每個輸入框描述的主詞儘量都用「當事人」。',
-          note: '提醒：本系統目前提供兩種AI模型預測，若結果差異過大可能代表此個案不容易有效預測，請再嘗試提供更細緻的描述，重新預測。兩個模型的原理與比較請見技術說明分頁。'
+          note: '提醒：本系統目前提供兩種AI模型預測，若結果差異過大可能代表此個案不容易有效預測，請再嘗試提供更細緻的描述，重新預測。兩個模型的原理與比較請見技術說明分頁。',
         },
         mode3: {
           title: '模式三：選項加文字輸入',
           instruction: '使用者需要「同時」勾選父親或母親對於爭取親權的有利或不利因素選項並輸入相關的文字敘述，讓AI模型作親權酌定判決預測。使用者可從表單中勾選13項參考因素中相符的(可複選)來作輸入資料或範例文字中選擇合適的填入再修改(亦可自行填入文字)。',
-          note: '提醒：本系統目前提供兩種AI模型預測，若結果差異過大可能代表此個案不容易有效預測，請再嘗試提供更細緻的描述，重新預測。兩個模型的原理與比較請見技術說明分頁。'
-        }
+          note: '提醒：本系統目前提供兩種AI模型預測，若結果差異過大可能代表此個案不容易有效預測，請再嘗試提供更細緻的描述，重新預測。兩個模型的原理與比較請見技術說明分頁。',
+        },
       },
       resultConfig: [
         { title: 'The statements favorable to the party(you)', title_f: 'The factors favorable to the party(you)', type: 'A', key: 'AA', dialog: false },
@@ -181,8 +181,8 @@ export default {
   },
   methods: {
     updateResult(val) {
-      this.result = val
-      console.log('result:', this.result)
+      this.result = val;
+      console.log('result:', this.result);
     },
     addStatement(resultKey, statement) {
       this.isStartPredict = false;
@@ -199,8 +199,8 @@ export default {
       return false;
     },
     clearAllStatement() {
-      console.log(this.$refs.groupForm)
-      this.$refs.groupForm.clearAllStatement()
+      console.log(this.$refs.groupForm);
+      this.$refs.groupForm.clearAllStatement();
     },
     checkContainChinese(str) {
       return /[\u4E00-\u9FA5]+/g.test(str);
@@ -243,14 +243,45 @@ export default {
         this.maxResult = predictResult.Both;
       }
     },
+    mergeResult(inputData) {
+      const outputData = {};
+      Object.entries(inputData).forEach(([key, value]) => {
+        const featuresSet = new Set();
+        const sentences = [];
+        console.log('key:', key, 'value:', value);
+
+        value.forEach((item) => {
+          if (item.Feature && item.Feature.length > 0) {
+            item.Feature.forEach(feature => featuresSet.add(feature));
+          }
+          if (item.Sentence && item.Sentence.trim().length > 0) {
+            sentences.push(item.Sentence.trim());
+          }
+        });
+
+        outputData[key] = {
+          Feature: Array.from(featuresSet),
+          Sentence: sentences.join(' '),
+        };
+      });
+
+      return outputData;
+    },
     startPredict() {
-      console.log('>>>>>start predict:', this.result.data);
-      if (this.checkInputValid(this.result.data)) {
+      console.log('>>>>>start predict ==> raw result:', this.result.data);
+      let result = this.mergeResult(this.result.data);
+      console.log('>>>>>start predict ==> merge result:', result);
+      if (this.checkInputValid(result)) {
         this.isLoading = true;
+        result = {
+          model: this.$route.params.mode,
+          data: result,
+        };
+        console.log('>>>>>start predict ==> provide result:', result);
         axios({
           method: 'post',
           url: `${this.$api}/api/predict`,
-          data: this.result.data,
+          data: result,
         }).then((res) => {
           console.log('res.data:', res.data);
           // predict_result: { Applicant: 0, Respondent: 0, Both: 0 }
