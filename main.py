@@ -27,16 +27,16 @@ model_path = './ckpt/aug_last.pt'
 #     url = 'https://drive.google.com/uc?export=download&id=1wk_Fvcky0M4pQOs7RiEwei_dIZCHjXxh'
 #     gdown.download(url, best_model_path, quiet=False)
 
-PRETRAINED_MODEL_NAME = "bert-base-chinese" 
-NUM_LABELS = 3
-MAX_LENGTH = 512
-EMB_MODEL_NAME = ""
-tokenizer = BertTokenizer.from_pretrained(PRETRAINED_MODEL_NAME)
-# Ensemble
-best_model = MyJointBert.from_pretrained(PRETRAINED_MODEL_NAME, num_labels=NUM_LABELS, emb_name=EMB_MODEL_NAME)
-best_model.load_state_dict(torch.load(best_model_path, map_location='cpu'))
-deploy_model = MyJointBert.from_pretrained(PRETRAINED_MODEL_NAME, num_labels=NUM_LABELS, emb_name=EMB_MODEL_NAME)
-deploy_model.load_state_dict(torch.load(deploy_model_path, map_location='cpu'))
+# PRETRAINED_MODEL_NAME = "bert-base-chinese" 
+# NUM_LABELS = 3
+# MAX_LENGTH = 512
+# EMB_MODEL_NAME = ""
+# tokenizer = BertTokenizer.from_pretrained(PRETRAINED_MODEL_NAME)
+# # Ensemble
+# best_model = MyJointBert.from_pretrained(PRETRAINED_MODEL_NAME, num_labels=NUM_LABELS, emb_name=EMB_MODEL_NAME)
+# best_model.load_state_dict(torch.load(best_model_path, map_location='cpu'))
+# deploy_model = MyJointBert.from_pretrained(PRETRAINED_MODEL_NAME, num_labels=NUM_LABELS, emb_name=EMB_MODEL_NAME)
+# deploy_model.load_state_dict(torch.load(deploy_model_path, map_location='cpu'))
 # Choose one
 # model = MyJointBert.from_pretrained(PRETRAINED_MODEL_NAME, num_labels=NUM_LABELS, emb_name=EMB_MODEL_NAME)
 # model.load_state_dict(torch.load(model_path, map_location='cpu'))
