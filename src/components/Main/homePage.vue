@@ -1,9 +1,7 @@
 <!-- eslint-disable max-len -->
 <template>
-  <div class="jumbotron content" id="Home">
-    <div class="Home-container">
-      <div class="Home-title">系統說明</div>
-    </div>
+  <div class="home-content" id="Home">
+    <div class="Home-title">系統說明</div>
     <UserGuide :guide="mainIntro" :isHome="true"></UserGuide>
     <div class="btn-content bg-white">
       <el-row :gutter="10" justify="space-around">
@@ -66,17 +64,12 @@ export default {
   text-align: center;
   color: #fff;
 }
-.jumbotron {
-  padding: 2rem 1rem;
-  margin-bottom: 0;
-  padding-bottom: 50px;
-  border-radius: 0;
-  overflow-y: auto;
-}
-.content {
+.home-content {
   width: 90%;
   max-width: 1680px;
   margin: auto;
+  padding: 20px 10px 50px 10px;
+  min-height: calc(100vh - 255px);
 }
 .Home-subtitle {
   font-size: 2.1rem;

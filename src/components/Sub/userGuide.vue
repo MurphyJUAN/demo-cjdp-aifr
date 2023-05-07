@@ -24,7 +24,7 @@ export default {
 .Home-intro {
   overflow-y: auto;
   overflow-x: hidden;
-  padding-bottom: 50px;
+  padding-bottom: 20px;
 }
 
 #guide {

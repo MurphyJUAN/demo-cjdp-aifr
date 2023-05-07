@@ -5,7 +5,7 @@
       <div class="page-title">{{ pageText[$route.params.mode].title }}</div>
       <div class="shadow-none p-2 mb-2 rounded quote">{{ pageText[$route.params.mode].instruction }}</div>
       <div v-loading="isLoading">
-        <router-view @resultUpdate="updateResult" ref="groupForm"/>
+        <router-view @resultUpdate="updateResult" @updatePrePredict="updatePrePredict" ref="groupForm"/>
       </div>
       <div class="shadow-none p-2 mb-2">{{ pageText[$route.params.mode].note }}</div>
       <el-row :gutter="20">
@@ -47,7 +47,7 @@ export default {
       elapsedTime: 0,
       maxResult: 0,
       isLoading: false,
-      isStartPredict: true,
+      isStartPredict: false,
       errorPrompt: false,
       errorCode: new Error(),
       pageText: {
@@ -178,6 +178,7 @@ export default {
           RD: { Sentence: '', Feature: [] },
         },
       },
+      prePredict: false
     };
   },
   methods: {
@@ -268,7 +269,17 @@ export default {
 
       return outputData;
     },
+    updatePrePredict(val) {
+      this.prePredict = val
+    },
     startPredict() {
+      if (!this.prePredict) {
+        this.$message({
+          message: '請檢查是否皆已輸入因素與理由',
+          type: 'warning'
+        })
+        return
+      }
       console.log('>>>>>start predict ==> raw result:', this.result.data);
       let result = this.mergeResult(this.result.data);
       console.log('>>>>>start predict ==> merge result:', result);
@@ -308,7 +319,7 @@ export default {
         this.maxResult = 0;
       },
       deep: true,
-    },
+    }
   },
 };
 </script>
@@ -318,9 +329,7 @@ export default {
     font-size: 1.5rem;
     font-weight: bold;
     width: fit-content;
-    // border-bottom: 2px solid #F3BsB5C;
-    // color: white;
-    margin: 0px 0 20px 0;
+    margin: 0px 0 10px 0;
     padding: 0 5px;
 }
 .predict-container {
@@ -338,9 +347,9 @@ export default {
 .quote {
     background-color: rgba(90,77,88,0.12);
     text-align: center;
-    font-size: 1.2rem;
+    font-size: 1rem;
     text-align: left;
-    margin: 10px 0;
+    margin: 0;
 }
 .predict-btn {
     border-radius: 4px;

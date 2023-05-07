@@ -4,6 +4,7 @@ import HomePage from '@/components/Main/homePage';
 import PastCase from '@/components/Main/pastCase';
 import UserPredict from '@/components/Main/userPredict';
 import UserInputGroup from '@/components/Sub/userInputGroup';
+import Links from '@/components/Sub/links';
 import GenderSelect from '@/components/Sub/genderAndCountrySelect';
 import CheckboxGroup from '@/components/Sub/checkboxGroup';
 import SupplementDescription from '@/components/Sub/supplementDescription';
@@ -21,9 +22,9 @@ export default new Router({
       component: HomePage,
     },
     {
-      path: '/pastCase',
-      name: 'PastCase',
-      component: PastCase,
+      path: '/links',
+      name: 'Link',
+      component: Links,
     },
     {
       path: '/userPredict',
