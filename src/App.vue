@@ -75,6 +75,13 @@ body {
   text-align: left;
   color: #FFF;
 }
+.user-instruction {
+  font-size: 1rem;
+  z-index: 100;
+  line-height: 1.6rem;
+  text-align: left;
+  color: #fff;
+}
 #appNavbar {
   width: 90%;
   max-width: 1680px;

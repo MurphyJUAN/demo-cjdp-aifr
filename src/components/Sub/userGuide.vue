@@ -29,7 +29,7 @@ export default {
 
 #guide {
   border-radius: 12px;
-  padding: 20px;
+  padding: 1rem;
   background-color: rgba(243,187,92,.08);
   border: 2px solid #cfbf84;
 }
@@ -42,13 +42,6 @@ export default {
   line-height: 30px;
 }
 .user-instruction-title {
-  text-align: left;
-}
-
-.user-instruction {
-  font-size: 1.2rem;
-  z-index: 100;
-  line-height: 30px;
   text-align: left;
 }
 .home-description {
