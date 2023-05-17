@@ -17,3 +17,4 @@ package-lock.json
 *.pt
 __pycache__/*
 *.pyc
+ckpt/*
