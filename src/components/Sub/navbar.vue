@@ -16,6 +16,7 @@
       <el-menu-item index="/userPredict/mode2">模式二：文字</el-menu-item>
       <el-menu-item index="/userPredict/mode3">模式三：選項加文字</el-menu-item>
       <el-menu-item index="/techDoc">技術說明</el-menu-item>
+      <el-menu-item index="/links">友善資源</el-menu-item>
       <el-menu-item index="/contactUs">聯絡我們</el-menu-item>
     </el-menu>
   </div>

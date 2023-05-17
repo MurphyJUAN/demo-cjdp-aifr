@@ -1,13 +1,13 @@
 <template>
     <div class="page-container">
         <div class="Home-title">友善資源連結</div>
-        <el-row :gutter="20" justify="center">
-            <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="2" v-for="link in links" :key="link.name">
-                <a :href="link.src" target="_blank">
-                    <div class="link-block">{{link.name}}</div>
-                </a>
-            </el-col>
-        </el-row>
+        <div class="d-flex flex-row mb-3 flex-wrap">
+          <div v-for="link in links" :key="link.name">
+            <a :href="link.src" target="_blank">
+                <div class="link-block">{{link.name}}</div>
+            </a>
+          </div>
+        </div>
     </div>
 </template>
 
@@ -70,6 +70,7 @@ export default {
     font-size: 1.4rem;
     margin: 20px;
     transition: 0.4s;
+    width: 12rem;
     &:hover {
         text-decoration: none;
         background-color: #F3BB5C;

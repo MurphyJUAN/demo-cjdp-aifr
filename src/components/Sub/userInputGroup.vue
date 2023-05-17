@@ -1,7 +1,7 @@
 <template>
   <el-row justify="space-between" :gutter="5">
     <el-col :xs="24" :sm="12" v-for="(colConfigs, idx) in resultConfig" :key="idx">
-      <div class="px-3 pb-3 w-100" v-for="config in colConfigs" :key="config.title" :class="idx==0?'brown-divider':''">
+      <div class="px-3 pb-2 w-100" v-for="config in colConfigs" :key="config.title" :class="idx==0?'brown-divider':''">
         <div v-if="$route.params.mode == 'mode1'" class="ins-1">對{{config.title}}的因素選項</div>
         <div v-if="$route.params.mode == 'mode2'" class="ins-1">對{{config.title}}的理由文字</div>
         <div v-if="$route.params.mode == 'mode3'" class="ins-1">對{{config.title}}的因素與理由</div>
@@ -11,7 +11,7 @@
         </div>
 
         <div v-if="$route.params.mode == 'mode2'">
-          <input-description :configKey="config" :rowIdx="0" @descriptionUpdate="updateDescription" ref="inputForm"></input-description>
+          <input-description-m2 :configKey="config" :rowIdx="0" @descriptionUpdate="updateDescription" ref="inputForm"></input-description-m2>
         </div>
 
         <div v-if="$route.params.mode == 'mode3'">
@@ -21,10 +21,16 @@
                 {{ rowIdx+1 }}.
               </el-col>
               <el-col :span="21" >
-                <select-features :configKey="config" :rowIdx="rowIdx" :allowMultiple="false" @featureUpdate="updateFeature" ref="selectForm"></select-features>
-                <input-description :configKey="config" :rowIdx="rowIdx" @descriptionUpdate="updateDescription" ref="inputForm"></input-description>
+                <input-description-m3
+                  :configKey="config"
+                  :rowIdx="rowIdx"
+                  @featureUpdate="updateFeature" 
+                  @descriptionUpdate="updateDescription" 
+                  v-on="$listeners"
+                  ref="inputForm">
+                </input-description-m3>
               </el-col>
-              <el-col v-if="result.data[config.key].length > 1 && rowIdx == result.data[config.key].length-1" :span="2">
+              <el-col v-if="rowIdx == result.data[config.key].length-1" :span="2">
                 <el-button type="danger" icon="el-icon-delete" circle @click="deleteInputRow(config.key, rowIdx)"></el-button>
               </el-col>
             </el-row>
@@ -32,7 +38,7 @@
           <div>
           <el-row :gutter="1">
             <el-col :offset="1" :span="23">
-              <el-button type="warning" @click="addInputRow(config.key)">新增欄位</el-button>
+              <el-button type="warning" @click="addInputRow(config.key)">新增因素與理由</el-button>
             </el-col>
           </el-row>
           </div>
@@ -44,15 +50,18 @@
 
 <script>
 import selectFeatures from './selectFeatures';
-import inputDescription from './inputDescription';
+import inputDescriptionM2 from './inputDescriptionM2';
+import inputDescriptionM3 from './inputDescriptionM3';
 
 export default {
   name: 'UserInputGroup',
   components: {
     'select-features': selectFeatures,
-    'input-description': inputDescription,
+    'input-description-m2': inputDescriptionM2,
+    'input-description-m3': inputDescriptionM3
   },
   props: {
+    prePredict: Boolean
   },
   data() {
     return {
@@ -83,6 +92,34 @@ export default {
       },
       deep: true,
     },
+    '$route.params.mode': {
+      handler: function(mode) {
+        delete this.result.data
+        if (mode == 'mode3') {
+          delete this.result.data
+          this.result =  {
+            data: {
+              AA: [],
+              AD: [],
+              RA: [],
+              RD: [],
+            },
+          }
+        }
+        else {
+          this.result =  {
+            data: {
+              AA: [{ Sentence: '', Feature: [] }],
+              AD: [{ Sentence: '', Feature: [] }],
+              RA: [{ Sentence: '', Feature: [] }],
+              RD: [{ Sentence: '', Feature: [] }],
+            },
+          }
+        }
+      },
+      deep: true,
+      immediate: true
+    }
   },
   methods: {
     deleteInputRow(key, rowIdx) {
@@ -95,22 +132,19 @@ export default {
     },
     addInputRow(key) {
       this.result.data[key].push({ Sentence: '', Feature: [] })
-      console.log(this.result.data)
     },
     updateFeature(val) {
       console.log('updateFeature', val)
-      let features = []
-      if (!val.value.value) {
+      if (typeof val.value === 'object' && val.value !== null) {
+        let features = []
         for(let i=0;i<val.value.length;i++) {
           features.push(val.value[i].label)
         }
+        this.result.data[val.key][0].Feature = features
       }
       else {
-        features.push(val.value.label)
+        this.result.data[val.key][val.rowIdx].Feature = [val.value]
       }
-      
-      this.result.data[val.key][val.rowIdx].Feature = features
-      console.log(this.result)
     },
     updateDescription(val) {
       console.log('updateDescription', val)
@@ -134,7 +168,7 @@ export default {
           this.$refs.inputForm[i].clearAll()
         }
       }
-    },
+    }
   },
 };
 </script>
@@ -143,9 +177,14 @@ export default {
 .brown-divider {
   border-right: 1px solid #5A4D30;
 }
+@media screen and (max-width:768px) { 
+  .brown-divider {
+    border-right: 0px;
+  }
+}
 .ins-1 {
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: bold;
-    padding-top: 15px;
+    padding: 10px 0;
 }
 </style>

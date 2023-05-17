@@ -8,7 +8,6 @@
       <appNavbar id="appNavbar"/>
     </div>
     <router-view :currentApi="currentApi" class="content" />
-    <appLinks />
     <appFooter :currentApi="currentApi" />
   </div>
 </template>
@@ -16,14 +15,12 @@
 <script>
 import Navbar from './components/Sub/navbar';
 import Footer from './components/Sub/footer';
-import Link from './components/Sub/links.vue';
 
 export default {
   name: 'App',
   components: {
     appNavbar: Navbar,
-    appFooter: Footer,
-    appLinks: Link
+    appFooter: Footer
   },
   data() {
     // test api
@@ -65,17 +62,25 @@ body {
   background-color: #fff;
 }
 .page-container {
-    width: calc( 90% - 40px );
-    max-width: 1680px;
-    margin: 0px auto 50px auto;
+  width: calc( 90% - 40px );
+  max-width: 1680px;
+  margin: 0px auto 50px auto;
+  min-height: calc(100vh - 305px);
 }
 .Home-title {
-  font-size: 2.4rem;
+  font-size: 2rem;
   font-weight: 700;
   max-width: 1170px;
-  padding: 1rem 10px;
+  padding: 2rem 10px;
   text-align: left;
   color: #FFF;
+}
+.user-instruction {
+  font-size: 1rem;
+  z-index: 100;
+  line-height: 1.6rem;
+  text-align: left;
+  color: #fff;
 }
 #appNavbar {
   width: 90%;

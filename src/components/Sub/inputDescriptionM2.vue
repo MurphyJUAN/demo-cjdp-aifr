@@ -6,8 +6,7 @@
       </el-col>
       <el-col :span="4">
         <el-dialog title="範例文字" :visible.sync="dialogState[configKey.key]">
-          <div v-for="statementGroup in sentencesExample[configKey.type]" :key="statementGroup.type" style="padding-bottom:20px;">
-            <div style="padding-bottom: 5px;">{{statementGroup.type}}</div>
+          <div v-for="statementGroup in sentencesExample[configKey.type]" :key="statementGroup.type">
             <div v-for="statement in statementGroup.item" :key="statement.value">
               <div class='statement-card' :class="checkStatement(statement.value)?'isActive':''" @click="addStatement(statement.value)">
                 {{statement.label}}

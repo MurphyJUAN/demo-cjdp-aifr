@@ -4,7 +4,9 @@
     <multiselect v-model="result" :options="features" :multiple="allowMultiple" :close-on-select="false" :clear-on-select="false" placeholder="請選擇因素" label="label" track-by="value">
       <template slot="singleLabel" slot-scope="props"><span class="option__desc"><span class="option__title">{{ props.option.label}}</span></span></template>
       <template slot="option" slot-scope="props">
-        <div class="option__desc"><span class="option__title" :title="props.option.desc">{{ props.option.label }}</span></div>
+        <el-tooltip class="item" effect="dark" :content="props.option.desc" placement="top-start">
+          <div class="option__title">{{ props.option.label }}<i class="el-icon-question"></i></div>
+        </el-tooltip>
       </template>
     </multiselect>
   </div>
@@ -55,6 +57,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.multiselect * {
+  font-size: 1rem !important;
+}
+// .multiselect__content {
+//   font-size: 1rem;
+// }
+.option__title {
+  // font-size: 1rem;
+  padding-right: 50px;
+}
 .container {
   @media (min-width: 1400px) {
     max-width: 1200px;

@@ -1,16 +1,44 @@
 <!-- eslint-disable max-len -->
 <template>
-  <div class="jumbotron content" id="Home">
-    <div class="Home-container">
-      <div class="Home-title">系統說明</div>
-    </div>
+  <div class="home-content" id="Home">
+    <div class="Home-title">系統說明</div>
     <UserGuide :guide="mainIntro" :isHome="true"></UserGuide>
     <div class="btn-content bg-white">
       <el-row :gutter="10" justify="space-around">
-        <el-col :span="8"><router-link to="userPredict/mode1"><div class="grid-content bg-orange"><strong>輸入模式一</strong><div>選項勾選</div></div></router-link></el-col>
-        <el-col :span="8"><router-link to="userPredict/mode2"><div class="grid-content bg-green"><strong>輸入模式二</strong><div>文字描述</div></div></router-link></el-col>
-        <el-col :span="8"><router-link to="userPredict/mode3"><div class="grid-content bg-pink"><strong>輸入模式三</strong><div>選項+文字</div></div></router-link></el-col>
+        <el-col :span="8">
+          <router-link to="userPredict/mode1">
+            <div class="grid-content bg-orange">
+              <strong>輸入模式一(選項勾選)</strong>
+              <div>優點：可快速勾選</div>
+              <div>缺點：需判斷分類</div>
+              <div>準確度：~75%-77%</div>
+            </div>
+          </router-link>
+        </el-col>
+        <el-col :span="8">
+          <router-link to="userPredict/mode2">
+            <div class="grid-content bg-green">
+              <strong>輸入模式二(文字描述)</strong>
+              <div>優點：可直接文字輸入不分類</div>
+              <div>缺點：輸入需時較久不易完整</div>
+              <div>準確度：~83%-88%</div>
+            </div>
+          </router-link>
+        </el-col>
+        <el-col :span="8">
+          <router-link to="userPredict/mode3">
+            <div class="grid-content bg-pink">
+              <strong>輸入模式三(選項勾選+文字描述)</strong>
+              <div>優點：準確度最高(特別是對共同親權)</div>
+              <div>缺點：輸入需時最久且需要判斷分類</div>
+              <div>準確度：~86%-90%</div>
+            </div>
+          </router-link>
+        </el-col>
       </el-row>
+    </div>
+    <div class="user-instruction mt-2">
+      本系統AI模型所預測的結果僅供使用者參考用，建議由法律專業人士協助輸入資料並多方測試比較以發揮最大的效果。但本系統預測的結果並無任何法律效力。使用者仍須以法院實際審理結果為最後依據。
     </div>
   </div>
 </template>
@@ -26,7 +54,7 @@ export default {
   data() {
     return {
       mainIntro:
-        '本網頁是國立清華大學人文社會AI應用與發展研究中心執行AI公共化相關計畫之成果展示。本系統的AI模型是使用司法院公開釋出的離婚後親權酌定裁判書，經由法律專業人工標註結果作為訓練資料。藉由自然語言處理技術，本系統可對使用者所提供的個案文字資料預測離婚後親權酌定結果(以機率表示各種可能性的高低)。但本系統任何結果都僅供參考，並無法律效力，使用者仍須以法院實際審理結果為最後依據。',
+        '本系統是國立清華大學人文社會AI應用與發展研究中心為執行AI公共化相關計畫之成果展示。所使用的AI模型是以司法院所公開的離婚後親權酌定裁判書為基礎所訓練，就使用者所輸入的個案資料提供親權酌定結果的機率預測。為了更符合本中心所追求「可信賴之AI」的開發原則，本系統提供三種不同的個案資料輸入方式(各有其優缺點)，且各有兩種以上的AI模型結果同時顯現以作比較，減少使用者對特定資料類型或特定AI模型的倚賴而產生的偏見。本系統「技術說明」與「友善資源」的資訊還在整理準備中，預計2023年9月完成部署。',
       guide:
         '一、本系統目前僅處理「離婚後父母雙方爭取孩子撫養權」的相關案例。<br />二、為增加預測結果的可靠度與避免錯誤使用，使用者請先閱讀相關案例。<br />三、本系統假設使用者所需要之輸入雙方與相關文字描述皆是正確與完整。若有資料提供不完整、錯誤、誇大或刻意偏袒等，結果可能會受影響。建議使用前可以自行多一些整理，或請公正第三方協助輸入。<br />四、本系統的功能與準確度亦隨時改進中，若有任何疑問與建議，歡迎留言指教。',
       guide_en:
@@ -45,54 +73,19 @@ export default {
 @import "~bootstrap/scss/_variables";
 @import "~bootstrap/scss/mixins/_breakpoints";
 
-.btn-navigate {
-  color: #000;
-  background-color: #f3bb5c;
-  padding: 10px 20px;
-  border-radius: 4px;
-  border: 2px solid #f3bb5c;
-  text-decoration: none;
-  font-size: 1.2rem;
-  transition: background-color .2s ease-in-out;
-  &:hover {
-    background: #FFA200;
-    border: 2px solid #FFA200;
-  }
-}
-
 #Home {
   background-color: #1f191b;
   position: relative;
   text-align: center;
   color: #fff;
 }
-.jumbotron {
-  padding: 2rem 1rem;
-  margin-bottom: 0;
-  padding-bottom: 50px;
-  border-radius: 0;
-  overflow-y: auto;
-}
-.content {
+.home-content {
   width: 90%;
   max-width: 1680px;
   margin: auto;
+  padding: 20px 10px 20px 10px;
+  min-height: calc(100vh - 255px);
 }
-.Home-subtitle {
-  font-size: 2.1rem;
-  font-weight: 300;
-  padding-top: 2rem;
-}
-.user-instruction {
-  z-index: 100;
-  line-height: 35px;
-  letter-spacing: 4px;
-  // margin-left: 50%;
-  // transform: translateX(-50%);
-  text-align: left;
-  margin-top: -25px;
-}
-
 .btn-content {
   width: 100%;
   border-radius: 12px;
@@ -103,16 +96,23 @@ a {
 }
 .grid-content {
   border-radius: 4px;
-  height: 8.5rem;
-  margin: 30px;
-  padding: 2rem;
-  font-size: 1.5rem;
+  height: fit-content;
+  margin: 1.3rem;
+  padding: 0.8rem 2rem;
+  text-align: left;
+  font-size: 1rem;
   color: #000;
   transition: 0.4s;
   &:hover {
     opacity: 0.8;
-    font-size: 1.6rem;
+    font-size: 1.1rem;
   }
+}
+.grid-content > strong {
+  font-size: 1.2rem;
+}
+.grid-content > div {
+  text-align: left;
 }
 .bg-white{
   background-color: rgba(243,187,92,0.08);

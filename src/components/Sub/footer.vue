@@ -6,9 +6,12 @@
             <el-col :span="12">
               <p>聯絡我們：custodyprediction@gmail.com</p>
             </el-col>
-            <el-col :span="12">
+            <el-col :span="8">
               <div class="footer-link"><a href="http://www.phys.nthu.edu.tw/~aicmt/index.html" target="_blank">清華大學AIFR研究群</a></div>
               <div class="footer-link"><a href="https://nthuhssai.site.nthu.edu.tw/" target="_blank">清華大學人文社會AI應用與發展研究中心</a></div>
+            </el-col>
+            <el-col :span="4">
+              <img src="/static/logo_nthu.png" width="200" height="40" class="d-inline-block align-top" alt="" loading="lazy" />
             </el-col>
           </el-row>
       </div>
