@@ -107,6 +107,7 @@ export default {
           }
         }
         else {
+          this.$emit('updatePrePredict', true)
           this.result =  {
             data: {
               AA: [{ Sentence: '', Feature: [] }],
