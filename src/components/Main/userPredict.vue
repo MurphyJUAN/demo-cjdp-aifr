@@ -18,7 +18,7 @@
         <el-col :span="24">
           <PredictResult
             v-if="isStartPredict"
-            id="predictResult"
+            class="predictResult"
             :predict_result="predict_result"
             :elapsedTime="elapsedTime"
             :isLoading="isLoading"
@@ -383,5 +383,9 @@ export default {
 }
 .ins-3 {
   font-weight: bold
+}
+.predictResult {
+  width: 60%;
+  margin: 0 25% 0 15%;
 }
 </style>
