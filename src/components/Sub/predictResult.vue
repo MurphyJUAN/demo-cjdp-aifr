@@ -11,9 +11,9 @@
         <el-row v-for="model in modelUsed[$route.params.mode]" :key="model" :gutter="10">
           <el-col :span="6">AI模型-{{ model }}</el-col>
           <div v-if="predict_result[model]">
-            <el-col :span="6">{{Math.round(predict_result[model]['Applicant']*100) / 100}}%</el-col>
-            <el-col :span="6">{{Math.round(predict_result[model]['Both']*100) / 100}}%</el-col>
-            <el-col :span="6">{{Math.round(predict_result[model]['Respondent']*100) / 100}}%</el-col>
+            <el-col :span="6">{{Math.round(predict_result[model]['Applicant']['avg_prob']*100) / 100}}% ±{{ predict_result[model]['Applicant']['std'] }}%</el-col>
+            <el-col :span="6">{{Math.round(predict_result[model]['Both']['avg_prob']*100) / 100}}% ±{{ predict_result[model]['Both']['std'] }}%</el-col>
+            <el-col :span="6">{{Math.round(predict_result[model]['Respondent']['avg_prob']*100) / 100}}% ±{{ predict_result[model]['Respondent']['std'] }}%</el-col>
           </div>
         </el-row>
       </div>
