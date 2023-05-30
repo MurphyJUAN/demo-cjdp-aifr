@@ -42,6 +42,14 @@ export default {
       // currentApi: publicApi2,
     };
   },
+  created() {
+    this.$confirm('<div style="color:red;">本網頁正在進行升級，目前所呈現的結果請勿參考<div>', '', {
+      confirmButtonText: '我了解',
+      type: 'warning',
+      showCancelButton: false,
+      dangerouslyUseHTMLString: true,
+    })
+  }
 };
 </script>
 
