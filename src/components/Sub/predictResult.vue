@@ -4,9 +4,9 @@
     <div style="z-index: 100">
       <div class="p-10 justify-content-center mt-4 mx-20" style="z-index: 100">
         <el-row :gutter="10">
-          <el-col :offset="6" :span="6">父親贏得親權的機率%</el-col>
-          <el-col :span="6">雙方共享親權的機率%</el-col>
-          <el-col :span="6">母親贏得親權的機率%</el-col>
+          <el-col :offset="6" :span="6">父親贏得親權的機率(%)</el-col>
+          <el-col :span="6">雙方共享親權的機率(%)</el-col>
+          <el-col :span="6">母親贏得親權的機率(%)</el-col>
         </el-row>
         <el-row v-for="model in modelUsed[$route.params.mode]" :key="model" :gutter="10">
           <el-col :span="6">AI模型-{{ model }}</el-col>
