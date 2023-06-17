@@ -3,7 +3,6 @@
   <div>
     <div class="web-header">
       <router-link to="/">
-        <img src="/static/icon.jpg" width="151" height="85" class="d-inline-block align-top" alt="" loading="lazy">
         <span class="web-title">AI輔助親權酌定預測系統</span>
       </router-link>
       <div class="head-divider"></div>

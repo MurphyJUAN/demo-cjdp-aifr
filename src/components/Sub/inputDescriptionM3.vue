@@ -19,7 +19,7 @@
             </el-col>
           </el-row>
         </el-dialog>
-        <el-button type="primary" icon="el-icon-edit" size="mini" @click="dialogState=true">修改</el-button>
+        <el-button type="primary" icon="el-icon-edit" size="mini" @click="dialogState=true">選擇因素與理由範例</el-button>
       </el-col>
       <el-col :span="18">
         <div v-if="warnState.sentence" class="warn-text">*理由不得為空</div>
