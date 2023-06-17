@@ -178,7 +178,7 @@ export default {
           RD: { Sentence: '', Feature: [] },
         },
       },
-      prePredict: false
+      prePredict: false,
     };
   },
   methods: {
@@ -270,16 +270,16 @@ export default {
       return outputData;
     },
     updatePrePredict(val) {
-      this.prePredict = val
+      this.prePredict = val;
     },
     startPredict() {
-      if (!this.prePredict) {
-        this.$message({
-          message: '請檢查是否皆已輸入因素與理由',
-          type: 'warning'
-        })
-        return
-      }
+      // if (!this.prePredict) {
+      //   this.$message({
+      //     message: '請檢查是否皆已輸入因素與理由',
+      //     type: 'warning',
+      //   });
+      //   return;
+      // }
       console.log('>>>>>start predict ==> raw result:', this.result.data);
       let result = this.mergeResult(this.result.data);
       console.log('>>>>>start predict ==> merge result:', result);
@@ -319,7 +319,7 @@ export default {
         this.maxResult = 0;
       },
       deep: true,
-    }
+    },
   },
 };
 </script>
