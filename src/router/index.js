@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import HomePage from '@/components/Main/homePage';
-import PastCase from '@/components/Main/pastCase';
+import HomePageDemo from '@/components/Main/homePageDemo';
+import UserPredictDemo from '@/components/Main/userPredictDemo';
 import UserPredict from '@/components/Main/userPredict';
 import UserInputGroup from '@/components/Sub/userInputGroup';
 import Links from '@/components/Sub/links';
@@ -22,6 +23,23 @@ export default new Router({
       component: HomePage,
     },
     {
+      path: '/demo-home',
+      name: 'HomePageDemo',
+      component: HomePageDemo,
+    },
+    {
+      path: '/demo-predict',
+      name: 'UserPredictDemo',
+      component: UserPredictDemo,
+      children: [
+        { path: '/demo-predict/genderSelect', component: GenderSelect },
+        { path: '/demo-predict/checkboxGroup', component: CheckboxGroup },
+        { path: '/demo-predict/supplementDescription', component: SupplementDescription },
+        { path: '/demo-predict/predictResult', component: PredictResult },
+        { path: '/demo-predict/resultFeedback', component: ResultFeedback },
+      ],
+    },
+    {
       path: '/links',
       name: 'Link',
       component: Links,
@@ -36,7 +54,7 @@ export default new Router({
         // { path: '/userPredict/supplementDescription', component: SupplementDescription },
         // { path: '/userPredict/predictResult', component: PredictResult },
         // { path: '/userPredict/resultFeedback', component: ResultFeedback },
-        { path: ':mode', component: UserInputGroup }
+        { path: ':mode', component: UserInputGroup },
       ],
     },
   ],

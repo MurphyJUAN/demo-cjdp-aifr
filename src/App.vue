@@ -5,7 +5,8 @@
     <img class="purpleBar" src="static/purpleBar.png" />
     <img class="yellowBar" src="static/yellowBar.png" />-->
     <div class="headerContainer">
-      <appNavbar id="appNavbar"/>
+      <appNavbar v-if="!$route.path.includes('demo')" id="appNavbar"/>
+      <appNavbarDemo v-if="$route.path.includes('demo')" id="appNavbarDemo"/>
     </div>
     <router-view :currentApi="currentApi" class="content" />
     <appFooter :currentApi="currentApi" />
@@ -13,14 +14,18 @@
 </template>
 
 <script>
+import '@progress/kendo-theme-fluent/dist/all.css';
 import Navbar from './components/Sub/navbar';
+import NavbarDemo from './components/Sub/navbarDemo';
 import Footer from './components/Sub/footer';
+
 
 export default {
   name: 'App',
   components: {
     appNavbar: Navbar,
-    appFooter: Footer
+    appNavbarDemo: NavbarDemo,
+    appFooter: Footer,
   },
   data() {
     // test api
@@ -43,13 +48,15 @@ export default {
     };
   },
   created() {
-    this.$confirm('<div style="color:red;">本網頁正在進行升級，目前所呈現的結果請勿參考<div>', '', {
-      confirmButtonText: '我了解',
-      type: 'warning',
-      showCancelButton: false,
-      dangerouslyUseHTMLString: true,
-    })
-  }
+    if (!this.$route.path.includes('demo')) {
+      this.$confirm('<div style="color:red;">本網頁正在進行升級，目前所呈現的結果請勿參考<div>', '', {
+        confirmButtonText: '我了解',
+        type: 'warning',
+        showCancelButton: false,
+        dangerouslyUseHTMLString: true,
+      });
+    }
+  },
 };
 </script>
 
