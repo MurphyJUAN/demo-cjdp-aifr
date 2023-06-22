@@ -14,7 +14,6 @@
 </template>
 
 <script>
-import '@progress/kendo-theme-fluent/dist/all.css';
 import Navbar from './components/Sub/navbar';
 import NavbarDemo from './components/Sub/navbarDemo';
 import Footer from './components/Sub/footer';
