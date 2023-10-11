@@ -5,7 +5,7 @@
     <UserGuide :guide="mainIntro" :isHome="true"></UserGuide>
     <div class="btn-content bg-white">
       <el-row :gutter="10" justify="space-around">
-        <el-col :span="8">
+        <el-col :span="6">
           <router-link to="userPredict/mode1">
             <div class="grid-content bg-orange">
               <strong>輸入模式一(選項勾選)</strong>
@@ -15,7 +15,7 @@
             </div>
           </router-link>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="6">
           <router-link to="userPredict/mode2">
             <div class="grid-content bg-green">
               <strong>輸入模式二(文字描述)</strong>
@@ -25,11 +25,21 @@
             </div>
           </router-link>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="6">
           <router-link to="userPredict/mode3">
             <div class="grid-content bg-pink">
               <strong>輸入模式三(選項勾選+文字描述)</strong>
               <div>優點：準確度最高(特別是對共同親權)</div>
+              <div>缺點：輸入需時最久且需要判斷分類</div>
+              <div>準確度：~86%-90%</div>
+            </div>
+          </router-link>
+        </el-col>
+        <el-col :span="6">
+          <router-link to="/predict-mode4">
+            <div class="grid-content bg-info">
+              <strong>輸入模式四(選項勾選+文字描述)(多模型)</strong>
+              <div>優點：準確度最高(特別是對共同親權)、預測結果較具有魯棒性</div>
               <div>缺點：輸入需時最久且需要判斷分類</div>
               <div>準確度：~86%-90%</div>
             </div>

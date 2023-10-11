@@ -86,6 +86,7 @@ export default {
   },
   data() {
     return {
+      previousRoute: null,
       predict_result: { detail_info: [
         { label: '聲請方(Plaintiff)', probability: 60.45 },
         { label: '聲請方(Plaintiff)', probability: 78.96 },
@@ -232,6 +233,16 @@ export default {
         },
       },
     };
+  },
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.previousRoute = from;
+    });
+  },
+
+  beforeRouteUpdate(to, from, next) {
+    this.previousRoute = from;
+    next();
   },
   methods: {
     addStatement(resultKey, statement) {

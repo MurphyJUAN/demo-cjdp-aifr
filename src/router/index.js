@@ -28,6 +28,11 @@ export default new Router({
       component: HomePageDemo,
     },
     {
+      path: '/predict-mode4',
+      name: 'UserPredictDemo',
+      component: UserPredictDemo,
+    },
+    {
       path: '/demo-predict',
       name: 'UserPredictDemo',
       component: UserPredictDemo,
