@@ -11,6 +11,7 @@ import CheckboxGroup from '@/components/Sub/checkboxGroup';
 import SupplementDescription from '@/components/Sub/supplementDescription';
 import PredictResult from '@/components/Sub/predictResult';
 import ResultFeedback from '@/components/Sub/resultFeedback';
+import TechDoc from '@/components/Main/TechDoc';
 
 Vue.use(Router);
 
@@ -48,6 +49,11 @@ export default new Router({
       path: '/links',
       name: 'Link',
       component: Links,
+    },
+    {
+      path: '/techDoc',
+      name: 'TechDoc',
+      component: TechDoc,
     },
     {
       path: '/userPredict',
