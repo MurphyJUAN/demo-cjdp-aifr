@@ -35,7 +35,7 @@
             </div>
           </router-link>
         </el-col>
-        <el-col :span="6">
+        <!-- <el-col :span="6">
           <router-link to="/predict-mode4">
             <div class="grid-content bg-info">
               <strong>輸入模式四(選項勾選+文字描述)(多模型)</strong>
@@ -44,7 +44,7 @@
               <div>準確度：~86%-90%</div>
             </div>
           </router-link>
-        </el-col>
+        </el-col> -->
       </el-row>
     </div>
     <div class="user-instruction mt-2">
