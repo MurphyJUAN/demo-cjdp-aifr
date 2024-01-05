@@ -22,14 +22,14 @@
               <p>在 Model L1 中，我們集成10個 XGBOOST 的三分類器，每個 XGBOOST 分類器都由不同的隨機種子初始化權重，並切分出不同的訓練資料集，除此之外，我們在其中的 8 份訓練數據集隨機生成 10% 判決結果為雙方共同持有親權的假資料以擴增資料集，並增加模型的魯棒性。每一次使用者操作本系統的模式一，在選定雙方有利不利的判決因子後，這 10 個模型會各自針對這筆輸入，產生判給申請方、相對方與雙方這三個類別的預測機率，我們再將這些結果取平均並計算標準差後呈現給使用者。</p>
               <p>下圖為 Model L1 的架構示意圖：</p>
               <div class="d-block">
-            <img class="w-25 mx-auto d-block" src="../../../static/xgboost.png" />
+            <img class="w-50 mx-auto d-block" src="../../../static/xgboost.png" />
           </div>
             </li>
             <li>(模式二)Model S2:
               <p>首先，我們使用 Doc2Vec 方法將每篇判決書轉換為固定長度的向量，這種方法可以捕捉到文本中的上下文語義資訊。接著，我們將這些向量輸入到我們自己設計的深度神經網路(DNN)架構中。這個架構的目的是進一步從Doc2Vec生成的向量中提取和學習有關判決結果的隱含特徵。</p>
               <p>下圖是 S2 的架構示意圖：</p>
               <div class="d-block">
-            <img class="w-25 mx-auto d-block" src="../../../static/dnn.png" />
+            <img class="w-50 mx-auto d-block" src="../../../static/dnn.png" />
           </div>
             </li>
             <li>
@@ -38,11 +38,21 @@
             </li>
             <li>
               (模式一、二、三) Model (L2, S2, C2):
-              <p>然而由於以上方法在判給雙方的預測上始終表現得不佳，例如 Model L1 XGBOOST 在預測判給相對方、判給申請方的 F1 Score 都可以到 88% 以上，然而在判給雙方卻只有 25% 以下的 F1 Score，Model S2 也有一樣的問題。因此我們提出一個基於 Intermediate Self-Supervised Training (ISST) 兩階段訓練方法，在微調預訓練過的 BERT 學習親權判決預測這個任務之前，先加入中間任務，讓模型學習先分類理據中哪些陳述是屬於有利、哪些是屬於不利的陳述。透過這種兩階段訓練方法，我們相較直接微調 BERT，在判給雙方的 F1 Score 上可以提升 13% 左右，有效解決之前的模型在判給雙方上總是會與其他兩方混淆的困境，並在總體正確率上明顯提升。</p>
+              <p>然而由於以上方法在判給雙方的預測上始終表現得不佳，例如 Model L1 XGBOOST 在預測判給相對方、判給申請方的 F1 Score 都可以到 88% 以上，然而在判給雙方卻只有 25% 以下的 F1 Score，Model S2 也有一樣的問題。因此我們提出一個基於 Intermediate Self-Supervised Training (ISST) 兩階段訓練方法[1]，在微調預訓練過的 BERT 學習親權判決預測這個任務之前，先加入中間任務，讓模型學習先分類理據中哪些陳述是屬於有利、哪些是屬於不利的陳述。透過這種兩階段訓練方法，我們相較直接微調 BERT，在判給雙方的 F1 Score 上可以提升 13% 左右，有效解決之前的模型在判給雙方上總是會與其他兩方混淆的困境，並在總體正確率上明顯提升。在本系統中，我們又使用隨機的五種起始亂數來架設五種模型參數，並使用資料擴增的方式來增加可靠度[2]。</p>
               <p>下圖是模型訓練方法的示意圖：</p>
               <div class="d-block">
-                <img class="w-25 mx-auto d-block" src="../../../static/isst.png" />
+                <img class="w-50 mx-auto d-block" src="../../../static/isst.png" />
               </div>
+            </li>
+            <li>
+              附註：
+              <p>[1] Yining Juan, Chung-Chi Chen, Hsin-Hsi Chen, and Daw-Wei Wang, CustodiAI: A System for Predicting Child Custody Outcomes, published in JCNLP-AACL 2023 (The 13th International Joint Conference on Natural Language Processing and the 3rd Conference of the Asia-Pacific Chapter of the Association for Computational Linguistics ).</p>
+              <p>[2] Ya-Lun Li, Yun-Hsien Lin and Daw-Wei Wang, Method for Training Decision-Making Model with Natural Language Corpus, US Patent Approved, Application, No.16/875636. 李亞倫、林昀嫺與 王道維, 「自然語言語料用於機器學習決策模型的訓練方法」, 中華民國專利通過, 申請案號 108146882</p>
+            </li>
+            <li>
+              模型限制
+              <p>本系統中所使用基於ISST兩階段訓練方法的Model L2, S2, C2模型，固然都可以在不同的輸入模式中優於其他模型的結果(L1,S1,C1)，但是並不代表對於每一個使用者所輸入的個別案件都有準確的預測。此模型的限制在於所使用的訓練資料皆是來自真實的親權裁判結果所標註的資訊，其文字是經過法官以其專業的判決書用所表達。本系統的使用者若以較為簡化的輸入資料或非專業的文字描述測試，可能因為不足以反映司法案件中的情況，因而得到預期以外的結果。</p>
+              <p>其中一個例子是，如果父親與母親雙方都輸入完全相同的有利或不利選項與文字，一般人可能會預期得到雙方共享親權的預測結果。但是以ISST為基礎的L2, S2, C2三個模型預測的結果會是父母親得到親權的機率幾乎相同且高於雙方共享親權的機率，而非共享親權的機率最高。這是因為司法實務上幾乎沒有這樣的極端案例(雙方所有條件皆一樣)。事實上，法官判斷是否合適共同親權的判決並非僅根據父母雙方的個別條件，也要看父母雙方是否可以合作，往往隱藏在更細膩的文字描述中。所以在以上這類過於簡化且不夠真實的測試情形下，本系統的預測結果可能會與使用者的期待有所不同。</p>
             </li>
           </ul>
           <div class="d-block">

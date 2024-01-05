@@ -8,7 +8,6 @@
             </div>
             <div>
                 <!-- Summary -->
-                {{  }}
                 <div class="summary-card" ref="summaryCard">
                     <div class="content-container">
                         <div class="summary-sub-title mb-1">MOST LIKELY OUTCOME & CONFIDENCE LEVEL</div>

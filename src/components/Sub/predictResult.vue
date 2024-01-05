@@ -1,11 +1,11 @@
 <!-- eslint-disable max-len -->
 <template>
   <div id="predict-result" class="text-center">
-    <div style="z-index: 100">
+    <div style="z-index: 100" class="w-100">
       <div class="p-10 justify-content-center mt-4 mx-20" style="z-index: 100">
         <el-row :gutter="10">
           <el-col :offset="6" :span="6">父親贏得親權的機率(%)</el-col>
-          <el-col :span="6">雙方共享親權的機率(%)</el-col>
+          <el-col :span="6">雙方共享親權的機率(%)*</el-col>
           <el-col :span="6">母親贏得親權的機率(%)</el-col>
         </el-row>
         <el-row v-for="model in modelUsed[$route.params.mode]" :key="model" :gutter="10">
@@ -15,6 +15,9 @@
             <el-col :span="6">{{Math.round(predict_result[model]['Both']['avg_prob']*100) / 100}} ±{{ predict_result[model]['Both']['std'] }}</el-col>
             <el-col :span="6">{{Math.round(predict_result[model]['Respondent']['avg_prob']*100) / 100}} ±{{ predict_result[model]['Respondent']['std'] }}</el-col>
           </div>
+        </el-row>
+        <el-row class="p-10 justify-content-center text-center mt-4 mx-20">
+          (*) 可參考<a href="/techDoc">「技術說明</a>」中的「五、模型限制(以判給雙方的情形為例)」
         </el-row>
       </div>
       <!-- <div v-if="isLoading">Calculating... {{elapsedTime}} seconds have elapsed.</div> -->

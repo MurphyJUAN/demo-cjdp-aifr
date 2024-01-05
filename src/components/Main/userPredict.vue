@@ -208,8 +208,12 @@ export default {
       return /[\u4E00-\u9FA5]+/g.test(str);
     },
     checkInputValid(data) {
+      let isContainAdvantageValid = false;
       let isLenValid = false;
       let isLanguageValid = true;
+      if (((data.AA.Sentence.length > 0) || (data.AA.Feature.length > 0)) && ((data.RA.Sentence.length > 0) || (data.RA.Feature.length > 0))) {
+        isContainAdvantageValid = true;
+      }
       Object.keys(data).forEach((key) => {
         if (data[key].Sentence.length > 0) {
           isLenValid = true;
@@ -222,6 +226,10 @@ export default {
         }
         return null;
       });
+      if (!isContainAdvantageValid) {
+        alert('You have to input advantage factors or rationale statements to both side.');
+        return false;
+      }
       if (!isLenValid) {
         alert("You haven't input any custody factors or rationale statements.");
         return false;
@@ -385,7 +393,7 @@ export default {
   font-weight: bold
 }
 .predictResult {
-  width: 60%;
+  width: 65%;
   margin: 0 25% 0 15%;
 }
 </style>
