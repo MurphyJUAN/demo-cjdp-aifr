@@ -1,5 +1,6 @@
 # %%
 import torch
+from transformers.models.bert.modeling_bert import BertPreTrainedModel, BertModel
 from transformers import AutoModel, AutoTokenizer
 from transformers.models.bert.modeling_bert import BertPreTrainedModel, BertModel
 import torch.nn as nn
@@ -17,14 +18,14 @@ class MyJointBert(BertPreTrainedModel):
     def __init__(self, config, emb_name):
         super(MyJointBert, self).__init__(config)
         self.num_labels = config.num_labels
-        # self.bert = BertModel(config)
+        self.bert = BertModel.from_pretrained("bert-base-chinese")
         # Load embeding model
-        PRETRAINED_MODEL_NAME = "bert-base-chinese" 
-        model = MyBert.from_pretrained(PRETRAINED_MODEL_NAME, num_labels=3)
-        if len(emb_name) > 0:
-            model.load_state_dict(torch.load(emb_name))
-            print(f'>>>>Finish loadding from {emb_name}')
-        self.bert = model.bert
+        # PRETRAINED_MODEL_NAME = "bert-base-chinese" 
+        # myBert = MyBert.from_pretrained(PRETRAINED_MODEL_NAME, num_labels=3)
+        # self.bert = myBert.bert  # first assign the bert model
+        # if len(emb_name) > 0:
+        #     self.bert.load_state_dict(torch.load(emb_name))  # load weights after assignment
+        #     print(f'>>>>Finish loading from {emb_name}')
         # Load embeding model
         self.dropout = nn.Dropout(config.hidden_dropout_prob)
         self.batchNorm = nn.BatchNorm1d(768)
@@ -38,15 +39,38 @@ class MyJointBert(BertPreTrainedModel):
         )
         # self.apply(self.init_bert_weights)
         # self.init_weights()
+    def avarage_embedding(self, hidden_states, attention_mask):
+        # hidden_states 的 shape 為 (batch_size, sequence_length, hidden_size)
+        # attention_mask 的 shape 為 (batch_size, sequence_length)
+        mask = attention_mask.unsqueeze(-1).expand(hidden_states.size()).float()
+        # 將 PAD tokens 的 mask 設為 0，其他 tokens 的 mask 設為 1
+        masked_hidden_states = hidden_states * mask
+        # 計算 token embeddings 的平均值
+        sum_embeddings = torch.sum(masked_hidden_states, 1)
+        sum_mask = torch.clamp(mask.sum(1), min=1e-9)
+        avg_embeddings = sum_embeddings / sum_mask
+        return avg_embeddings
+    
     def forward(self, AA, AD, RA, RD, labels=None):
-        _,  AA_pooled_output = self.bert(AA['input_ids'], token_type_ids=AA['token_type_ids'], attention_mask=AA['attention_mask'], return_dict=False)
-        AA_pooled_output = self.dropout(self.batchNorm(AA_pooled_output))
-        _,  AD_pooled_output = self.bert(AD['input_ids'], token_type_ids=AD['token_type_ids'], attention_mask=AD['attention_mask'], return_dict=False)
-        AD_pooled_output = self.dropout(self.batchNorm(AD_pooled_output))
-        _,  RA_pooled_output = self.bert(RA['input_ids'], token_type_ids=RA['token_type_ids'], attention_mask=RA['attention_mask'], return_dict=False)
-        RA_pooled_output = self.dropout(self.batchNorm(RA_pooled_output))
-        _,  RD_pooled_output = self.bert(RD['input_ids'], token_type_ids=RD['token_type_ids'], attention_mask=RD['attention_mask'], return_dict=False)
-        RD_pooled_output = self.dropout(self.batchNorm(RD_pooled_output))
+        AA_hidden_state, AA_pooled_output = self.bert(AA['input_ids'], token_type_ids=AA['token_type_ids'], attention_mask=AA['attention_mask'], return_dict=False)
+        AD_hidden_state, AD_pooled_output = self.bert(AD['input_ids'], token_type_ids=AD['token_type_ids'], attention_mask=AD['attention_mask'], return_dict=False)
+        RA_hidden_state, RA_pooled_output = self.bert(RA['input_ids'], token_type_ids=RA['token_type_ids'], attention_mask=RA['attention_mask'], return_dict=False)
+        RD_hidden_state, RD_pooled_output = self.bert(RD['input_ids'], token_type_ids=RD['token_type_ids'], attention_mask=RD['attention_mask'], return_dict=False)
+        
+        # AA_pooled_output = self.dropout(self.batchNorm(AA_pooled_output))
+        # AD_pooled_output = self.dropout(self.batchNorm(AD_pooled_output))
+        # RA_pooled_output = self.dropout(self.batchNorm(RA_pooled_output))
+        # RD_pooled_output = self.dropout(self.batchNorm(RD_pooled_output))
+        
+        AA_pooled_output = self.dropout(self.batchNorm(\
+          self.avarage_embedding(AA_hidden_state, AA['attention_mask'])))
+        AD_pooled_output = self.dropout(self.batchNorm( \
+          self.avarage_embedding(AD_hidden_state,AD['attention_mask'])))
+        RA_pooled_output = self.dropout(self.batchNorm( \
+          self.avarage_embedding(RA_hidden_state, RA['attention_mask'])))
+        RD_pooled_output = self.dropout(self.batchNorm( \
+          self.avarage_embedding(RD_hidden_state, RD['attention_mask'])))
+
         pooled_output = torch.cat((AA_pooled_output, AD_pooled_output, RA_pooled_output, RD_pooled_output), 1)
         # pooled_output = (AA_pooled_output + AD_pooled_output + RA_pooled_output + RD_pooled_output) / 4
         logits = self.classifier(pooled_output)
@@ -78,13 +102,13 @@ class MyJointRoberta(torch.nn.Module):
         # self.apply(self.init_bert_weights)
         # self.init_weights()
     def forward(self, AA, AD, RA, RD, labels=None):
-        _,  AA_pooled_output = self.bert(AA['input_ids'], token_type_ids=AA['segment'], attention_mask=AA['mask'], return_dict=False)
+        _,  AA_pooled_output = self.bert(AA['input_ids'], token_type_ids=AA['token_type_ids'], attention_mask=AA['attention_mask'], return_dict=False)
         AA_pooled_output = self.dropout(self.batchNorm(AA_pooled_output))
-        _,  AD_pooled_output = self.bert(AD['input_ids'], token_type_ids=AD['segment'], attention_mask=AD['mask'], return_dict=False)
+        _,  AD_pooled_output = self.bert(AD['input_ids'], token_type_ids=AD['token_type_ids'], attention_mask=AD['attention_mask'], return_dict=False)
         AD_pooled_output = self.dropout(self.batchNorm(AD_pooled_output))
-        _,  RA_pooled_output = self.bert(RA['input_ids'], token_type_ids=RA['segment'], attention_mask=RA['mask'], return_dict=False)
+        _,  RA_pooled_output = self.bert(RA['input_ids'], token_type_ids=RA['token_type_ids'], attention_mask=RA['attention_mask'], return_dict=False)
         RA_pooled_output = self.dropout(self.batchNorm(RA_pooled_output))
-        _,  RD_pooled_output = self.bert(RD['input_ids'], token_type_ids=RD['segment'], attention_mask=RD['mask'], return_dict=False)
+        _,  RD_pooled_output = self.bert(RD['input_ids'], token_type_ids=RD['token_type_ids'], attention_mask=RD['attention_mask'], return_dict=False)
         RD_pooled_output = self.dropout(self.batchNorm(RD_pooled_output))
         pooled_output = torch.cat((AA_pooled_output, AD_pooled_output, RA_pooled_output, RD_pooled_output), 1)
         # pooled_output = (AA_pooled_output + AD_pooled_output + RA_pooled_output + RD_pooled_output) / 4
