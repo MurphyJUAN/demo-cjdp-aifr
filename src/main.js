@@ -15,9 +15,9 @@ Vue.use(VueAxios, axios);
 // Vue.prototype.$ajax = axios;
 Vue.use(ElementUI);
 Vue.config.productionTip = false;
-Vue.prototype.$globalApi = 'https://subtle-cricket-grown.ngrok-free.app';
+// Vue.prototype.$globalApi = 'https://subtle-cricket-grown.ngrok-free.app';
 Vue.prototype.$testApi = 'http://127.0.0.1:8000';
-// Vue.prototype.$globalApi = 'http://10.0.1.201:8000';
+Vue.prototype.$globalApi = 'http://10.0.1.201:8000';
 Vue.prototype.$api = Vue.prototype.$globalApi;
 // Vue.prototype.$api = Vue.prototype.$testApi;
 /* eslint-disable no-new */
