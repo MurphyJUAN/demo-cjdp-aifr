@@ -463,18 +463,32 @@ def predict():
     # std_our_bert = [0, 0, 0]
     
     if mode == "mode1":
-        prob_xgboost, std_xgboost = get_predict(data=data, model_list=xgboost_model_list, type='xgboost-based', device=device)
-        result = {
-            'L1': { 'Applicant': {'avg_prob': prob_xgboost[0]*100, 'std': std_xgboost[0]}, \
-                    'Respondent': {'avg_prob': prob_xgboost[1]*100, 'std': std_xgboost[1]}, \
-                    'Both': {'avg_prob': prob_xgboost[2]*100, 'std': std_xgboost[2]}
+        print('>>>mode1')
+        if data['AA'] == data['RA'] and data['AD'] == data['RD']:
+            result = {
+            'L1': { 'Applicant': {'avg_prob': 0*100, 'std': 0}, \
+                    'Respondent': {'avg_prob':0*100, 'std': 0}, \
+                    'Both': {'avg_prob': 1*100, 'std': 0}
                     },
             'L2': {
-                 'Applicant': {'avg_prob': prob_our_bert[0]*100, 'std': std_our_bert[0]}, \
-                'Respondent': {'avg_prob': prob_our_bert[1]*100, 'std': std_our_bert[1]}, \
-                'Both': {'avg_prob': prob_our_bert[2]*100, 'std': std_our_bert[2]}
+                 'Applicant': {'avg_prob': 0*100, 'std': 0}, \
+                'Respondent': {'avg_prob': 0*100, 'std': 0}, \
+                'Both': {'avg_prob': 1*100, 'std': 0}
                 }
         }
+        else:
+            prob_xgboost, std_xgboost = get_predict(data=data, model_list=xgboost_model_list, type='xgboost-based', device=device)
+            result = {
+                'L1': { 'Applicant': {'avg_prob': prob_xgboost[0]*100, 'std': std_xgboost[0]}, \
+                        'Respondent': {'avg_prob': prob_xgboost[1]*100, 'std': std_xgboost[1]}, \
+                        'Both': {'avg_prob': prob_xgboost[2]*100, 'std': std_xgboost[2]}
+                        },
+                'L2': {
+                    'Applicant': {'avg_prob': prob_our_bert[0]*100, 'std': std_our_bert[0]}, \
+                    'Respondent': {'avg_prob': prob_our_bert[1]*100, 'std': std_our_bert[1]}, \
+                    'Both': {'avg_prob': prob_our_bert[2]*100, 'std': std_our_bert[2]}
+                    }
+            }
     elif mode == "mode2":
         print('>>>data', data)
         dnn_model_list = [dnn_switch_0_model, dnn_switch_5_model, dnn_switch_10_model, dnn_switch_15_model, dnn_switch_20_model, dnn_switch_30_model]
