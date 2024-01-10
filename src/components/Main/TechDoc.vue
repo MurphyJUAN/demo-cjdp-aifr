@@ -45,14 +45,14 @@
               </div>
             </li>
             <li>
-              附註：
-              <p>[1] Yining Juan, Chung-Chi Chen, Hsin-Hsi Chen, and Daw-Wei Wang, CustodiAI: A System for Predicting Child Custody Outcomes, published in JCNLP-AACL 2023 (The 13th International Joint Conference on Natural Language Processing and the 3rd Conference of the Asia-Pacific Chapter of the Association for Computational Linguistics ).</p>
-              <p>[2] Ya-Lun Li, Yun-Hsien Lin and Daw-Wei Wang, Method for Training Decision-Making Model with Natural Language Corpus, US Patent Approved, Application, No.16/875636. 李亞倫、林昀嫺與 王道維, 「自然語言語料用於機器學習決策模型的訓練方法」, 中華民國專利通過, 申請案號 108146882</p>
-            </li>
-            <li>
               模型限制
               <p>本系統中所使用基於ISST兩階段訓練方法的Model L2, S2, C2模型，固然都可以在不同的輸入模式中優於其他模型的結果(L1,S1,C1)，但是並不代表對於每一個使用者所輸入的個別案件都有準確的預測。此模型的限制在於所使用的訓練資料皆是來自真實的親權裁判結果所標註的資訊，其文字是經過法官以其專業的判決書用所表達。本系統的使用者若以較為簡化的輸入資料或非專業的文字描述測試，可能因為不足以反映司法案件中的情況，因而得到預期以外的結果。</p>
               <p>其中一個例子是，如果父親與母親雙方都輸入完全相同的有利或不利選項與文字，一般人可能會預期得到雙方共享親權的預測結果。但是以ISST為基礎的L2, S2, C2三個模型預測的結果會是父母親得到親權的機率幾乎相同且高於雙方共享親權的機率，而非共享親權的機率最高。這是因為司法實務上幾乎沒有這樣的極端案例(雙方所有條件皆一樣)。事實上，法官判斷是否合適共同親權的判決並非僅根據父母雙方的個別條件，也要看父母雙方是否可以合作，往往隱藏在更細膩的文字描述中。所以在以上這類過於簡化且不夠真實的測試情形下，本系統的預測結果可能會與使用者的期待有所不同。</p>
+            </li>
+            <li>
+              附註：
+              <p>[1] Yining Juan, Chung-Chi Chen, Hsin-Hsi Chen, and Daw-Wei Wang, CustodiAI: A System for Predicting Child Custody Outcomes, published in JCNLP-AACL 2023 (The 13th International Joint Conference on Natural Language Processing and the 3rd Conference of the Asia-Pacific Chapter of the Association for Computational Linguistics ).</p>
+              <p>[2] Ya-Lun Li, Yun-Hsien Lin and Daw-Wei Wang, Method for Training Decision-Making Model with Natural Language Corpus, US Patent Approved, Application, No.16/875636. 李亞倫、林昀嫺與 王道維, 「自然語言語料用於機器學習決策模型的訓練方法」, 中華民國專利通過, 申請案號 108146882</p>
             </li>
           </ul>
           <div class="d-block">

@@ -227,15 +227,15 @@ export default {
         return null;
       });
       if (!isContainAdvantageValid) {
-        alert('You have to input advantage factors or rationale statements to both side.');
+        alert('雙方都需要輸入有利的因素選項或是文字敘述喔！');
         return false;
       }
       if (!isLenValid) {
-        alert("You haven't input any custody factors or rationale statements.");
+        alert('你還沒選擇任何因素選項或是輸入任何文字敘述喔！');
         return false;
       }
       if (!isLanguageValid) {
-        alert('Now we only support chinese input.');
+        alert('我們目前只支援中文輸入！');
         return false;
       }
 
