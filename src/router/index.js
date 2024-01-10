@@ -12,6 +12,7 @@ import SupplementDescription from '@/components/Sub/supplementDescription';
 import PredictResult from '@/components/Sub/predictResult';
 import ResultFeedback from '@/components/Sub/resultFeedback';
 import TechDoc from '@/components/Main/TechDoc';
+import ContactUs from '@/components/Main/contactUs';
 
 Vue.use(Router);
 
@@ -54,6 +55,11 @@ export default new Router({
       path: '/techDoc',
       name: 'TechDoc',
       component: TechDoc,
+    },
+    {
+      path: '/contactUs',
+      name: 'ContactUs',
+      component: ContactUs,
     },
     {
       path: '/userPredict',

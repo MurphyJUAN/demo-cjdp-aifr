@@ -43,7 +43,7 @@ features = ['親子感情', '意願能力', '父母經濟', '支持系統', '父
        '子女年齡', '人格發展', '父母健康', '父母職業', '子女意願', '友善父母', '父母品行']
 # %%
 # Parameter For Pertubation
-copy_ratio = 100
+copy_ratio = 20
 with open('./neu_string.txt', 'r', encoding='utf-8') as file:
     neu_string = file.read()
 # %%
