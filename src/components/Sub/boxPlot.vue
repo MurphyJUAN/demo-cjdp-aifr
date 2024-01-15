@@ -49,6 +49,7 @@ export default {
           textStyle: {
             fontWeight: 'normal', // 或者使用數字，例如 400, 600 等
             fontSize: 17,
+            color: '#212529',
           },
         },
         tooltip: {
