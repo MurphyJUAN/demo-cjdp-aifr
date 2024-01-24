@@ -348,6 +348,11 @@ def get_predict(data, model_list, type, device):
             all_probs += get_perturbation_result(data, model, device)
         prob = np.mean(np.array(all_probs), axis=0).tolist()
         std = np.std(np.array(all_probs), ddof=1, axis=0).tolist()
+        min_values = np.min(all_probs, axis=0).tolist()
+        q1_values = np.percentile(all_probs, 25, axis=0).tolist()
+        q2_values = np.percentile(all_probs, 50, axis=0).tolist()  # This is the median
+        q3_values = np.percentile(all_probs, 75, axis=0).tolist()
+        max_values = np.max(all_probs, axis=0).tolist()
     elif type == "dnn":
         # 斷句 get_split_sentences
         data_list = get_splits_sentences(data)
@@ -360,6 +365,11 @@ def get_predict(data, model_list, type, device):
         # 計算 acg_prob, acg_std
         prob = np.mean(np.array(all_probs), axis=0).tolist()
         std = np.std(np.array(all_probs), ddof=1, axis=0).tolist()
+        min_values = np.min(all_probs, axis=0).tolist()
+        q1_values = np.percentile(all_probs, 25, axis=0).tolist()
+        q2_values = np.percentile(all_probs, 50, axis=0).tolist()  # This is the median
+        q3_values = np.percentile(all_probs, 75, axis=0).tolist()
+        max_values = np.max(all_probs, axis=0).tolist()
     elif type == "xgboost-based":
         AA = collect_features(data['AA']['Feature'], '有利')
         AD = collect_features(data['AD']['Feature'], '不利')
@@ -376,8 +386,13 @@ def get_predict(data, model_list, type, device):
             all_probs.append(probs)
         prob = np.mean(np.array(all_probs), axis=0).tolist()
         std = np.std(np.array(all_probs), ddof=1, axis=0).tolist()
+        min_values = np.min(all_probs, axis=0).tolist()
+        q1_values = np.percentile(all_probs, 25, axis=0).tolist()
+        q2_values = np.percentile(all_probs, 50, axis=0).tolist()  # This is the median
+        q3_values = np.percentile(all_probs, 75, axis=0).tolist()
+        max_values = np.max(all_probs, axis=0).tolist()
     print('>>>>> Predict Result:', prob)
-    return prob, [np.round(s*100, decimals=2)  for s in std]   
+    return prob, [np.round(s*100, decimals=2)  for s in std], ([np.round(v*100, decimals=2) for v in min_values], [np.round(v*100, decimals=2) for v in q1_values], [np.round(v*100, decimals=2) for v in q2_values], [np.round(v*100, decimals=2) for v in q3_values], [np.round(v*100, decimals=2) for v in max_values])  
     
 # %%
 '''
@@ -457,7 +472,7 @@ def predict():
         device = torch.device('cuda')
 
     our_model_list = [our_switch_model, our_switch_5_model_1, our_switch_5_model_2, our_switch_5_model_3, our_switch_10_model, our_switch_15_model]
-    prob_our_bert, std_our_bert = get_predict(data=data, model_list=our_model_list, type="bert-based", device=device)
+    prob_our_bert, std_our_bert, (min_our_bert, q1_our_bert, q2_our_bert, q3_our_bert, max_our_bert) = get_predict(data=data, model_list=our_model_list, type="bert-based", device=device)
     # TODO
     # prob_our_bert = [0, 0, 0]
     # std_our_bert = [0, 0, 0]
@@ -465,43 +480,44 @@ def predict():
     if mode == "mode1":
         print('>>>mode1')
         if data['AA'] == data['RA'] and data['AD'] == data['RD']:
+            # TODO
             result = {
-            'L1': { 'Applicant': {'avg_prob': 0*100, 'std': 0}, \
-                    'Respondent': {'avg_prob':0*100, 'std': 0}, \
-                    'Both': {'avg_prob': 1*100, 'std': 0}
+            'L1': { 'Applicant': {'avg_prob': 0*100, 'std': 0, 'min': 0, "q1": 0, "q2": 0, "q3": 0, "max": 0}, \
+                    'Respondent': {'avg_prob':0*100, 'std': 0, 'min': 0, "q1": 0, "q2": 0, "q3": 0, "max": 0}, \
+                    'Both': {'avg_prob': 1*100, 'std': 0, 'min': 100, "q1": 100, "q2": 100, "q3": 100, "max": 100}
                     },
             'L2': {
-                 'Applicant': {'avg_prob': 0*100, 'std': 0}, \
-                'Respondent': {'avg_prob': 0*100, 'std': 0}, \
-                'Both': {'avg_prob': 1*100, 'std': 0}
+                 'Applicant': {'avg_prob': 0*100, 'std': 0, 'min': 0, "q1": 0, "q2": 0, "q3": 0, "max": 0}, \
+                'Respondent': {'avg_prob': 0*100, 'std': 0, 'min': 0, "q1": 0, "q2": 0, "q3": 0, "max": 0}, \
+                'Both': {'avg_prob': 1*100, 'std': 0, 'min': 100, "q1": 100, "q2": 100, "q3": 100, "max": 100}
                 }
         }
         else:
-            prob_xgboost, std_xgboost = get_predict(data=data, model_list=xgboost_model_list, type='xgboost-based', device=device)
+            prob_xgboost, std_xgboost, (min_xgboost, q1_xgboost, q2_xgboost, q3_xgboost, max_xgboost) = get_predict(data=data, model_list=xgboost_model_list, type='xgboost-based', device=device)
             result = {
-                'L1': { 'Applicant': {'avg_prob': prob_xgboost[0]*100, 'std': std_xgboost[0]}, \
-                        'Respondent': {'avg_prob': prob_xgboost[1]*100, 'std': std_xgboost[1]}, \
-                        'Both': {'avg_prob': prob_xgboost[2]*100, 'std': std_xgboost[2]}
+                'L1': { 'Applicant': {'avg_prob': prob_xgboost[0]*100, 'std': std_xgboost[0], 'min': min_xgboost[0], "q1": q1_xgboost[0], "q2": q2_xgboost[0], "q3": q3_xgboost[0], "max": max_xgboost[0]}, \
+                        'Respondent': {'avg_prob': prob_xgboost[1]*100, 'std': std_xgboost[1], 'min': min_xgboost[1], "q1": q1_xgboost[1], "q2": q2_xgboost[1], "q3": q3_xgboost[1], "max": max_xgboost[1]}, \
+                        'Both': {'avg_prob': prob_xgboost[2]*100, 'std': std_xgboost[2], 'min': min_xgboost[2], "q1": q1_xgboost[2], "q2": q2_xgboost[2], "q3": q3_xgboost[2], "max": max_xgboost[2]}
                         },
                 'L2': {
-                    'Applicant': {'avg_prob': prob_our_bert[0]*100, 'std': std_our_bert[0]}, \
-                    'Respondent': {'avg_prob': prob_our_bert[1]*100, 'std': std_our_bert[1]}, \
-                    'Both': {'avg_prob': prob_our_bert[2]*100, 'std': std_our_bert[2]}
+                    'Applicant': {'avg_prob': prob_our_bert[0]*100, 'std': std_our_bert[0], 'min': min_our_bert[0], "q1": q1_our_bert[0], "q2": q2_our_bert[0], "q3": q3_our_bert[0], "max": max_our_bert[0]},  \
+                    'Respondent': {'avg_prob': prob_our_bert[1]*100, 'std': std_our_bert[1], 'min': min_our_bert[1], "q1": q1_our_bert[1], "q2": q2_our_bert[1], "q3": q3_our_bert[1], "max": max_our_bert[1]}, \
+                    'Both': {'avg_prob': prob_our_bert[2]*100, 'std': std_our_bert[2], 'min': min_our_bert[2], "q1": q1_our_bert[2], "q2": q2_our_bert[2], "q3": q3_our_bert[2], "max": max_our_bert[2]}
                     }
             }
     elif mode == "mode2":
         print('>>>data', data)
         dnn_model_list = [dnn_switch_0_model, dnn_switch_5_model, dnn_switch_10_model, dnn_switch_15_model, dnn_switch_20_model, dnn_switch_30_model]
-        prob_dnn, std_dnn = get_predict(data=data, model_list=dnn_model_list, type="dnn", device=device)
+        prob_dnn, std_dnn, (min_dnn, q1_dnn, q2_dnn, q3_dnn, max_dnn) = get_predict(data=data, model_list=dnn_model_list, type="dnn", device=device)
         result = {
-            'S1': { 'Applicant': {'avg_prob': prob_dnn[0]*100, 'std': std_dnn[0]}, \
-                    'Respondent': {'avg_prob': prob_dnn[1]*100, 'std': std_dnn[1]}, \
-                    'Both': {'avg_prob': prob_dnn[2]*100, 'std': std_dnn[2]}
+            'S1': { 'Applicant': {'avg_prob': prob_dnn[0]*100, 'std': std_dnn[0], 'min': min_dnn[0], "q1": q1_dnn[0], "q2": q2_dnn[0], "q3": q3_dnn[0], "max": max_dnn[0]}, \
+                    'Respondent': {'avg_prob': prob_dnn[1]*100, 'std': std_dnn[1], 'min': min_dnn[1], "q1": q1_dnn[1], "q2": q2_dnn[1], "q3": q3_dnn[1], "max": max_dnn[1]}, \
+                    'Both': {'avg_prob': prob_dnn[2]*100, 'std': std_dnn[2], 'min': min_dnn[2], "q1": q1_dnn[2], "q2": q2_dnn[2], "q3": q3_dnn[2], "max": max_dnn[2]}
                     },
             'S2': {
-                'Applicant': {'avg_prob': prob_our_bert[0]*100, 'std': std_our_bert[0]}, \
-                'Respondent': {'avg_prob': prob_our_bert[1]*100, 'std': std_our_bert[1]}, \
-                'Both': {'avg_prob': prob_our_bert[2]*100, 'std': std_our_bert[2]}
+                    'Applicant': {'avg_prob': prob_our_bert[0]*100, 'std': std_our_bert[0], 'min': min_our_bert[0], "q1": q1_our_bert[0], "q2": q2_our_bert[0], "q3": q3_our_bert[0], "max": max_our_bert[0]},  \
+                    'Respondent': {'avg_prob': prob_our_bert[1]*100, 'std': std_our_bert[1], 'min': min_our_bert[1], "q1": q1_our_bert[1], "q2": q2_our_bert[1], "q3": q3_our_bert[1], "max": max_our_bert[1]}, \
+                    'Both': {'avg_prob': prob_our_bert[2]*100, 'std': std_our_bert[2], 'min': min_our_bert[2], "q1": q1_our_bert[2], "q2": q2_our_bert[2], "q3": q3_our_bert[2], "max": max_our_bert[2]}
                 }
         }
         for m in dnn_model_list:
@@ -511,18 +527,19 @@ def predict():
         
     elif mode == "mode3":
         lawformer_model_list = [lawformer_switch_0_model, lawformer_switch_5_model, lawformer_switch_10_model, lawformer_switch_15_model]
-        prob_lawformer, std_lawformer = get_predict(data=data, model_list=lawformer_model_list, type="bert-based", device=device)
+        prob_lawformer, std_lawformer, (min_lawformer, q1_lawformer, q2_lawformer, q3_lawformer, max_lawformer) = get_predict(data=data, model_list=lawformer_model_list, type="bert-based", device=device)
 
         result = {
         'C1': {
-            'Applicant': {'avg_prob': prob_lawformer[0]*100, 'std': std_lawformer[0]}, \
-            'Respondent': {'avg_prob': prob_lawformer[1]*100, 'std': std_lawformer[1]}, \
-            'Both': {'avg_prob': prob_lawformer[2]*100, 'std': std_lawformer[2]}
+            'Applicant': {'avg_prob': prob_lawformer[0]*100, 'std': std_lawformer[0], 'min': min_lawformer[0], "q1": q1_lawformer[0], "q2": q2_lawformer[0], "q3": q3_lawformer[0], "max": max_lawformer[0]}, \
+            'Respondent': {'avg_prob': prob_lawformer[1]*100, 'std': std_lawformer[1], 'min': min_lawformer[1], "q1": q1_lawformer[1], "q2": q2_lawformer[1], "q3": q3_lawformer[1], "max": max_lawformer[1]}, \
+            'Both': {'avg_prob': prob_lawformer[2]*100, 'std': std_lawformer[2], 'min': min_lawformer[2], "q1": q1_lawformer[2], "q2": q2_lawformer[2], "q3": q3_lawformer[2], "max": max_lawformer[2]}
         },
-        'C2': { 'Applicant': {'avg_prob': prob_our_bert[0]*100, 'std': std_our_bert[0]}, \
-                'Respondent': {'avg_prob': prob_our_bert[1]*100, 'std': std_our_bert[1]}, \
-                'Both': {'avg_prob': prob_our_bert[2]*100, 'std': std_our_bert[2]}
-                },
+        'C2': {
+                'Applicant': {'avg_prob': prob_our_bert[0]*100, 'std': std_our_bert[0], 'min': min_our_bert[0], "q1": q1_our_bert[0], "q2": q2_our_bert[0], "q3": q3_our_bert[0], "max": max_our_bert[0]},  \
+                'Respondent': {'avg_prob': prob_our_bert[1]*100, 'std': std_our_bert[1], 'min': min_our_bert[1], "q1": q1_our_bert[1], "q2": q2_our_bert[1], "q3": q3_our_bert[1], "max": max_our_bert[1]}, \
+                'Both': {'avg_prob': prob_our_bert[2]*100, 'std': std_our_bert[2], 'min': min_our_bert[2], "q1": q1_our_bert[2], "q2": q2_our_bert[2], "q3": q3_our_bert[2], "max": max_our_bert[2]}
+            }
         }
         for m in lawformer_model_list:
             m.cpu()
