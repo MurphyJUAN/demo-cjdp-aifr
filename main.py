@@ -64,24 +64,40 @@ def load_dnn_model(model_path, input_size=200, bottleneck_size=100, output_size=
     return model
 # For Demo Paper
 # Our(only switch)
-our_switch_model_path = './ckpt/new/our_switch_0.pt'
-our_switch_model = load_bert_model(our_switch_model_path, PRETRAINED_MODEL_NAME, NUM_LABELS, EMB_MODEL_NAME)
-our_switch_model.to(device)
-# Our(swotch + 5% both augment 1)
-our_switch_5_model_1 = load_bert_model('./ckpt/new/our_switch_5_1.pt', PRETRAINED_MODEL_NAME, NUM_LABELS, EMB_MODEL_NAME)
-our_switch_5_model_1.to(device)
-# Our(swotch + 5% both augment 2)
-our_switch_5_model_2 = load_bert_model('./ckpt/new/our_switch_5_2.pt', PRETRAINED_MODEL_NAME, NUM_LABELS, EMB_MODEL_NAME)
-our_switch_5_model_2.to(device)
-# Our(swotch + 5% both augment 3)
-our_switch_5_model_3 = load_bert_model('./ckpt/new/our_switch_5_3.pt', PRETRAINED_MODEL_NAME, NUM_LABELS, EMB_MODEL_NAME)
-our_switch_5_model_3.to(device)
-# Our(swotch + 10% both augment)
-our_switch_10_model = load_bert_model('./ckpt/new/our_switch_10.pt', PRETRAINED_MODEL_NAME, NUM_LABELS, EMB_MODEL_NAME)
-our_switch_10_model.to(device)
-# Our(swotch + 15% both augment)
-our_switch_15_model = load_bert_model('./ckpt/new/our_switch_15.pt', PRETRAINED_MODEL_NAME, NUM_LABELS, EMB_MODEL_NAME)
-our_switch_15_model.to(device)
+our_switch_model = None
+our_switch_5_model_1 = None
+our_switch_5_model_2 = None
+our_switch_5_model_3 = None
+our_switch_10_model = None
+our_switch_15_model = None
+
+def load_demo_models():
+    global our_switch_model 
+    global our_switch_5_model_1 
+    global our_switch_5_model_2 
+    global our_switch_5_model_3 
+    global our_switch_10_model 
+    global our_switch_15_model 
+    our_switch_model_path = './ckpt/new/our_switch_0.pt'
+    our_switch_model = load_bert_model(our_switch_model_path, PRETRAINED_MODEL_NAME, NUM_LABELS, EMB_MODEL_NAME)
+    our_switch_model.to(device)
+    # Our(swotch + 5% both augment 1)
+    our_switch_5_model_1 = load_bert_model('./ckpt/new/our_switch_5_1.pt', PRETRAINED_MODEL_NAME, NUM_LABELS, EMB_MODEL_NAME)
+    our_switch_5_model_1.to(device)
+    # Our(swotch + 5% both augment 2)
+    our_switch_5_model_2 = load_bert_model('./ckpt/new/our_switch_5_2.pt', PRETRAINED_MODEL_NAME, NUM_LABELS, EMB_MODEL_NAME)
+    our_switch_5_model_2.to(device)
+    # Our(swotch + 5% both augment 3)
+    our_switch_5_model_3 = load_bert_model('./ckpt/new/our_switch_5_3.pt', PRETRAINED_MODEL_NAME, NUM_LABELS, EMB_MODEL_NAME)
+    our_switch_5_model_3.to(device)
+    # Our(swotch + 10% both augment)
+    our_switch_10_model = load_bert_model('./ckpt/new/our_switch_10.pt', PRETRAINED_MODEL_NAME, NUM_LABELS, EMB_MODEL_NAME)
+    our_switch_10_model.to(device)
+    # Our(swotch + 15% both augment)
+    our_switch_15_model = load_bert_model('./ckpt/new/our_switch_15.pt', PRETRAINED_MODEL_NAME, NUM_LABELS, EMB_MODEL_NAME)
+    our_switch_15_model.to(device)
+
+
 # # Our(swotch + 30% both augment)
 # our_switch_30_model = load_bert_model('./ckpt/new_moaug/our_switch_30.pt', PRETRAINED_MODEL_NAME, NUM_LABELS, EMB_MODEL_NAME)
 # our_switch_30_model.to(device)
@@ -99,54 +115,99 @@ def load_xgboost_models(model_paths):
         )
     return model_list
 xgboost_model_paths = ['./ckpt/xgboost_3class_0.pkl', './ckpt/xgboost_3class_1.pkl', './ckpt/xgboost_3class_2.pkl', './ckpt/xgboost_3class_3.pkl', './ckpt/xgboost_3class_4.pkl', './ckpt/xgboost_3class_5.pkl', './ckpt/xgboost_3class_6.pkl', './ckpt/xgboost_3class_7.pkl', './ckpt/xgboost_3class_8.pkl', './ckpt/xgboost_3class_9.pkl', './ckpt/xgboost_3class_10.pkl']
-xgboost_model_list = load_xgboost_models(xgboost_model_paths)
+xgboost_model_list = []
+
 # For DNN
 # 讀入中性句的平均向量
 # 讀入 DNN 的六個模型
 # Switch + 0%
-dnn_switch_0_path = './ckpt/new_moaug/dnn_switch_0.pt'
-dnn_switch_0_model = load_dnn_model(dnn_switch_0_path)
-dnn_switch_0_model.to(device)
-# Switch + 5%
-dnn_switch_5_path = './ckpt/new_moaug/dnn_switch_5_1.pt'
-dnn_switch_5_model = load_dnn_model(dnn_switch_5_path)
-dnn_switch_5_model.to(device)
-# Switch + 10%
-dnn_switch_10_path = './ckpt/new_moaug/dnn_switch_10.pt'
-dnn_switch_10_model = load_dnn_model(dnn_switch_10_path)
-dnn_switch_10_model.to(device)
-# Switch + 15%
-dnn_switch_15_path = './ckpt/new_moaug/dnn_switch_15.pt'
-dnn_switch_15_model = load_dnn_model(dnn_switch_15_path)
-dnn_switch_15_model.to(device)
-# Switch + 20
-dnn_switch_20_path = './ckpt/new_moaug/dnn_switch_20.pt'
-dnn_switch_20_model = load_dnn_model(dnn_switch_20_path)
-dnn_switch_20_model.to(device)
-# Switch + 30
-dnn_switch_30_path = './ckpt/new_moaug/dnn_switch_30.pt'
-dnn_switch_30_model = load_dnn_model(dnn_switch_30_path)
-dnn_switch_30_model.to(device)
+dnn_switch_0_model = None
+dnn_switch_5_model = None
+dnn_switch_10_model = None
+dnn_switch_15_model = None
+dnn_switch_20_model = None
+dnn_switch_30_model = None
+
+def load_dnn_models():
+    global dnn_switch_0_model
+    global dnn_switch_5_model
+    global dnn_switch_10_model
+    global dnn_switch_15_model
+    global dnn_switch_20_model
+    global dnn_switch_30_model
+    dnn_switch_0_path = './ckpt/new_moaug/dnn_switch_0.pt'
+    dnn_switch_0_model = load_dnn_model(dnn_switch_0_path)
+    dnn_switch_0_model.to(device)
+    # Switch + 5%
+    dnn_switch_5_path = './ckpt/new_moaug/dnn_switch_5_1.pt'
+    dnn_switch_5_model = load_dnn_model(dnn_switch_5_path)
+    dnn_switch_5_model.to(device)
+    # Switch + 10%
+    dnn_switch_10_path = './ckpt/new_moaug/dnn_switch_10.pt'
+    dnn_switch_10_model = load_dnn_model(dnn_switch_10_path)
+    dnn_switch_10_model.to(device)
+    # Switch + 15%
+    dnn_switch_15_path = './ckpt/new_moaug/dnn_switch_15.pt'
+    dnn_switch_15_model = load_dnn_model(dnn_switch_15_path)
+    dnn_switch_15_model.to(device)
+    # Switch + 20
+    dnn_switch_20_path = './ckpt/new_moaug/dnn_switch_20.pt'
+    dnn_switch_20_model = load_dnn_model(dnn_switch_20_path)
+    dnn_switch_20_model.to(device)
+    # Switch + 30
+    dnn_switch_30_path = './ckpt/new_moaug/dnn_switch_30.pt'
+    dnn_switch_30_model = load_dnn_model(dnn_switch_30_path)
+    dnn_switch_30_model.to(device)
 # For Lawformer (switch + 0% both augment)
-lawformer_switch_0_model = load_roberta_model('./ckpt/new/lawformer_switch_0.pt', "thunlp/Lawformer", NUM_LABELS)
-lawformer_switch_0_model.to(device)
-# For Lawformer (switch + 05% both augment)
-lawformer_switch_5_model = load_roberta_model('./ckpt/new/lawformer_switch_5.pt', "thunlp/Lawformer", NUM_LABELS)
-lawformer_switch_5_model.to(device)
-# For Lawformer (switch + 10% both augment)
-lawformer_switch_10_model = load_roberta_model('./ckpt/new/lawformer_switch_10.pt', "thunlp/Lawformer", NUM_LABELS)
-lawformer_switch_10_model.to(device)
-# For Lawformer (switch + 15% both augment)
-lawformer_switch_15_model = load_roberta_model('./ckpt/new/lawformer_switch_15.pt', "thunlp/Lawformer", NUM_LABELS)
-lawformer_switch_15_model.to(device)
+lawformer_switch_0_model = None
+lawformer_switch_5_model = None
+lawformer_switch_10_model = None
+lawformer_switch_15_model = None
+
+def load_lawformer_models():
+    global lawformer_switch_0_model 
+    global lawformer_switch_5_model 
+    global lawformer_switch_10_model 
+    global lawformer_switch_15_model 
+    lawformer_switch_0_model = load_roberta_model('./ckpt/new/lawformer_switch_0.pt', "thunlp/Lawformer", NUM_LABELS)
+    lawformer_switch_0_model.to(device)
+    # For Lawformer (switch + 05% both augment)
+    lawformer_switch_5_model = load_roberta_model('./ckpt/new/lawformer_switch_5.pt', "thunlp/Lawformer", NUM_LABELS)
+    lawformer_switch_5_model.to(device)
+    # For Lawformer (switch + 10% both augment)
+    lawformer_switch_10_model = load_roberta_model('./ckpt/new/lawformer_switch_10.pt', "thunlp/Lawformer", NUM_LABELS)
+    lawformer_switch_10_model.to(device)
+    # For Lawformer (switch + 15% both augment)
+    lawformer_switch_15_model = load_roberta_model('./ckpt/new/lawformer_switch_15.pt', "thunlp/Lawformer", NUM_LABELS)
+    lawformer_switch_15_model.to(device)
 # %%
 # For Doc2Vec
-model_dbow = Doc2Vec.load('./ckpt/dbow_100_ADV_DIS_model.bin')
-model_dmm = Doc2Vec.load('./ckpt/dmm_100_ADV_DIS_model.bin')
-model_dbow.random.seed(3407)
-model_dmm.random.seed(3407)
-concate_model = ConcatenatedDoc2Vec([model_dbow, model_dmm])
-seed_funcs = [model_dbow.random.seed, model_dmm.random.seed]
+model_dbow = None
+model_dmm = None
+concate_model = None
+def load_doc2vec_models():
+    global model_dbow
+    global model_dmm
+    global concate_model
+    model_dbow = Doc2Vec.load('./ckpt/dbow_100_ADV_DIS_model.bin')
+    model_dmm = Doc2Vec.load('./ckpt/dmm_100_ADV_DIS_model.bin')
+    model_dbow.random.seed(3407)
+    model_dmm.random.seed(3407)
+    concate_model = ConcatenatedDoc2Vec([model_dbow, model_dmm])
+# %%
+def initialize_model():
+    """在处理第一个请求之前加载模型"""
+    global xgboost_model_list
+    load_demo_models()
+    xgboost_model_list = load_xgboost_models(xgboost_model_paths)
+    load_dnn_models()
+    load_lawformer_models()
+    load_doc2vec_models()
+# %%
+initialize_model()
+
+
+# %%
 def seg_to_DocVec(input_txt, model):
     avgDoc2Vec = []
     for _ in range(1):
@@ -392,7 +453,7 @@ def get_predict(data, model_list, type, device):
         q3_values = np.percentile(all_probs, 75, axis=0).tolist()
         max_values = np.max(all_probs, axis=0).tolist()
     print('>>>>> Predict Result:', prob)
-    return prob, [np.round(s*100, decimals=2)  for s in std], ([np.round(v*100, decimals=2) for v in min_values], [np.round(v*100, decimals=2) for v in q1_values], [np.round(v*100, decimals=2) for v in q2_values], [np.round(v*100, decimals=2) for v in q3_values], [np.round(v*100, decimals=2) for v in max_values])  
+    return prob, [np.round(s*100, decimals=2)  for s in std], ([np.round(v*100, decimals=2) for v in min_values], [np.round(v*100, decimals=2) for v in q1_values], [np.round(v*100, decimals=2) for v in q2_values], [np.round(v*100, decimals=2) for v in q3_values], [np.round(v*100, decimals=2) for v in max_values]), np.array(all_probs)
     
 # %%
 '''
@@ -444,6 +505,7 @@ def demo_predict():
 
 @app.route('/api/predict', methods=['POST', 'GET'])
 def predict():
+    device = "cpu"
     full_data = request.get_json()
     print('>>>>> Input Query Data:', full_data)
     mode = full_data['model']
@@ -472,7 +534,7 @@ def predict():
         device = torch.device('cuda')
 
     our_model_list = [our_switch_model, our_switch_5_model_1, our_switch_5_model_2, our_switch_5_model_3, our_switch_10_model, our_switch_15_model]
-    prob_our_bert, std_our_bert, (min_our_bert, q1_our_bert, q2_our_bert, q3_our_bert, max_our_bert) = get_predict(data=data, model_list=our_model_list, type="bert-based", device=device)
+    prob_our_bert, std_our_bert, (min_our_bert, q1_our_bert, q2_our_bert, q3_our_bert, max_our_bert), all_our_bert_probs = get_predict(data=data, model_list=our_model_list, type="bert-based", device=device)
     # TODO
     # prob_our_bert = [0, 0, 0]
     # std_our_bert = [0, 0, 0]
@@ -482,77 +544,77 @@ def predict():
         if data['AA'] == data['RA'] and data['AD'] == data['RD']:
             # TODO
             result = {
-            'L1': { 'Applicant': {'avg_prob': 0*100, 'std': 0, 'min': 0, "q1": 0, "q2": 0, "q3": 0, "max": 0}, \
-                    'Respondent': {'avg_prob':0*100, 'std': 0, 'min': 0, "q1": 0, "q2": 0, "q3": 0, "max": 0}, \
-                    'Both': {'avg_prob': 1*100, 'std': 0, 'min': 100, "q1": 100, "q2": 100, "q3": 100, "max": 100}
+            'L1': { 'Applicant': {'avg_prob': 0*100, 'std': 0, 'min': 0, "q1": 0, "q2": 0, "q3": 0, "max": 0, "all_probs": [0]*len(xgboost_model_list)}, \
+                    'Respondent': {'avg_prob':0*100, 'std': 0, 'min': 0, "q1": 0, "q2": 0, "q3": 0, "max": 0, "all_probs": [0]*len(xgboost_model_list)}, \
+                    'Both': {'avg_prob': 1*100, 'std': 0, 'min': 100, "q1": 100, "q2": 100, "q3": 100, "max": 100, "all_probs": [1]*len(xgboost_model_list)}
                     },
             'L2': {
-                 'Applicant': {'avg_prob': 0*100, 'std': 0, 'min': 0, "q1": 0, "q2": 0, "q3": 0, "max": 0}, \
-                'Respondent': {'avg_prob': 0*100, 'std': 0, 'min': 0, "q1": 0, "q2": 0, "q3": 0, "max": 0}, \
-                'Both': {'avg_prob': 1*100, 'std': 0, 'min': 100, "q1": 100, "q2": 100, "q3": 100, "max": 100}
+                 'Applicant': {'avg_prob': 0*100, 'std': 0, 'min': 0, "q1": 0, "q2": 0, "q3": 0, "max": 0, "all_probs": [0]*len(all_our_bert_probs)}, \
+                'Respondent': {'avg_prob': 0*100, 'std': 0, 'min': 0, "q1": 0, "q2": 0, "q3": 0, "max": 0, "all_probs": [0]*len(all_our_bert_probs)}, \
+                'Both': {'avg_prob': 1*100, 'std': 0, 'min': 100, "q1": 100, "q2": 100, "q3": 100, "max": 100, "all_probs": [1]*len(all_our_bert_probs)}
                 }
         }
         else:
-            prob_xgboost, std_xgboost, (min_xgboost, q1_xgboost, q2_xgboost, q3_xgboost, max_xgboost) = get_predict(data=data, model_list=xgboost_model_list, type='xgboost-based', device=device)
+            prob_xgboost, std_xgboost, (min_xgboost, q1_xgboost, q2_xgboost, q3_xgboost, max_xgboost), all_xgboost_probs = get_predict(data=data, model_list=xgboost_model_list, type='xgboost-based', device=device)
             result = {
-                'L1': { 'Applicant': {'avg_prob': prob_xgboost[0]*100, 'std': std_xgboost[0], 'min': min_xgboost[0], "q1": q1_xgboost[0], "q2": q2_xgboost[0], "q3": q3_xgboost[0], "max": max_xgboost[0]}, \
-                        'Respondent': {'avg_prob': prob_xgboost[1]*100, 'std': std_xgboost[1], 'min': min_xgboost[1], "q1": q1_xgboost[1], "q2": q2_xgboost[1], "q3": q3_xgboost[1], "max": max_xgboost[1]}, \
-                        'Both': {'avg_prob': prob_xgboost[2]*100, 'std': std_xgboost[2], 'min': min_xgboost[2], "q1": q1_xgboost[2], "q2": q2_xgboost[2], "q3": q3_xgboost[2], "max": max_xgboost[2]}
+                'L1': { 'Applicant': {'avg_prob': prob_xgboost[0]*100, 'std': std_xgboost[0], 'min': min_xgboost[0], "q1": q1_xgboost[0], "q2": q2_xgboost[0], "q3": q3_xgboost[0], "max": max_xgboost[0], "all_probs": all_xgboost_probs[:, 0].tolist()}, \
+                        'Respondent': {'avg_prob': prob_xgboost[1]*100, 'std': std_xgboost[1], 'min': min_xgboost[1], "q1": q1_xgboost[1], "q2": q2_xgboost[1], "q3": q3_xgboost[1], "max": max_xgboost[1], "all_probs": all_xgboost_probs[:, 1].tolist()}, \
+                        'Both': {'avg_prob': prob_xgboost[2]*100, 'std': std_xgboost[2], 'min': min_xgboost[2], "q1": q1_xgboost[2], "q2": q2_xgboost[2], "q3": q3_xgboost[2], "max": max_xgboost[2], "all_probs": all_xgboost_probs[:, 2].tolist()}
                         },
                 'L2': {
-                    'Applicant': {'avg_prob': prob_our_bert[0]*100, 'std': std_our_bert[0], 'min': min_our_bert[0], "q1": q1_our_bert[0], "q2": q2_our_bert[0], "q3": q3_our_bert[0], "max": max_our_bert[0]},  \
-                    'Respondent': {'avg_prob': prob_our_bert[1]*100, 'std': std_our_bert[1], 'min': min_our_bert[1], "q1": q1_our_bert[1], "q2": q2_our_bert[1], "q3": q3_our_bert[1], "max": max_our_bert[1]}, \
-                    'Both': {'avg_prob': prob_our_bert[2]*100, 'std': std_our_bert[2], 'min': min_our_bert[2], "q1": q1_our_bert[2], "q2": q2_our_bert[2], "q3": q3_our_bert[2], "max": max_our_bert[2]}
+                    'Applicant': {'avg_prob': prob_our_bert[0]*100, 'std': std_our_bert[0], 'min': min_our_bert[0], "q1": q1_our_bert[0], "q2": q2_our_bert[0], "q3": q3_our_bert[0], "max": max_our_bert[0], "all_probs": all_our_bert_probs[:, 0].tolist()},  \
+                    'Respondent': {'avg_prob': prob_our_bert[1]*100, 'std': std_our_bert[1], 'min': min_our_bert[1], "q1": q1_our_bert[1], "q2": q2_our_bert[1], "q3": q3_our_bert[1], "max": max_our_bert[1], "all_probs": all_our_bert_probs[:, 1].tolist()}, \
+                    'Both': {'avg_prob': prob_our_bert[2]*100, 'std': std_our_bert[2], 'min': min_our_bert[2], "q1": q1_our_bert[2], "q2": q2_our_bert[2], "q3": q3_our_bert[2], "max": max_our_bert[2], "all_probs": all_our_bert_probs[:, 2].tolist()}
                     }
             }
     elif mode == "mode2":
         print('>>>data', data)
         dnn_model_list = [dnn_switch_0_model, dnn_switch_5_model, dnn_switch_10_model, dnn_switch_15_model, dnn_switch_20_model, dnn_switch_30_model]
-        prob_dnn, std_dnn, (min_dnn, q1_dnn, q2_dnn, q3_dnn, max_dnn) = get_predict(data=data, model_list=dnn_model_list, type="dnn", device=device)
+        prob_dnn, std_dnn, (min_dnn, q1_dnn, q2_dnn, q3_dnn, max_dnn), all_dnn_probs = get_predict(data=data, model_list=dnn_model_list, type="dnn", device=device)
         result = {
-            'S1': { 'Applicant': {'avg_prob': prob_dnn[0]*100, 'std': std_dnn[0], 'min': min_dnn[0], "q1": q1_dnn[0], "q2": q2_dnn[0], "q3": q3_dnn[0], "max": max_dnn[0]}, \
-                    'Respondent': {'avg_prob': prob_dnn[1]*100, 'std': std_dnn[1], 'min': min_dnn[1], "q1": q1_dnn[1], "q2": q2_dnn[1], "q3": q3_dnn[1], "max": max_dnn[1]}, \
-                    'Both': {'avg_prob': prob_dnn[2]*100, 'std': std_dnn[2], 'min': min_dnn[2], "q1": q1_dnn[2], "q2": q2_dnn[2], "q3": q3_dnn[2], "max": max_dnn[2]}
+            'S1': { 'Applicant': {'avg_prob': prob_dnn[0]*100, 'std': std_dnn[0], 'min': min_dnn[0], "q1": q1_dnn[0], "q2": q2_dnn[0], "q3": q3_dnn[0], "max": max_dnn[0], "all_probs": all_dnn_probs[:, 0].tolist()}, \
+                    'Respondent': {'avg_prob': prob_dnn[1]*100, 'std': std_dnn[1], 'min': min_dnn[1], "q1": q1_dnn[1], "q2": q2_dnn[1], "q3": q3_dnn[1], "max": max_dnn[1], "all_probs": all_dnn_probs[:, 1].tolist()}, \
+                    'Both': {'avg_prob': prob_dnn[2]*100, 'std': std_dnn[2], 'min': min_dnn[2], "q1": q1_dnn[2], "q2": q2_dnn[2], "q3": q3_dnn[2], "max": max_dnn[2], "all_probs": all_dnn_probs[:, 2].tolist()}
                     },
             'S2': {
-                    'Applicant': {'avg_prob': prob_our_bert[0]*100, 'std': std_our_bert[0], 'min': min_our_bert[0], "q1": q1_our_bert[0], "q2": q2_our_bert[0], "q3": q3_our_bert[0], "max": max_our_bert[0]},  \
-                    'Respondent': {'avg_prob': prob_our_bert[1]*100, 'std': std_our_bert[1], 'min': min_our_bert[1], "q1": q1_our_bert[1], "q2": q2_our_bert[1], "q3": q3_our_bert[1], "max": max_our_bert[1]}, \
-                    'Both': {'avg_prob': prob_our_bert[2]*100, 'std': std_our_bert[2], 'min': min_our_bert[2], "q1": q1_our_bert[2], "q2": q2_our_bert[2], "q3": q3_our_bert[2], "max": max_our_bert[2]}
-                }
+                    'Applicant': {'avg_prob': prob_our_bert[0]*100, 'std': std_our_bert[0], 'min': min_our_bert[0], "q1": q1_our_bert[0], "q2": q2_our_bert[0], "q3": q3_our_bert[0], "max": max_our_bert[0], "all_probs": all_our_bert_probs[:, 0].tolist()},  \
+                    'Respondent': {'avg_prob': prob_our_bert[1]*100, 'std': std_our_bert[1], 'min': min_our_bert[1], "q1": q1_our_bert[1], "q2": q2_our_bert[1], "q3": q3_our_bert[1], "max": max_our_bert[1], "all_probs": all_our_bert_probs[:, 1].tolist()}, \
+                    'Both': {'avg_prob': prob_our_bert[2]*100, 'std': std_our_bert[2], 'min': min_our_bert[2], "q1": q1_our_bert[2], "q2": q2_our_bert[2], "q3": q3_our_bert[2], "max": max_our_bert[2], "all_probs": all_our_bert_probs[:, 2].tolist()}
+                    }
         }
-        for m in dnn_model_list:
-            m.cpu()
-        del dnn_model_list
-        torch.cuda.empty_cache()
+        # for m in dnn_model_list:
+        #     m.cpu()
+        # del dnn_model_list
+        # torch.cuda.empty_cache()
         
     elif mode == "mode3":
         lawformer_model_list = [lawformer_switch_0_model, lawformer_switch_5_model, lawformer_switch_10_model, lawformer_switch_15_model]
-        prob_lawformer, std_lawformer, (min_lawformer, q1_lawformer, q2_lawformer, q3_lawformer, max_lawformer) = get_predict(data=data, model_list=lawformer_model_list, type="bert-based", device=device)
+        prob_lawformer, std_lawformer, (min_lawformer, q1_lawformer, q2_lawformer, q3_lawformer, max_lawformer), all_lawformer_probs = get_predict(data=data, model_list=lawformer_model_list, type="bert-based", device=device)
 
         result = {
         'C1': {
-            'Applicant': {'avg_prob': prob_lawformer[0]*100, 'std': std_lawformer[0], 'min': min_lawformer[0], "q1": q1_lawformer[0], "q2": q2_lawformer[0], "q3": q3_lawformer[0], "max": max_lawformer[0]}, \
-            'Respondent': {'avg_prob': prob_lawformer[1]*100, 'std': std_lawformer[1], 'min': min_lawformer[1], "q1": q1_lawformer[1], "q2": q2_lawformer[1], "q3": q3_lawformer[1], "max": max_lawformer[1]}, \
-            'Both': {'avg_prob': prob_lawformer[2]*100, 'std': std_lawformer[2], 'min': min_lawformer[2], "q1": q1_lawformer[2], "q2": q2_lawformer[2], "q3": q3_lawformer[2], "max": max_lawformer[2]}
+            'Applicant': {'avg_prob': prob_lawformer[0]*100, 'std': std_lawformer[0], 'min': min_lawformer[0], "q1": q1_lawformer[0], "q2": q2_lawformer[0], "q3": q3_lawformer[0], "max": max_lawformer[0], "all_probs": all_lawformer_probs[:, 0]}, \
+            'Respondent': {'avg_prob': prob_lawformer[1]*100, 'std': std_lawformer[1], 'min': min_lawformer[1], "q1": q1_lawformer[1], "q2": q2_lawformer[1], "q3": q3_lawformer[1], "max": max_lawformer[1], "all_probs": all_lawformer_probs[:, 1]}, \
+            'Both': {'avg_prob': prob_lawformer[2]*100, 'std': std_lawformer[2], 'min': min_lawformer[2], "q1": q1_lawformer[2], "q2": q2_lawformer[2], "q3": q3_lawformer[2], "max": max_lawformer[2], "all_probs": all_lawformer_probs[:, 2]}
         },
         'C2': {
-                'Applicant': {'avg_prob': prob_our_bert[0]*100, 'std': std_our_bert[0], 'min': min_our_bert[0], "q1": q1_our_bert[0], "q2": q2_our_bert[0], "q3": q3_our_bert[0], "max": max_our_bert[0]},  \
-                'Respondent': {'avg_prob': prob_our_bert[1]*100, 'std': std_our_bert[1], 'min': min_our_bert[1], "q1": q1_our_bert[1], "q2": q2_our_bert[1], "q3": q3_our_bert[1], "max": max_our_bert[1]}, \
-                'Both': {'avg_prob': prob_our_bert[2]*100, 'std': std_our_bert[2], 'min': min_our_bert[2], "q1": q1_our_bert[2], "q2": q2_our_bert[2], "q3": q3_our_bert[2], "max": max_our_bert[2]}
-            }
+                    'Applicant': {'avg_prob': prob_our_bert[0]*100, 'std': std_our_bert[0], 'min': min_our_bert[0], "q1": q1_our_bert[0], "q2": q2_our_bert[0], "q3": q3_our_bert[0], "max": max_our_bert[0], "all_probs": all_our_bert_probs[:, 0]},  \
+                    'Respondent': {'avg_prob': prob_our_bert[1]*100, 'std': std_our_bert[1], 'min': min_our_bert[1], "q1": q1_our_bert[1], "q2": q2_our_bert[1], "q3": q3_our_bert[1], "max": max_our_bert[1], "all_probs": all_our_bert_probs[:, 1]}, \
+                    'Both': {'avg_prob': prob_our_bert[2]*100, 'std': std_our_bert[2], 'min': min_our_bert[2], "q1": q1_our_bert[2], "q2": q2_our_bert[2], "q3": q3_our_bert[2], "max": max_our_bert[2], "all_probs": all_our_bert_probs[:, 2]}
+                    }
         }
-        for m in lawformer_model_list:
-            m.cpu()
-        del lawformer_model_list
-        torch.cuda.empty_cache()
+        # for m in lawformer_model_list:
+        #     m.cpu()
+        # del lawformer_model_list
+        # torch.cuda.empty_cache()
     else:
         print(f'>>>>Error: Not exist mode: {mode}')
 
     # 清除 CUDA 的冗余 MEM
-    for m in our_model_list:
-        m.cpu()
-    del our_model_list
-    torch.cuda.empty_cache()
+    # for m in our_model_list:
+    #     m.cpu()
+    # del our_model_list
+    # torch.cuda.empty_cache()
         
     return jsonify(result)
 
