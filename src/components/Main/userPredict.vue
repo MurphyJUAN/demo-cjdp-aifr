@@ -393,7 +393,6 @@ export default {
   font-weight: bold
 }
 .predictResult {
-  width: 65%;
-  margin: 0 25% 0 15%;
+  width: 100%;
 }
 </style>

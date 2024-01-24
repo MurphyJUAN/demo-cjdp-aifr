@@ -2,24 +2,33 @@
 <template>
   <div id="predict-result" class="text-center">
     <div style="z-index: 100" class="w-100">
-      <div class="p-10 justify-content-center mt-4 mx-20" style="z-index: 100">
-        <el-row :gutter="10">
-          <el-col :offset="6" :span="6">父親贏得親權的機率(%)</el-col>
-          <el-col :span="6">雙方共享親權的機率(%)*</el-col>
-          <el-col :span="6">母親贏得親權的機率(%)</el-col>
-        </el-row>
-        <el-row v-for="model in modelUsed[$route.params.mode]" :key="model" :gutter="10">
-          <el-col :span="6">AI模型-{{ model }}</el-col>
-          <div v-if="predict_result[model]">
-            <el-col :span="6">{{Math.round(predict_result[model]['Applicant']['avg_prob']*100) / 100}} ±{{ predict_result[model]['Applicant']['std'] }}</el-col>
-            <el-col :span="6">{{Math.round(predict_result[model]['Both']['avg_prob']*100) / 100}} ±{{ predict_result[model]['Both']['std'] }}</el-col>
-            <el-col :span="6">{{Math.round(predict_result[model]['Respondent']['avg_prob']*100) / 100}} ±{{ predict_result[model]['Respondent']['std'] }}</el-col>
+      <el-row justify="space-around align-center" type="flex" class="w-100">
+        <el-col class="justify-content-center mt-4" :span="10">
+          <BoxPlot :predict_result="predict_result" :model_used="modelUsed[$route.params.mode]"></BoxPlot>
+        </el-col>
+        <el-col :span="14">
+          <div class="p-10 justify-content-center mt-4 mx-20" style="z-index: 100">
+            <el-row :gutter="10">
+              <el-col :offset="6" :span="6">父親贏得親權的機率(%)</el-col>
+              <el-col :span="6">雙方共享親權的機率(%)*</el-col>
+              <el-col :span="6">母親贏得親權的機率(%)</el-col>
+            </el-row>
+            <el-row v-for="model in modelUsed[$route.params.mode]" :key="model" :gutter="10">
+              <el-col :span="6">AI模型-{{ model }}</el-col>
+              <div v-if="predict_result[model]">
+                <el-col :span="6">{{Math.round(predict_result[model]['Applicant']['avg_prob']*100) / 100}} ±{{ predict_result[model]['Applicant']['std'] }}</el-col>
+                <el-col :span="6">{{Math.round(predict_result[model]['Both']['avg_prob']*100) / 100}} ±{{ predict_result[model]['Both']['std'] }}</el-col>
+                <el-col :span="6">{{Math.round(predict_result[model]['Respondent']['avg_prob']*100) / 100}} ±{{ predict_result[model]['Respondent']['std'] }}</el-col>
+              </div>
+            </el-row>
+            <el-row class="p-10 justify-content-center text-center mt-4 mx-20">
+              (*) 可參考<a href="/techDoc">「技術說明</a>」中的「五、模型限制(以判給雙方的情形為例)」
+            </el-row>
           </div>
-        </el-row>
-        <el-row class="p-10 justify-content-center text-center mt-4 mx-20">
-          (*) 可參考<a href="/techDoc">「技術說明</a>」中的「五、模型限制(以判給雙方的情形為例)」
-        </el-row>
-      </div>
+        </el-col>
+
+      </el-row>
+
       <!-- <div v-if="isLoading">Calculating... {{elapsedTime}} seconds have elapsed.</div> -->
       <div v-if="errorPrompt">{{errorCode}}</div>
     </div>
@@ -28,10 +37,12 @@
 
 <script>
 import RadialProgressBar from 'vue-radial-progress';
+import BoxPlot from '../Sub/boxPlot';
 
 export default {
   components: {
     RadialProgressBar,
+    BoxPlot,
   },
   name: 'PredictResult',
   data() {
