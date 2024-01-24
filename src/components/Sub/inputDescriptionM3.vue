@@ -4,14 +4,18 @@
       <el-col :span="6">
         <div v-if="warnState.feature" class="warn-text">*因素不得為空</div>
         <el-tooltip class="item" effect="dark" :content="getFeatureDesc(result.feature)" placement="top-start">
-          <div class="feature-name">{{ result.feature }}<i class="el-icon-question"></i></div>
+          <div class="feature-name">{{ result.feature }}
+            <!-- <i class="el-icon-question"></i> -->
+          </div>
         </el-tooltip>
         <el-dialog title="新增因素與理由" :visible.sync="dialogState" width="85%">
           <el-row :gutter="20">
             <el-col :lg="8" :sm="12" :xs="24" v-for="feature in features" :key="feature.value">
               <div class='statement-card' @click="addInput({feature: feature.value, sentence: sentencesExample[configKey.type][feature.value]?sentencesExample[configKey.type][feature.value]:'' })">
                 <el-tooltip class="item" effect="dark" :content="feature.desc" placement="top-start">
-                  <div class="feature-name orange-text">{{ feature.value }}<i class="el-icon-question"></i></div>
+                  <div class="feature-name orange-text">{{ feature.value }}
+                    <i class="el-icon-question"></i>
+                  </div>
                 </el-tooltip>
                 <div class="tiny-title">理由範例文字</div>
                 <div class="example-text">{{ sentencesExample[configKey.type][feature.value]?sentencesExample[configKey.type][feature.value]:'' }}</div>
@@ -19,7 +23,7 @@
             </el-col>
           </el-row>
         </el-dialog>
-        <el-button type="primary" icon="el-icon-edit" size="mini" @click="dialogState=true">選擇因素與理由範例</el-button>
+        <el-button type="primary" icon="el-icon-edit" size="mini" @click="dialogState=true">選擇因素與<br>理由範例</el-button>
       </el-col>
       <el-col :span="18">
         <div v-if="warnState.sentence" class="warn-text">*理由不得為空</div>
@@ -62,13 +66,13 @@ export default {
           支持系統: '當事人的家人皆為友善之親屬，可以在有需要的時候協助照顧孩子的生活起居。',
           父母生活: '當事人住家空間足夠安排孩子自己的房間，而住家距離學區及鬧區約5分鐘車程可及，生活機能便利，應適宜孩子居住。',
           主要照顧: '孩子自幼即與當事人同住，由當事人擔任其主要生活照顧者，目前生活平順，應減少不必要的變動。',
-          子女年齡: '範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字',
-          人格發展: '範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字',
-          父母健康: '範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字',
-          父母職業: '範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字',
-          子女意願: '範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字',
-          友善父母: '範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字',
-          父母品行: '範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字',
+          子女年齡: '孩子尚屬年幼，應極需有細心關照之需要，較適合由當事人長期照顧。',
+          人格發展: '孩子年齡已漸入青春期階段，開始發展形塑自己之人格與想法，在人格發展上亟需家人關心與引導，由當事人擔任親權人更為適切。',
+          父母健康: '當事人健康狀況良好正常，無重大傷病，可親自負擔孩子之生活照顧。',
+          父母職業: '當事人有穩定工作與收入來源，亦可於工作時間外照顧未成年子女。',
+          子女意願: '孩子年齡已達青少年階段，可清楚表達自己的意思，希望能與當事人同住。',
+          友善父母: '當事人願意讓對方繼續探望孩子，維繫親子關係，對孩子的成長較為有利。',
+          父母品行: '當事人的品性與素行並無不當紀錄。',
         },
         D: {
           親子感情: '孩子對當事人平日的言行感到不舒服，單獨與之相處有疏離或緊張的關係。',
@@ -77,13 +81,13 @@ export default {
           支持系統: '孩子與當事人的同居者原生家庭關係不佳，若獨自養育恐無法有足夠的支持系統協助。',
           父母生活: '當事人的居住地點附近環境複雜，且屋內並無孩子獨立的失活空間，居家環境不太適合孩子成長。',
           主要照顧: '當事人目前並非與孩子同住，或者並非孩子生活的主要照顧者，對其個性、生活所需上了解可能不足。',
-          子女年齡: '範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字',
-          人格發展: '範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字',
-          父母健康: '範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字',
-          父母職業: '範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字',
-          子女意願: '範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字',
-          友善父母: '範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字',
-          父母品行: '範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字範例文字',
+          子女年齡: '孩子尚屬年幼，需要更多細心關照，恐不利當事人長期照顧。',
+          人格發展: '孩子年齡已漸入青春期階段，開始發展形塑自己之人格與想法，在人格發展上亟需家人關心與引導，當事人顯然較缺乏合適之溝通技巧，較不利於親職輔導。',
+          父母健康: '當事人近年有重大傷病，對負擔孩子之生活照顧恐有疑慮。',
+          父母職業: '當事人雖有穩定工作，但常常需要加班或外地出差，對於照顧未成年子女恐有不足之處。',
+          子女意願: '孩子年齡已達青少年階段，可清楚表達自己的意思，較不願意與當事人同住。',
+          友善父母: '當事人曾將孩子帶回後，不願孩子與對方會面交往，對孩子的成長確有不利之處。',
+          父母品行: '當事人曾有不當管教行為，且因涉傷害罪而素行不良，恐影響孩子之健全人格與品行發展。',
         },
       },
     };
