@@ -35,9 +35,13 @@ export default {
         type: 'violin',
         x: data.map(row => row.label),
         y: data.map(row => row.probability),
-        points: 'none',
+        points: 'all',
+        pointpos: 0, // 將資料點放在中心
+        marker: {
+          size: 3, // Change the size as needed
+        },
         box: {
-          visible: true,
+          visible: false,
         },
         line: {
           color: 'green',
@@ -52,12 +56,30 @@ export default {
           type: 'groupby',
           groups: data.map(row => row.label),
           styles: [
-            { target: '聲請方(Plaintiff)', value: { line: { color: 'blue' } } },
+            { target: '聲請方(Plaintiff)', value: { line: { color: '#FEBEDF' } } },
             { target: '雙方(Both)', value: { line: { color: 'orange' } } },
-            { target: '相對方(Defendant)', value: { line: { color: 'green' } } },
+            { target: '相對方(Defendant)', value: { line: { color: '#BEDFFF' } } },
           ],
         }],
-      }];
+      },
+        // New trace for mean values
+      {
+        type: 'scatter',
+        mode: 'markers',
+        x: ['聲請方(Plaintiff)', '雙方(Both)', '相對方(Defendant)'],
+        y: [
+          this.predict_result.avg_prob.plaintiff,
+          this.predict_result.avg_prob.both,
+          this.predict_result.avg_prob.defendant,
+        ],
+        name: 'Mean',
+        marker: {
+          size: 5, // Adjust the size for the mean point
+          color: '#DE063E', // Choose a color to distinguish mean points
+          symbol: 'diamond',
+        },
+      },
+      ];
       const plotLayout = {
         title: {
           text: 'Model-Predicted Probability Distributions <br> of Custody Verdict Outcomes',

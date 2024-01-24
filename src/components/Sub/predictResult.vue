@@ -3,10 +3,11 @@
   <div id="predict-result" class="text-center">
     <div style="z-index: 100" class="w-100">
       <el-row justify="space-around align-center" type="flex" class="w-100">
-        <el-col class="justify-content-center mt-4" :span="10">
-          <BoxPlot :predict_result="predict_result" :model_used="modelUsed[$route.params.mode]"></BoxPlot>
+        <el-col class="justify-content-center mt-4" :span="12" v-for="model in modelUsed[$route.params.mode]" :key="model">
+          <!-- <OnlyViolinPlot :predict_result="predict_result" :model_used="model"></OnlyViolinPlot> -->
+          <violinPlotMain :predict_result="predict_result" :model_used="model"></violinPlotMain>
         </el-col>
-        <el-col :span="14">
+        <!-- <el-col :span="14">
           <div class="p-10 justify-content-center mt-4 mx-20" style="z-index: 100">
             <el-row :gutter="10">
               <el-col :offset="6" :span="6">父親贏得親權的機率(%)</el-col>
@@ -21,12 +22,14 @@
                 <el-col :span="6">{{Math.round(predict_result[model]['Respondent']['avg_prob']*100) / 100}} ±{{ predict_result[model]['Respondent']['std'] }}</el-col>
               </div>
             </el-row>
-            <el-row class="p-10 justify-content-center text-center mt-4 mx-20">
-              (*) 可參考<a href="/techDoc">「技術說明</a>」中的「五、模型限制(以判給雙方的情形為例)」
-            </el-row>
-          </div>
-        </el-col>
 
+          </div>
+        </el-col> -->
+
+      </el-row>
+      <el-row class="p-10 justify-content-center text-center mt-4 mx-20">
+        <div>為了避免使用者過度解讀AI預測的結果，本系統以小提琴圖(Violin Plot)來呈現親權判決預測結果，展示多達100組AI預測結果的機率分布狀態。點數越密集的區域代表越有可能的機率值，小提琴圖也越寬，反之亦然。</div>
+        <div>雙方共享親權的結果在不同模型可能差異較大，(*) 可參考<a href="/techDoc">「技術說明</a>」中的「五、模型限制(以判給雙方的情形為例)</div>
       </el-row>
 
       <!-- <div v-if="isLoading">Calculating... {{elapsedTime}} seconds have elapsed.</div> -->
@@ -37,12 +40,13 @@
 
 <script>
 import RadialProgressBar from 'vue-radial-progress';
-import BoxPlot from '../Sub/boxPlot';
+// import BoxPlot from '../Sub/boxPlot';
+import violinPlotMain from './violinPlotMain.vue';
 
 export default {
   components: {
     RadialProgressBar,
-    BoxPlot,
+    violinPlotMain,
   },
   name: 'PredictResult',
   data() {
