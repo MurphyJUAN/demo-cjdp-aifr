@@ -1,6 +1,6 @@
 <template>
     <div>
-      <Plotly :data="plotData" :layout="plotLayout"/>
+      <Plotly :data="plotData" :layout="plotLayout" :display-mode-bar="false"></Plotly>
     </div>
   </template>
 

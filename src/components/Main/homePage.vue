@@ -5,7 +5,7 @@
     <UserGuide :guide="mainIntro" :isHome="true"></UserGuide>
     <div class="btn-content bg-white">
       <el-row :gutter="10" justify="space-around">
-        <el-col :span="8">
+        <el-col :span="8" :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
           <router-link to="userPredict/mode1">
             <div class="grid-content bg-orange">
               <strong>輸入模式一(選項勾選)</strong>
@@ -15,7 +15,7 @@
             </div>
           </router-link>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="8" :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
           <router-link to="userPredict/mode2">
             <div class="grid-content bg-green">
               <strong>輸入模式二(文字描述)</strong>
@@ -25,7 +25,7 @@
             </div>
           </router-link>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="8" :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
           <router-link to="userPredict/mode3">
             <div class="grid-content bg-pink">
               <strong>輸入模式三(選項勾選+文字描述)</strong>
