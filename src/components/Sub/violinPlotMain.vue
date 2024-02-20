@@ -1,6 +1,6 @@
 <template>
     <div>
-      <Plotly :data="plotData" :layout="plotLayout"/>
+      <Plotly :data="plotData" :layout="plotLayout" :display-mode-bar="false"></Plotly>
     </div>
   </template>
 
@@ -113,7 +113,18 @@ export default {
         },
       },
       ];
+      let left = 0;
+      let right = 0;
+      if (window.innerWidth <= 768) { // 假设768px为小屏幕与大屏幕的分界点
+        left = 0;
+        right = 0;
+      } else {
+      // 大屏幕时的左右边距设置
+        left = 50;
+        right = 50;
+      }
       const plotLayout = {
+        responsive: true,
         title: {
           text: `${this.model_used}模型的預測機率之分佈圖`,
           y: 0.95,
@@ -124,8 +135,8 @@ export default {
         showlegend: false, // This will hide the legend
         margin: {
           t: 30, // top margin
-        //   l: 50, // left margin
-        //   r: 50, // right margin
+          l: left, // left margin
+          r: right, // right margin
         //   b: 50, // bottom margin
         //   autoexpand: false,
         },
@@ -136,7 +147,7 @@ export default {
           {
             x: '判給父親',
             y: -0.1, // now this is relative to the plot area
-            text: `<b>平均值: ${this.roundToTwo(this.predict_result[this.model_used].Applicant.avg_prob)}%<br>標準差: ${this.predict_result[this.model_used].Applicant.std}%</b>`,
+            text: `<b>${this.roundToTwo(this.predict_result[this.model_used].Applicant.avg_prob)}±${this.predict_result[this.model_used].Applicant.std}(%)</b>`,
             showarrow: false,
             font: {
               size: 12,
@@ -147,7 +158,7 @@ export default {
           {
             x: '判給雙方*',
             y: -0.1, // now this is relative to the plot area
-            text: `<b>平均值: ${this.roundToTwo(this.predict_result[this.model_used].Both.avg_prob)}%<br>標準差: ${this.predict_result[this.model_used].Both.std}%</b>`,
+            text: `<b>${this.roundToTwo(this.predict_result[this.model_used].Both.avg_prob)}±${this.predict_result[this.model_used].Both.std}(%)</b>`,
             showarrow: false,
             font: {
               size: 12,
@@ -158,7 +169,7 @@ export default {
           {
             x: '判給母親',
             y: -0.1, // now this is relative to the plot area
-            text: `<b>平均值: ${this.roundToTwo(this.predict_result[this.model_used].Respondent.avg_prob)}%<br>標準差: ${this.predict_result[this.model_used].Respondent.std}%</b>`,
+            text: `<b>${this.roundToTwo(this.predict_result[this.model_used].Respondent.avg_prob)}±${this.predict_result[this.model_used].Respondent.std}(%)</b>`,
             showarrow: false,
             font: {
               size: 12,

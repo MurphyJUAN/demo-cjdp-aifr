@@ -344,8 +344,16 @@ export default {
     background-color: #fff;
     border: 2px solid #F3BB5C;
     border-radius: 8px;
-    padding: 35px 40px;
-    margin: 50px 0;
+    margin: 10px;
+    padding: 0; /* 小屏幕上没有padding */
+}
+
+/* 媒体查询（大屏幕） */
+@media (min-width: 768px) { /* 768px 通常用于区分小屏幕和中等以上屏幕 */
+    .predict-container {
+        padding: 35px 40px; /* 大屏幕上增加padding */
+        margin: 50px;
+    }
 }
 .ins-1 {
     font-size: 1.2rem;

@@ -3,10 +3,10 @@
     <footer class="footer">
       <div class="footer-inner">
         <div class="row align-items-center">
-            <div class="col-6 mb-2">
+            <div class="col-md-6 col-12 mb-2">
               聯絡我們：custodyprediction@gmail.com
             </div>
-            <div class="col-6">
+            <div class="col-md-6 col-12 mb-2">
               <div class="row align-items-center">
                 <div class="mx-2">
                   <div class="footer-link"><a href="http://www.phys.nthu.edu.tw/~aicmt/index.html" target="_blank">清華大學AIFR研究群</a></div>

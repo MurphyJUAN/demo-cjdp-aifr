@@ -76,11 +76,20 @@ body {
   background-color: #fff;
 }
 .page-container {
-  width: calc( 90% - 40px );
-  max-width: 1680px;
-  margin: 0px auto 50px auto;
-  min-height: calc(100vh - 305px);
+    max-width: 1680px;
+    min-height: calc(100vh - 305px);
 }
+
+/* 媒体查询（大屏幕） */
+@media (min-width: 768px) { /* 例如，使用 768px 作为小屏幕和大屏幕的分界点 */
+    .page-container {
+        width: calc(90% - 40px);
+        margin: 0px auto 50px auto;
+        max-width: 1680px;
+        min-height: calc(100vh - 305px);
+    }
+}
+
 .Home-title {
   font-size: 2rem;
   font-weight: 700;

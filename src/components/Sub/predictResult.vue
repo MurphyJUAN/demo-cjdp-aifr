@@ -2,8 +2,9 @@
 <template>
   <div id="predict-result" class="text-center">
     <div style="z-index: 100" class="w-100">
-      <el-row justify="space-around align-center" type="flex" class="w-100">
-        <el-col class="justify-content-center mt-4" :span="12" v-for="model in modelUsed[$route.params.mode]" :key="model">
+
+      <el-row>
+        <el-col class="justify-content-center mt-4" :span="24" :xs="24" :sm="24" :md="12" :lg="12" :xl="12" v-for="model in modelUsed[$route.params.mode]" :key="model">
           <!-- <OnlyViolinPlot :predict_result="predict_result" :model_used="model"></OnlyViolinPlot> -->
           <violinPlotMain :predict_result="predict_result" :model_used="model"></violinPlotMain>
         </el-col>
