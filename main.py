@@ -593,14 +593,14 @@ def predict():
 
         result = {
         'C1': {
-            'Applicant': {'avg_prob': prob_lawformer[0]*100, 'std': std_lawformer[0], 'min': min_lawformer[0], "q1": q1_lawformer[0], "q2": q2_lawformer[0], "q3": q3_lawformer[0], "max": max_lawformer[0], "all_probs": all_lawformer_probs[:, 0]}, \
-            'Respondent': {'avg_prob': prob_lawformer[1]*100, 'std': std_lawformer[1], 'min': min_lawformer[1], "q1": q1_lawformer[1], "q2": q2_lawformer[1], "q3": q3_lawformer[1], "max": max_lawformer[1], "all_probs": all_lawformer_probs[:, 1]}, \
-            'Both': {'avg_prob': prob_lawformer[2]*100, 'std': std_lawformer[2], 'min': min_lawformer[2], "q1": q1_lawformer[2], "q2": q2_lawformer[2], "q3": q3_lawformer[2], "max": max_lawformer[2], "all_probs": all_lawformer_probs[:, 2]}
+            'Applicant': {'avg_prob': prob_lawformer[0]*100, 'std': std_lawformer[0], 'min': min_lawformer[0], "q1": q1_lawformer[0], "q2": q2_lawformer[0], "q3": q3_lawformer[0], "max": max_lawformer[0], "all_probs": all_lawformer_probs[:, 0].tolist()}, \
+            'Respondent': {'avg_prob': prob_lawformer[1]*100, 'std': std_lawformer[1], 'min': min_lawformer[1], "q1": q1_lawformer[1], "q2": q2_lawformer[1], "q3": q3_lawformer[1], "max": max_lawformer[1], "all_probs": all_lawformer_probs[:, 1].tolist()}, \
+            'Both': {'avg_prob': prob_lawformer[2]*100, 'std': std_lawformer[2], 'min': min_lawformer[2], "q1": q1_lawformer[2], "q2": q2_lawformer[2], "q3": q3_lawformer[2], "max": max_lawformer[2], "all_probs": all_lawformer_probs[:, 2].tolist()}
         },
         'C2': {
-                    'Applicant': {'avg_prob': prob_our_bert[0]*100, 'std': std_our_bert[0], 'min': min_our_bert[0], "q1": q1_our_bert[0], "q2": q2_our_bert[0], "q3": q3_our_bert[0], "max": max_our_bert[0], "all_probs": all_our_bert_probs[:, 0]},  \
-                    'Respondent': {'avg_prob': prob_our_bert[1]*100, 'std': std_our_bert[1], 'min': min_our_bert[1], "q1": q1_our_bert[1], "q2": q2_our_bert[1], "q3": q3_our_bert[1], "max": max_our_bert[1], "all_probs": all_our_bert_probs[:, 1]}, \
-                    'Both': {'avg_prob': prob_our_bert[2]*100, 'std': std_our_bert[2], 'min': min_our_bert[2], "q1": q1_our_bert[2], "q2": q2_our_bert[2], "q3": q3_our_bert[2], "max": max_our_bert[2], "all_probs": all_our_bert_probs[:, 2]}
+                    'Applicant': {'avg_prob': prob_our_bert[0]*100, 'std': std_our_bert[0], 'min': min_our_bert[0], "q1": q1_our_bert[0], "q2": q2_our_bert[0], "q3": q3_our_bert[0], "max": max_our_bert[0], "all_probs": all_our_bert_probs[:, 0].tolist()},  \
+                    'Respondent': {'avg_prob': prob_our_bert[1]*100, 'std': std_our_bert[1], 'min': min_our_bert[1], "q1": q1_our_bert[1], "q2": q2_our_bert[1], "q3": q3_our_bert[1], "max": max_our_bert[1], "all_probs": all_our_bert_probs[:, 1].tolist()}, \
+                    'Both': {'avg_prob': prob_our_bert[2]*100, 'std': std_our_bert[2], 'min': min_our_bert[2], "q1": q1_our_bert[2], "q2": q2_our_bert[2], "q3": q3_our_bert[2], "max": max_our_bert[2], "all_probs": all_our_bert_probs[:, 2].tolist()}
                     }
         }
         # for m in lawformer_model_list:
