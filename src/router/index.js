@@ -74,6 +74,10 @@ export default new Router({
         { path: ':mode', component: UserInputGroup },
       ],
     },
+    {
+      path: '/:pathMatch(.*)*',
+      redirect: '/index',
+    },
   ],
   scrollBehavior() {
     return { x: 0, y: 0 };
