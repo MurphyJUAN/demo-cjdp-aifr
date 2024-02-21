@@ -7,7 +7,7 @@
       </router-link>
       <div class="head-divider"></div>
     </div>
-    <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" :router="true" text-color="#000" active-text-color="#F3BB5C">
+    <el-menu :default-active="$route.path" class="el-menu-demo" mode="horizontal" :router="true" text-color="#000" active-text-color="#F3BB5C">
       <!-- <el-menu-item index="0">LOGO</el-menu-item>
       <div class="flex-grow" /> -->
       <el-menu-item index="/">首頁</el-menu-item>
