@@ -24,8 +24,8 @@
                 <input-description-m3
                   :configKey="config"
                   :rowIdx="rowIdx"
-                  @featureUpdate="updateFeature" 
-                  @descriptionUpdate="updateDescription" 
+                  @featureUpdate="updateFeature"
+                  @descriptionUpdate="updateDescription"
                   v-on="$listeners"
                   ref="inputForm">
                 </input-description-m3>
@@ -58,23 +58,14 @@ export default {
   components: {
     'select-features': selectFeatures,
     'input-description-m2': inputDescriptionM2,
-    'input-description-m3': inputDescriptionM3
+    'input-description-m3': inputDescriptionM3,
   },
   props: {
-    prePredict: Boolean
+    prePredict: Boolean,
   },
   data() {
     return {
-      resultConfig: [
-        [
-          { title: '父親有利', type: 'A', key: 'AA'},
-          { title: '父親不利', type: 'D', key: 'AD'},
-        ],
-        [
-          { title: '母親有利', type: 'A', key: 'RA'},
-          { title: '母親不利', type: 'D', key: 'RD'},
-        ]
-      ],
+      resultConfig: [],
       result: {
         data: {
           AA: [{ Sentence: '', Feature: [] }],
@@ -82,77 +73,97 @@ export default {
           RA: [{ Sentence: '', Feature: [] }],
           RD: [{ Sentence: '', Feature: [] }],
         },
-      }
+      },
     };
   },
   watch: {
     result: {
       handler(val) {
-        this.$emit('resultUpdate', val)
+        this.$emit('resultUpdate', val);
       },
       deep: true,
     },
     '$route.params.mode': {
-      handler: function(mode) {
-        delete this.result.data
+      handler(mode) {
+        delete this.result.data;
         if (mode == 'mode3') {
-          delete this.result.data
-          this.result =  {
+          delete this.result.data;
+          this.result = {
             data: {
               AA: [],
               AD: [],
               RA: [],
               RD: [],
             },
-          }
-        }
-        else {
-          this.$emit('updatePrePredict', true)
-          this.result =  {
+          };
+        } else {
+          this.$emit('updatePrePredict', true);
+          this.result = {
             data: {
               AA: [{ Sentence: '', Feature: [] }],
               AD: [{ Sentence: '', Feature: [] }],
               RA: [{ Sentence: '', Feature: [] }],
               RD: [{ Sentence: '', Feature: [] }],
             },
-          }
+          };
         }
       },
       deep: true,
-      immediate: true
-    }
+      immediate: true,
+    },
   },
   methods: {
+    checkScreenSize() {
+      // 這裡的 768px 是一個示例斷點，您可以根據需要調整
+      const bigScreenResultConfig = [
+        [
+          { title: '父親有利', type: 'A', key: 'AA' },
+          { title: '父親不利', type: 'D', key: 'AD' },
+        ],
+        [
+          { title: '母親有利', type: 'A', key: 'RA' },
+          { title: '母親不利', type: 'D', key: 'RD' },
+        ]];
+      const smallScreenResultConfig = [
+        [
+          { title: '父親有利', type: 'A', key: 'AA' },
+          { title: '母親有利', type: 'A', key: 'RA' },
+        ],
+        [
+          { title: '父親不利', type: 'D', key: 'AD' },
+          { title: '母親不利', type: 'D', key: 'RD' },
+        ]];
+      this.resultConfig = window.innerWidth > 768 ? bigScreenResultConfig : smallScreenResultConfig;
+    },
     deleteInputRow(key, rowIdx) {
-      let resultAry = JSON.parse(JSON.stringify(this.result.data[key]))
+      const resultAry = JSON.parse(JSON.stringify(this.result.data[key]));
       if (rowIdx > -1) {
-        resultAry.splice(rowIdx, 1)
+        resultAry.splice(rowIdx, 1);
       }
       this.$set(this.result.data, key, resultAry);
-      console.log(rowIdx, this.result.data)
+      console.log(rowIdx, this.result.data);
     },
     addInputRow(key) {
-      this.result.data[key].push({ Sentence: '', Feature: [] })
+      this.result.data[key].push({ Sentence: '', Feature: [] });
     },
     updateFeature(val) {
-      console.log('updateFeature', val)
+      console.log('updateFeature', val);
       if (typeof val.value === 'object' && val.value !== null) {
-        let features = []
-        for(let i=0;i<val.value.length;i++) {
-          features.push(val.value[i].label)
+        const features = [];
+        for (let i = 0; i<val.value.length; i++) {
+          features.push(val.value[i].label);
         }
-        this.result.data[val.key][0].Feature = features
-      }
-      else {
-        this.result.data[val.key][val.rowIdx].Feature = [val.value]
+        this.result.data[val.key][0].Feature = features;
+      } else {
+        this.result.data[val.key][val.rowIdx].Feature = [val.value];
       }
     },
     updateDescription(val) {
-      console.log('updateDescription', val)
-      this.result.data[val.key][val.rowIdx].Sentence = val.value
+      console.log('updateDescription', val);
+      this.result.data[val.key][val.rowIdx].Sentence = val.value;
     },
     clearAllStatement() {
-      console.log('clearAllStatement')
+      console.log('clearAllStatement');
       this.result.data = {
         AA: [{ Sentence: '', Feature: [] }],
         AD: [{ Sentence: '', Feature: [] }],
@@ -161,15 +172,22 @@ export default {
       };
       if (this.$refs.selectForm) {
         for (let i = 0; i < this.$refs.selectForm.length; i++) {
-          this.$refs.selectForm[i].clearAll()
+          this.$refs.selectForm[i].clearAll();
         }
       }
       if (this.$refs.inputForm) {
         for (let i = 0; i < this.$refs.inputForm.length; i++) {
-          this.$refs.inputForm[i].clearAll()
+          this.$refs.inputForm[i].clearAll();
         }
       }
-    }
+    },
+  },
+  created() {
+    this.checkScreenSize();
+    window.addEventListener('resize', this.checkScreenSize);
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.checkScreenSize);
   },
 };
 </script>
@@ -178,7 +196,7 @@ export default {
 .brown-divider {
   border-right: 1px solid #5A4D30;
 }
-@media screen and (max-width:768px) { 
+@media screen and (max-width:768px) {
   .brown-divider {
     border-right: 0px;
   }

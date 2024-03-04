@@ -73,22 +73,22 @@ a {
 }
 
 .menu-container {
-  overflow-x: scroll;
   white-space: nowrap; /* 防止内容换行 */
   max-width: 100%; /* 限制最大宽度，避免影响布局 */
 }
 
 .el-menu-demo {
   /* width: 1px; */
-  overflow-x: scroll;
   margin: 0px;
   padding: 0px;
 }
 .el-menu {
+  overflow: hidden;
   justify-content: center;
 }
 @media (max-width: 768px) {
   .el-menu {
+    overflow-x: scroll;
     justify-content: flex-start;
   }
 }
