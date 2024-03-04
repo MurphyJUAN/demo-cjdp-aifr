@@ -125,6 +125,9 @@ export default {
       }
       const plotLayout = {
         responsive: true,
+        dragmode: false, // 禁用拖動模式
+        xaxis: { fixedrange: true }, // 禁用 x 軸縮放
+        yaxis: { fixedrange: true }, // 禁用 y 軸縮放
         title: {
           text: `${this.model_used}模型的預測機率之分佈圖`,
           y: 0.95,
