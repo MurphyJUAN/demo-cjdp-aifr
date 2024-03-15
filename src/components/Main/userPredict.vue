@@ -15,6 +15,20 @@
         <el-col :span="12">
           <div class="predict-btn" style="background-color:#F3BB5C" @click="startPredict()">申請預測</div>
         </el-col>
+        <el-col :span="24" class="justify-content-center d-flex mt-2" v-if="showButton">
+          <div class="random-btn" @click="getTestCase()">
+            <img class="shuffle-icon mr-2" src="../../../static/shuffle.png" />
+            <span>隨機挑選案例</span>
+          </div>
+        </el-col>
+        <el-col v-if="showButton" class="justify-content-center text-align-center">
+          <p>Label:{{ ground_truth }}</p>
+          <p>ID: {{ ID }}</p>
+          <p>AA: {{ result.data.AA }}</p>
+          <p>AD: {{ result.data.AD }}</p>
+          <p>RA: {{ result.data.RA }}</p>
+          <p>RD: {{ result.data.RD }}</p>
+        </el-col>
         <el-col :span="24">
           <PredictResult
             v-if="isStartPredict"
@@ -43,6 +57,9 @@ export default {
   },
   data() {
     return {
+      showButton: false,
+      ID: '',
+      ground_truth: '',
       predict_result: { Applicant: 0, Respondent: 0, Both: 0 },
       elapsedTime: 0,
       maxResult: 0,
@@ -182,6 +199,23 @@ export default {
     };
   },
   methods: {
+    getTestCase() {
+      axios({
+        method: 'get',
+        // url: `${this.$api}/api/predict`,
+        url: `${this.$api}/api/get-testcase`,
+      }).then((res) => {
+        console.log('res.data:', res.data);
+        // predict_result: { Applicant: 0, Respondent: 0, Both: 0 }
+        this.updateResult({ data: res.data.data });
+        this.ground_truth = res.data.result;
+        this.ID = res.data.ID;
+      });
+    },
+    checkUrl() {
+      // 獲取當前頁面的 URL
+      this.showButton = this.$route.query.test === 'true';
+    },
     updateResult(val) {
       this.result = val;
       console.log('result:', this.result);
@@ -319,6 +353,9 @@ export default {
       // eslint-disable-next-line no-alert
     },
   },
+  created() {
+    this.checkUrl();
+  },
   watch: {
     result: {
       handler(val) {
@@ -403,5 +440,19 @@ export default {
 }
 .predictResult {
   width: 100%;
+}
+.shuffle-icon {
+  width: 1rem;
+}
+.random-btn {
+ cursor: pointer;
+ box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+ padding: 0.5rem;
+ border-radius: 5px;
+ background: rgba(223, 223, 223, 0.555);
+ &:hover {
+    background: rgb(194, 194, 194);
+    color: white;
+  }
 }
 </style>
