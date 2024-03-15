@@ -74,12 +74,11 @@ def get_testcase():
           "RD": [{ "Sentence": random_row['RD_Rationale'].values[0], "Feature": random_row['RD_Factor'].values[0].split(",") }],
         },
     }
-    print(response)
     return jsonify(response)
 
 # %%
 
 if __name__ == "__main__":
-        port = int(os.environ.get("PORT", 8000))
+        port = int(os.environ.get("PORT", 8080))
     #    app.run(host='0.0.0.0', port=port, debug=True, ssl_context=('cert.pem', 'key.pem'))
         app.run(host='0.0.0.0', port=port, debug=True)
