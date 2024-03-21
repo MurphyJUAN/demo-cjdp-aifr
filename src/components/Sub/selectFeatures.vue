@@ -4,7 +4,7 @@
     <multiselect v-model="result" :options="features" :multiple="allowMultiple" :close-on-select="false" :clear-on-select="false" placeholder="請選擇因素" label="label" track-by="value" :searchable="false">
       <template slot="singleLabel" slot-scope="props"><span class="option__desc"><span class="option__title">{{ props.option.label}}</span></span></template>
       <template slot="option" slot-scope="props">
-        <el-tooltip class="item" effect="dark" :content="props.option.desc" placement="top-start">
+        <el-tooltip class="item" effect="dark" :content="props.option.desc" placement="top-end">
           <div class="option__title">{{ props.option.label }}<i class="el-icon-question"></i></div>
         </el-tooltip>
       </template>
