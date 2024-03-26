@@ -13,6 +13,7 @@ import PredictResult from '@/components/Sub/predictResult';
 import ResultFeedback from '@/components/Sub/resultFeedback';
 import TechDoc from '@/components/Main/TechDoc';
 import ContactUs from '@/components/Main/contactUs';
+import ChatBotDemo from '@/components/Main/chatBotDemo';
 
 Vue.use(Router);
 
@@ -73,6 +74,11 @@ export default new Router({
         // { path: '/userPredict/resultFeedback', component: ResultFeedback },
         { path: ':mode', component: UserInputGroup },
       ],
+    },
+    {
+      path: '/chatbot',
+      name: 'ChatBotDemo',
+      component: ChatBotDemo,
     },
     {
       path: '/:pathMatch(.*)*',
