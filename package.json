@@ -20,6 +20,7 @@
     "babel-plugin-syntax-jsx": "^6.18.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-runtime": "^6.26.0",
+    "bootstrap-vue": "^2.23.1",
     "chart.js": "^4.4.1",
     "chartjs-chart-box-and-violin-plot": "^4.0.0",
     "connect-history-api-fallback": "^1.6.0",
@@ -30,7 +31,7 @@
     "http-proxy-middleware": "^2.0.6",
     "http-server": "^14.1.1",
     "plotly.js": "^2.24.2",
-    "vue": "^2.5.2",
+    "vue": "^2.7.16",
     "vue-apexcharts": "^1.6.2",
     "vue-axios": "^2.1.4",
     "vue-chartjs": "^5.3.0",
@@ -40,7 +41,8 @@
     "vue-radial-progress": "^0.3.2",
     "vue-router": "^3.0.1",
     "vue-select": "^3.1.0",
-    "vue-visible": "^1.0.2"
+    "vue-visible": "^1.0.2",
+    "vue2-daterange-picker": "^0.6.8"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
@@ -61,7 +63,7 @@
     "babel-helper-vue-jsx-merge-props": "^2.0.3",
     "babel-loader": "^8.0.0",
     "babel-plugin-transform-vue-jsx": "^3.5.0",
-    "bootstrap": "^4.3.1",
+    "bootstrap": "^4.6.2",
     "chalk": "^2.0.1",
     "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.28.0",

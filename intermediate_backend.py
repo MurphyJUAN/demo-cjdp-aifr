@@ -33,6 +33,32 @@ def random_number():
     }
     return jsonify(response)
 
+@app.route('/api/intermediate-vote-monitor', methods=['POST', 'GET'])
+def forward_get_bote():
+    payload = request.args.to_dict()
+    print('>>>payload:', payload)
+    external_url = 'http://140.114.80.46:5556/api/vote-monitor'
+    response = requests.get(external_url, params=payload)
+    # response = [{
+    # "name": 'Team1',
+    # "data": [
+    #     { "x": '2024-04-04 00:46:18', "y": 974 },
+    #     { "x": '2024-04-04 00:58:49', "y": 975 },
+    #     { "x": '2024-04-04 01:08:50', "y": 983 },
+    #     { "x": '2024-04-04 01:18:51', "y": 992 },
+    # ],
+    #         },
+    #         {
+    #     "name": 'Team2',
+    #     "data": [
+    #         { "x": '2024-04-04 00:46:18', "y": 456 },
+    #         { "x": '2024-04-04 00:58:49', "y": 472 },
+    #         { "x": '2024-04-04 01:08:50', "y": 475 },
+    #         { "x": '2024-04-04 01:18:51', "y": 490 },
+    #     ],
+    #     }]
+    return jsonify(response)
+
 @app.route('/api/intermediate-predict', methods=['POST', 'GET'])
 def forward_predict():
     payload = request.get_json()

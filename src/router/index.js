@@ -14,6 +14,7 @@ import ResultFeedback from '@/components/Sub/resultFeedback';
 import TechDoc from '@/components/Main/TechDoc';
 import ContactUs from '@/components/Main/contactUs';
 import ChatBotDemo from '@/components/Main/chatBotDemo';
+import VoteMonitor from '@/components/Main/voteMonitor';
 
 Vue.use(Router);
 
@@ -46,6 +47,11 @@ export default new Router({
         { path: '/demo-predict/predictResult', component: PredictResult },
         { path: '/demo-predict/resultFeedback', component: ResultFeedback },
       ],
+    },
+    {
+      path: '/voteMonitor',
+      name: 'VoteMonitor',
+      component: VoteMonitor,
     },
     {
       path: '/links',

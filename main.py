@@ -454,7 +454,73 @@ def get_predict(data, model_list, type, device):
         max_values = np.max(all_probs, axis=0).tolist()
     print('>>>>> Predict Result:', prob)
     return prob, [np.round(s*100, decimals=2)  for s in std], ([np.round(v*100, decimals=2) for v in min_values], [np.round(v*100, decimals=2) for v in q1_values], [np.round(v*100, decimals=2) for v in q2_values], [np.round(v*100, decimals=2) for v in q3_values], [np.round(v*100, decimals=2) for v in max_values]), np.array(all_probs)
-    
+# %%
+'''For Vote Monitor'''
+vote_records_dir_path = "/cluster/home/yining_juan/auto_vote/vote_record"
+def get_date(date_str):
+    date_obj = datetime.strptime(date_str, "%Y-%m-%dT%H:%M:%S.%fZ")
+    # 提取月和日，如果是个位数，去掉前导0
+    formatted_month_day = int(date_obj.day)
+    return formatted_month_day
+def collect_data(team_target, date_type, start_date, end_date):
+    # 根據 start 和 end load 檔案
+    loaded_files = []
+    teams = ['Le姊家事商談好夥伴-結合生成式AI與親權判決模型解決親權難題', 'AI 啟動市民力量-喚醒居住環境共好意識', '新聞領域展開 — 多元新聞整合平台', '協助視障者提升情緒判讀能力弭平社交障礙',
+       'SPEAK WITH U 弭平強勢語言帶來的落差: 用生成式AI進行多模態翻譯與方言保存']
+    if date_type == "日":
+        file_name = f"{vote_records_dir_path}/4-{get_date(start_date)}_crawler.csv"
+        if os.path.exists(file_name):
+            df = pd.read_csv(file_name)
+            loaded_files.append(df)
+            timestamps = df['timestamp'].tolist()
+            if team_target == "全部":
+                result = [
+                    {'name': teams[0], 'data': []},
+                    {'name': teams[1], 'data': []},
+                    {'name': teams[2], 'data': []},
+                    {'name': teams[3], 'data': []},
+                    {'name': teams[4], 'data': []},
+                ]
+                for team_id, team in enumerate(teams):
+                    team_data = df[team].tolist()
+                    for time_id, timestamp in enumerate(timestamps):
+                        result[team_id]['data'].append({'x': timestamp, 'y': team_data[time_id]})
+            else:
+                result = [{'name': team_target, 'data': []}]
+                team_data = df[team_target].tolist()
+                for time_id, timestamp in enumerate(timestamps):
+                    result[0]['data'].append({'x': timestamp, 'y': team_data[time_id]})
+        else:
+            return "No File!"
+    else:
+        start_day = get_date(start_date)
+        end_day = get_date(end_date)
+        date_range = range(start_day, end_day + 1)
+        for i in date_range:
+            file_name = f"4-{i}_crawler.csv"
+            if os.path.exists(file_name):
+                df = pd.read_csv(file_name)
+                loaded_files.append(df)
+        if team_target == '全部':
+            result = [
+                    {'name': teams[0], 'data': []},
+                    {'name': teams[1], 'data': []},
+                    {'name': teams[2], 'data': []},
+                    {'name': teams[3], 'data': []},
+                    {'name': teams[4], 'data': []},
+                ]
+            for df in loaded_files:
+                timestamps = df['timestamp'].tolist()
+                for team_id, team in enumerate(teams):
+                    team_data = df[team].tolist()
+                    result[team_id]['data'].append({'x': timestamps[-1], 'y': team_data[-1]})
+        else:
+            result = [{'name': team_target, 'data': []}]
+            for df in loaded_files:
+                timestamps = df['timestamp'].tolist()
+                team_data = df[team_target].tolist()
+                result[0]['data'].append({'x': timestamps[-1], 'y': team_data[-1]})
+    return result
 # %%
 '''
 Interface...
@@ -470,6 +536,14 @@ def random_number():
         'randomNumber': random.randint(1, 100)
     }
     return jsonify(response)
+
+@app.route('/api/vote-monitor', methods=['POST', 'GET'])
+def get_votes():
+    payload = request.args.to_dict()
+    response = collect_data(team_target=payload['team_target'], date_type=payload['date_type'],
+    start_date=payload['start_date'], end_date=payload['end_date'])
+    return jsonify(response)
+
 
 @app.route('/api/demo-predict', methods=['POST', 'GET'])
 def demo_predict():

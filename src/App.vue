@@ -1,15 +1,18 @@
 <template>
-  <div id="app" class="web-body">
-    <!-- <img class="pinkCircle" src="static/pinkCircle.png" />
-    <img class="blueCircle" src="static/blueCircle.png" />
-    <img class="purpleBar" src="static/purpleBar.png" />
-    <img class="yellowBar" src="static/yellowBar.png" />-->
-    <div class="headerContainer">
-      <appNavbar v-if="!$route.path.includes('demo')" id="appNavbar"/>
-      <appNavbarDemo v-if="$route.path.includes('demo')" id="appNavbarDemo"/>
+  <div>
+    <div id="app" class="web-body" v-if="!$route.path.includes('vote')">
+      <!-- <img class="pinkCircle" src="static/pinkCircle.png" />
+      <img class="blueCircle" src="static/blueCircle.png" />
+      <img class="purpleBar" src="static/purpleBar.png" />
+      <img class="yellowBar" src="static/yellowBar.png" />-->
+      <div class="headerContainer">
+        <appNavbar v-if="!$route.path.includes('demo')" id="appNavbar"/>
+        <appNavbarDemo v-if="$route.path.includes('demo')" id="appNavbarDemo"/>
+      </div>
+      <router-view :currentApi="currentApi" class="content" />
+      <appFooter :currentApi="currentApi" />
     </div>
-    <router-view :currentApi="currentApi" class="content" />
-    <appFooter :currentApi="currentApi" />
+    <router-view v-if="$route.path.includes('vote')" :currentApi="currentApi" class="content" />
   </div>
 </template>
 
