@@ -65,7 +65,6 @@ import DateRangePicker from 'vue2-daterange-picker';
 import 'vue2-daterange-picker/dist/vue2-daterange-picker.css';
 import axios from 'axios';
 
-const today = new Date();
 export default {
   components: {
     NavbarVote,
@@ -94,8 +93,8 @@ export default {
       showDropdowns: false,
       autoApply: true,
       dateRange: {
-        startDate: today,
-        endDate: today,
+        startDate: new Date(),
+        endDate: new Date(),
       },
     };
   },
@@ -103,18 +102,30 @@ export default {
     handleSelectDataDateType(type) {
       this.selectDataDateType = type;
     },
-    getVotesData(selectedTeam, selectDataDateType, dateRange) {
+    formatDate(date) {
+      const d = new Date(date);
+      let month = `${d.getMonth() + 1}`;
+      let day = `${d.getDate()}`;
+      const year = d.getFullYear();
+
+      if (month.length < 2) month = `0${month}`;
+      if (day.length < 2) day = `0${day}`;
+
+      return [year, month, day].join('-');
+    },
+    getVotesData() {
       this.chartLoading = true;
+      const params = {
+        team_target: this.selectedTeam,
+        date_type: this.selectDataDateType,
+        start_date: this.formatDate(this.dateRange.startDate),
+        end_date: this.formatDate(this.dateRange.endDate),
+      };
+
       axios({
         method: 'get',
-        // url: `${this.$api}/api/predict`,
         url: `${this.$api}/api/intermediate-vote-monitor`,
-        params: {
-          team_target: selectedTeam,
-          date_type: selectDataDateType,
-          start_date: dateRange.startDate,
-          end_date: dateRange.endDate,
-        },
+        params,
       }).then((res) => {
         this.votesData = res.data;
         this.chartLoading = false;
@@ -129,7 +140,7 @@ export default {
         url: `${this.$api}/api/intermediate-vote-download`, // Flask后端提供的下载CSV的API端点
         method: 'GET',
         params: {
-          start_date: this.dateRange.startDate,
+          start_date: this.formatDate(this.dateRange.startDate),
         },
         responseType: 'blob', // 重要：为了处理二进制文件下载
       }).then((response) => {
@@ -151,16 +162,20 @@ export default {
     },
   },
   mounted() {
-    this.getVotesData(this.selectedTeam, this.selectDataDateType, this.dateRange);
+    this.dateRange = {
+      startDate: new Date(),
+      endDate: new Date(),
+    };
+    this.getVotesData();
   },
   watch: {
     selectedTeam(newValue, oldValue) {
-      this.getVotesData(this.selectedTeam, this.selectDataDateType, this.dateRange);
+      this.getVotesData();
     },
     dateRange: {
       handler(val) {
         // do stuff
-        this.getVotesData(this.selectedTeam, this.selectDataDateType, this.dateRange);
+        this.getVotesData();
       },
       deep: true,
     },
@@ -175,7 +190,7 @@ export default {
       } else if (newValue === '週') {
         this.selectDateMode = 'range';
         this.isDatePickerReadOnly = false;
-        const sevenDaysAgo = new Date(today.setDate(today.getDate() - 7));
+        const sevenDaysAgo = new Date(new Date().setDate(new Date().getDate() - 7));
         const compareDate = new Date('2024-04-04');
         if (sevenDaysAgo < compareDate) {
           sevenDaysAgo.setTime(compareDate.getTime());
@@ -193,7 +208,7 @@ export default {
           endDate: '2024-04-23T00:00:00.000Z',
         };
       }
-      this.getVotesData(this.selectedTeam, this.selectDataDateType, this.dateRange);
+      this.getVotesData();
     },
   },
 };

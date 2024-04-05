@@ -127,7 +127,6 @@ export default {
     votes_data: {
       handler(val) {
         // do stuff
-        console.log('>>>>>>>Change Data!');
         if (val.length >= 0) {
           this.series = val;
         } else {

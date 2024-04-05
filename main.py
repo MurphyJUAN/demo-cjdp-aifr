@@ -459,7 +459,7 @@ def get_predict(data, model_list, type, device):
 '''For Vote Monitor'''
 vote_records_dir_path = "/cluster/home/yining_juan/auto_vote/vote_record"
 def get_date(date_str):
-    date_obj = datetime.strptime(date_str, "%Y-%m-%dT%H:%M:%S.%fZ")
+    date_obj = datetime.strptime(date_str, "%Y-%m-%d")
     # 提取月和日，如果是个位数，去掉前导0
     formatted_month_day = int(date_obj.day)
     return formatted_month_day
