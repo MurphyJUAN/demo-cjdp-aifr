@@ -51,6 +51,16 @@ export default {
       msg: 'Welcome to Your Vue.js App',
       series: [team1, team2, team3],
       chartOptions: {
+        legend: {
+          show: true, // 显示图例
+          position: 'bottom', // 图例的位置
+          itemMargin: {
+            horizontal: 20, // 水平间距
+            vertical: 10, // 垂直间距
+          } },
+        stroke: {
+          width: 1, // 将线条宽度设置为1px
+        },
         chart: {
           type: 'area',
           stacked: false,
@@ -68,7 +78,7 @@ export default {
           enabled: false,
         },
         markers: {
-          size: 5,
+          size: 0,
         },
         title: {
         //   text: 'Stock Price Movement',
@@ -117,6 +127,7 @@ export default {
     votes_data: {
       handler(val) {
         // do stuff
+        console.log('>>>>>>>Change Data!');
         if (val.length >= 0) {
           this.series = val;
         } else {

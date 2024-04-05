@@ -1,11 +1,13 @@
 # %%
 import pickle
-from flask import Flask, request, render_template, jsonify, make_response, send_file
+from flask import Flask, request, render_template, jsonify, make_response, send_file, Response
 import os
 from flask_cors import CORS, cross_origin
 import random
 import requests
 import pandas as pd
+import tempfile
+import shutil
 
 # %%
 # For CORS Protocal
@@ -39,25 +41,41 @@ def forward_get_bote():
     print('>>>payload:', payload)
     external_url = 'http://140.114.80.46:5556/api/vote-monitor'
     response = requests.get(external_url, params=payload)
-    # response = [{
-    # "name": 'Team1',
-    # "data": [
-    #     { "x": '2024-04-04 00:46:18', "y": 974 },
-    #     { "x": '2024-04-04 00:58:49', "y": 975 },
-    #     { "x": '2024-04-04 01:08:50', "y": 983 },
-    #     { "x": '2024-04-04 01:18:51', "y": 992 },
-    # ],
-    #         },
-    #         {
-    #     "name": 'Team2',
-    #     "data": [
-    #         { "x": '2024-04-04 00:46:18', "y": 456 },
-    #         { "x": '2024-04-04 00:58:49', "y": 472 },
-    #         { "x": '2024-04-04 01:08:50', "y": 475 },
-    #         { "x": '2024-04-04 01:18:51', "y": 490 },
-    #     ],
-    #     }]
     return jsonify(response.json())
+
+@app.route('/api/intermediate-vote-download', methods=['POST', 'GET'])
+def forward_download():
+    payload = request.args.to_dict()
+    external_url = 'http://140.114.80.46:5556/api/vote-download'
+    external_response = requests.get(external_url, params=payload, stream=True)
+    # 确保请求成功
+    if external_response.status_code == 200:
+        file_size_bytes = len(external_response.content)
+        print(f"接收到的文件大小为 {file_size_bytes} 字节", external_response.status_code, external_response.headers)
+
+        return Response(external_response.content, headers={
+            "Content-Disposition": "attachment; filename=downloaded_file.csv",
+            "Content-Type": "text/csv; charset=utf-8"
+        })
+
+        # # 创建临时文件以保存下载的CSV文件
+        # with tempfile.NamedTemporaryFile(mode='w+b', delete=False, dir='./') as temp_file:
+        #     # 将外部响应的内容写入临时文件
+        #     shutil.copyfileobj(external_response.raw, temp_file)
+        #     temp_file.flush()  # 确保数据写入磁盘
+        #     os.fsync(temp_file.fileno())  # 确保数据从操作系统缓冲区写入
+        #     # 注意保留文件名，以便后续使用
+        #     temp_file_name = temp_file.name
+        #     print("临时文件已创建，路径和文件名为:", temp_file_name)
+        
+        # # 使用Flask的send_file发送文件
+        # # 注意：需要设置as_attachment=True以便于触发浏览器的下载行为
+        # return send_file(temp_file_name, as_attachment=True, download_name="downloaded_file.csv", mimetype='text/csv')
+    else:
+        # 如果外部请求失败，返回错误信息
+        return Response("Failed to download file from external URL", status=external_response.status_code)
+
+    return response
 
 @app.route('/api/intermediate-predict', methods=['POST', 'GET'])
 def forward_predict():

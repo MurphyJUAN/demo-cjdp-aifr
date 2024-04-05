@@ -1,8 +1,9 @@
 <template>
     <div class="vote-page">
       <NavbarVote></NavbarVote>
-      {{ dateRange }}
-      {{ selectDataDateType }}
+      <!-- {{ dateRange }}
+      {{ selectDataDateType }} -->
+      <!-- {{ chartLoading }} -->
       <b-container class="bv-example-row">
         <b-row class="setting-block">
           <div class="w-100 d-inline-flex setting-row">
@@ -13,7 +14,7 @@
               :readonly="isDatePickerReadOnly"
               opens="center"
               :locale-data="{ firstDay: 1, format: 'yyyy-mm-dd' }"
-              minDate="2024-04-04" maxDate="2024-04-23"
+              minDate="2024-04-04T00:00:00.000Z" maxDate="2024-04-23T00:00:00.000Z"
               :singleDatePicker="selectDateMode"
               :timePicker="showTimePicker"
               :timePicker24Hour="showTimePicker24Hour"
@@ -30,11 +31,22 @@
             <Multiselect  class="team-selector" v-model="selectedTeam" :options="team_selector_options" :searchable="false" :close-on-select="false" :show-labels="false"></Multiselect>
           </div>
         </b-row>
+        <b-row v-if="chartLoading" class="d-flex justify-content-center w-100 mt-3">
+            <b-button variant="primary" class="mx-2">
+                <b-spinner small></b-spinner>
+                <span class="sr-only">Loading...</span>
+            </b-button>
+
+            <b-button variant="primary">
+                <b-spinner small type="grow"></b-spinner>
+                Loading...
+            </b-button>
+        </b-row>
         <b-row class="">
           <ChartVote :votes_data="votesData"></ChartVote>
         </b-row>
-        <b-row class="d-flex justify-content-center w-100 mt-3">
-            <b-button variant="dark">下載 csv 檔</b-button>
+        <b-row v-if="selectDataDateType==='日'" class="d-flex justify-content-center w-100 mt-3">
+            <b-button variant="dark" @click="downloadCsv()">下載 csv 檔</b-button>
         </b-row>
       </b-container>
 
@@ -63,6 +75,8 @@ export default {
   data() {
     return {
       msg: 'Welcome to Your Vue.js App',
+      loading: true,
+      chartLoading: false,
       votesData: [],
       isDatePickerReadOnly: false,
       selectDataDateType: '日',
@@ -87,7 +101,7 @@ export default {
       this.selectDataDateType = type;
     },
     getVotesData(selectedTeam, selectDataDateType, dateRange) {
-      console.log('>>>Get voted data!');
+      this.chartLoading = true;
       axios({
         method: 'get',
         // url: `${this.$api}/api/predict`,
@@ -99,10 +113,42 @@ export default {
           end_date: dateRange.endDate,
         },
       }).then((res) => {
-        console.log('res.data:', res.data);
         this.votesData = res.data;
+        this.chartLoading = false;
+      }).catch((error) => {
+        console.log(error);
+        this.chartLoading = false;
       });
     },
+    downloadCsv() {
+      this.chartLoading = true;
+      axios({
+        url: `${this.$api}/api/intermediate-vote-download`, // Flask后端提供的下载CSV的API端点
+        method: 'GET',
+        params: {
+          start_date: this.dateRange.startDate,
+        },
+        responseType: 'blob', // 重要：为了处理二进制文件下载
+      }).then((response) => {
+        // 创建一个新的Blob对象，使用从服务器收到的数据
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        // 创建一个a标签用于下载
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'votes.csv'); // 或者你想要命名的文件名
+        document.body.appendChild(link);
+        link.click();
+        link.remove(); // 完成后移除该元素
+        window.URL.revokeObjectURL(url); // 释放URL对象
+        this.chartLoading = false;
+      }).catch((error) => {
+        console.log(error);
+        this.chartLoading = false;
+      });
+    },
+  },
+  mounted() {
+    this.getVotesData(this.selectedTeam, this.selectDataDateType, this.dateRange);
   },
   watch: {
     selectedTeam(newValue, oldValue) {
@@ -140,8 +186,8 @@ export default {
         this.selectDateMode = 'range';
         this.isDatePickerReadOnly = true;
         this.dateRange = {
-          startDate: '2024-04-04',
-          endDate: '2024-04-23',
+          startDate: '2024-04-04T00:00:00.000Z',
+          endDate: '2024-04-23T00:00:00.000Z',
         };
       }
       this.getVotesData(this.selectedTeam, this.selectDataDateType, this.dateRange);

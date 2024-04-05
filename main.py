@@ -545,6 +545,13 @@ def get_votes():
     start_date=payload['start_date'], end_date=payload['end_date'])
     return jsonify(result)
 
+@app.route('/api/vote-download', methods=['POST', 'GET'])
+def download_votes():
+    payload = request.args.to_dict()
+    csv_path = f"{vote_records_dir_path}/4-{get_date(payload['start_date'])}_crawler.csv"
+
+    return send_file(csv_path, download_name=f"4-{get_date(payload['start_date'])}_crawler.csv")
+
 
 @app.route('/api/demo-predict', methods=['POST', 'GET'])
 def demo_predict():
