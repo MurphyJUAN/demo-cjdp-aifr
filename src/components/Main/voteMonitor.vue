@@ -7,6 +7,9 @@
       <b-container class="bv-example-row">
         <b-row class="setting-block">
           <div class="w-100 d-flex flex-column flex-sm-row align-items-center setting-row">
+            <div class="mb-2 mb-sm-0">
+              <img class="vote-refresh" @click="getVotesData()" src="../../../static/refresh_gray.png">
+            </div>
             <ToggleVote class="mb-2 mb-sm-0"  @selectType="handleSelectDataDateType"></ToggleVote>
             <date-range-picker
             class="date-range-picker mb-2 mb-sm-0 ml-sm-2"
@@ -245,5 +248,11 @@ export default {
   .date-range-picker {
     /* margin-left: 1rem; */
     width: 15rem;
+  }
+  .vote-refresh {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-left: 2rem;
+    cursor: pointer;
   }
   </style>
