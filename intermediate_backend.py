@@ -57,7 +57,7 @@ def forward_get_bote():
     #         { "x": '2024-04-04 01:18:51', "y": 490 },
     #     ],
     #     }]
-    return jsonify(response)
+    return jsonify(response.json())
 
 @app.route('/api/intermediate-predict', methods=['POST', 'GET'])
 def forward_predict():
