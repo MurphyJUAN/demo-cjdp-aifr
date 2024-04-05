@@ -498,7 +498,7 @@ def collect_data(team_target, date_type, start_date, end_date):
         end_day = get_date(end_date)
         date_range = range(start_day, end_day + 1)
         for i in date_range:
-            file_name = f"4-{i}_crawler.csv"
+            file_name = f"{vote_records_dir_path}/4-{i}_crawler.csv"
             if os.path.exists(file_name):
                 df = pd.read_csv(file_name)
                 loaded_files.append(df)
@@ -541,9 +541,9 @@ def random_number():
 @app.route('/api/vote-monitor', methods=['POST', 'GET'])
 def get_votes():
     payload = request.args.to_dict()
-    response = collect_data(team_target=payload['team_target'], date_type=payload['date_type'],
+    result = collect_data(team_target=payload['team_target'], date_type=payload['date_type'],
     start_date=payload['start_date'], end_date=payload['end_date'])
-    return jsonify(response)
+    return jsonify(result)
 
 
 @app.route('/api/demo-predict', methods=['POST', 'GET'])
