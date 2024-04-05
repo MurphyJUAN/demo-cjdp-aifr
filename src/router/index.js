@@ -12,6 +12,7 @@ import SupplementDescription from '@/components/Sub/supplementDescription';
 import PredictResult from '@/components/Sub/predictResult';
 import ResultFeedback from '@/components/Sub/resultFeedback';
 import TechDoc from '@/components/Main/TechDoc';
+import UserDoc from '@/components/Main/UserDoc';
 import ContactUs from '@/components/Main/contactUs';
 import ChatBotDemo from '@/components/Main/chatBotDemo';
 import VoteMonitor from '@/components/Main/voteMonitor';
@@ -57,6 +58,11 @@ export default new Router({
       path: '/links',
       name: 'Link',
       component: Links,
+    },
+    {
+      path: '/userDoc',
+      name: 'UserDoc',
+      component: UserDoc,
     },
     {
       path: '/techDoc',

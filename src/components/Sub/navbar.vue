@@ -16,6 +16,7 @@
         <el-menu-item index="/userPredict/mode2">模式二：文字</el-menu-item>
         <el-menu-item index="/userPredict/mode3">模式三：選項加文字</el-menu-item>
         <!-- <el-menu-item index="/predict-mode4">模式四：選項加文字(多模型)</el-menu-item> -->
+        <el-menu-item index="/userDoc">使用說明</el-menu-item>
         <el-menu-item index="/techDoc">技術說明</el-menu-item>
         <el-menu-item index="/links">友善資源</el-menu-item>
         <el-menu-item index="/contactUs">開發團隊</el-menu-item>
