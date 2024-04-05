@@ -6,10 +6,10 @@
       <!-- {{ chartLoading }} -->
       <b-container class="bv-example-row">
         <b-row class="setting-block">
-          <div class="w-100 d-inline-flex setting-row">
-            <ToggleVote @selectType="handleSelectDataDateType"></ToggleVote>
+          <div class="w-100 d-flex flex-column flex-sm-row align-items-center setting-row">
+            <ToggleVote class="mb-2 mb-sm-0"  @selectType="handleSelectDataDateType"></ToggleVote>
             <date-range-picker
-            class="date-range-picker"
+            class="date-range-picker mb-2 mb-sm-0 ml-sm-2"
               ref="picker"
               :readonly="isDatePickerReadOnly"
               opens="center"
@@ -27,8 +27,11 @@
                     {{ picker.startDate | date }} - {{ picker.endDate | date }}
                 </template> -->
             </date-range-picker>
-            <div class="verticle-line"></div>
-            <Multiselect  class="team-selector" v-model="selectedTeam" :options="team_selector_options" :searchable="false" :close-on-select="false" :show-labels="false"></Multiselect>
+            <div class="verticle-line d-none d-sm-block"></div>
+            <div class="px-3 w-100">
+                <Multiselect  class="team-selector mb-2 mb-sm-0" v-model="selectedTeam" :options="team_selector_options" :searchable="false" :close-on-select="false" :show-labels="false"></Multiselect>
+            </div>
+
           </div>
         </b-row>
         <b-row v-if="chartLoading" class="d-flex justify-content-center w-100 mt-3">
@@ -222,10 +225,10 @@ export default {
     margin-bottom: 2rem;
   }
   .team-selector {
-    width: 40rem;
+    width: 100%;
   }
   .date-range-picker {
-    margin-left: 1rem;
+    /* margin-left: 1rem; */
     width: 15rem;
   }
   </style>
