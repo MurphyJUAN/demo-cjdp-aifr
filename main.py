@@ -23,6 +23,7 @@ from gensim.test.test_doc2vec import ConcatenatedDoc2Vec
 import re
 import data_preprocess
 from data_preprocess import clean_to_seg
+from datetime import datetime
 # %%
 # For CORS Protocal
 app = Flask(__name__,
