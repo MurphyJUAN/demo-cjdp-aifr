@@ -61,7 +61,6 @@ export default {
     'input-description-m3': inputDescriptionM3,
   },
   props: {
-    prePredict: Boolean,
   },
   data() {
     return {
@@ -97,7 +96,6 @@ export default {
             },
           };
         } else {
-          this.$emit('updatePrePredict', true);
           this.result = {
             data: {
               AA: [{ Sentence: '', Feature: [] }],

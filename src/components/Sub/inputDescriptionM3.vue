@@ -120,11 +120,6 @@ export default {
       if (this.result.sentence == '') {
         obj.sentence = true;
       }
-      if (obj.feature || obj.sentence) {
-        this.$emit('updatePrePredict', false);
-      } else {
-        this.$emit('updatePrePredict', true);
-      }
       return obj;
     },
   },

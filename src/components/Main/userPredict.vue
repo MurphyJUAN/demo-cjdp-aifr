@@ -5,7 +5,7 @@
       <div class="page-title">{{ pageText[$route.params.mode].title }}</div>
       <div class="shadow-none p-2 mb-2 rounded quote">{{ pageText[$route.params.mode].instruction }}</div>
       <div v-loading="isLoading">
-        <router-view @resultUpdate="updateResult" @updatePrePredict="updatePrePredict" ref="groupForm"/>
+        <router-view @resultUpdate="updateResult" ref="groupForm"/>
       </div>
       <div class="shadow-none p-2 mb-2">{{ pageText[$route.params.mode].note }}</div>
       <el-row :gutter="20">
@@ -193,7 +193,6 @@ export default {
           RD: { Sentence: '', Feature: [] },
         },
       },
-      prePredict: false,
     };
   },
   computed: {
@@ -308,17 +307,7 @@ export default {
 
       return outputData;
     },
-    updatePrePredict(val) {
-      this.prePredict = val;
-    },
     startPredict() {
-      // if (!this.prePredict) {
-      //   this.$message({
-      //     message: '請檢查是否皆已輸入因素與理由',
-      //     type: 'warning',
-      //   });
-      //   return;
-      // }
       console.log('>>>>>start predict ==> raw result:', this.result.data);
       let result = this.mergeResult(this.result.data);
       console.log('>>>>>start predict ==> merge result:', result);
