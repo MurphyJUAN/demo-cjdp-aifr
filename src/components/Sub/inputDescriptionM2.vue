@@ -138,7 +138,7 @@ export default {
   },
   methods: {
     addStatement(statement) {
-      this.isStartPredict = false;
+      // this.isStartPredict = false;
       this.isLoading = false;
       if (this.checkStatement(statement)) {
         this.result = this.result.replace(statement, '');

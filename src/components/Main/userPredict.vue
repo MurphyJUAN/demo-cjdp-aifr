@@ -31,9 +31,9 @@
         </el-col>
         <el-col :span="24">
           <PredictResult
-            v-if="isStartPredict"
+            v-if="isModeKeyLengthTwo"
             class="predictResult"
-            :predict_result="predict_result"
+            :predict_result="predict_result[$route.params.mode]"
             :elapsedTime="elapsedTime"
             :isLoading="isLoading"
             :errorPrompt="errorPrompt"
@@ -59,10 +59,10 @@ export default {
       showButton: false,
       ID: '',
       ground_truth: '',
-      predict_result: { Applicant: 0, Respondent: 0, Both: 0 },
+      predict_result: { mode1: { Applicant: 0, Respondent: 0, Both: 0 }, mode2: { Applicant: 0, Respondent: 0, Both: 0 }, mode3: { Applicant: 0, Respondent: 0, Both: 0 } },
       elapsedTime: 0,
       isLoading: false,
-      isStartPredict: false,
+      // isStartPredict: false,
       errorPrompt: false,
       errorCode: new Error(),
       pageText: {
@@ -196,6 +196,17 @@ export default {
       prePredict: false,
     };
   },
+  computed: {
+    isModeKeyLengthTwo() {
+      // 确保 predict_result 和 $route.params.mode 是存在的
+      const mode = this.$route.params.mode;
+      const result = this.predict_result[mode];
+      if (result) {
+        return Object.keys(result).length === 2;
+      }
+      return false; // 如果 result 不存在，返回 false
+    },
+  },
   methods: {
     getTestCase() {
       axios({
@@ -204,7 +215,6 @@ export default {
         url: `${this.$api}/api/get-testcase`,
       }).then((res) => {
         console.log('res.data:', res.data);
-        // predict_result: { Applicant: 0, Respondent: 0, Both: 0 }
         this.updateResult({ data: res.data.data });
         this.ground_truth = res.data.result;
         this.ID = res.data.ID;
@@ -219,7 +229,7 @@ export default {
       console.log('result:', this.result);
     },
     addStatement(resultKey, statement) {
-      this.isStartPredict = false;
+      // this.isStartPredict = false;
       this.isLoading = false;
       if (this.checkStatement(resultKey, statement)) {
         this.result.data[resultKey].Sentence = this.result.data[resultKey].Sentence.replace(statement, '');
@@ -234,6 +244,7 @@ export default {
     clearAllStatement() {
       console.log(this.$refs.groupForm);
       this.$refs.groupForm.clearAllStatement();
+      this.predict_result[this.$route.params.mode] = { Applicant: 0, Respondent: 0, Both: 0 };
     },
     checkContainChinese(str) {
       return /[\u4E00-\u9FA5]+/g.test(str);
@@ -325,13 +336,12 @@ export default {
           data: result,
         }).then((res) => {
           console.log('res.data:', res.data);
-          // predict_result: { Applicant: 0, Respondent: 0, Both: 0 }
-          this.predict_result = res.data;
-          this.isStartPredict = true;
+          this.predict_result[this.$route.params.mode] = res.data;
+          // this.isStartPredict = true;
           this.isLoading = false;
         });
       } else {
-        this.isStartPredict = false;
+        // this.isStartPredict = false;
         this.isLoading = false;
       }
       // eslint-disable-next-line no-alert
@@ -344,8 +354,9 @@ export default {
     result: {
       handler(val) {
         // do stuff
-        this.isStartPredict = false;
+        // this.isStartPredict = false;
         this.isLoading = false;
+        this.predict_result[this.$route.params.mode] = { Applicant: 0, Respondent: 0, Both: 0 };
       },
       deep: true,
     },
