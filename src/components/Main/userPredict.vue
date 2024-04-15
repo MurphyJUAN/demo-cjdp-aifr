@@ -56,6 +56,32 @@ export default {
   },
   data() {
     return {
+      result: {
+        mode1: {
+          data: {
+            AA: [{ Sentence: '', Feature: [] }],
+            AD: [{ Sentence: '', Feature: [] }],
+            RA: [{ Sentence: '', Feature: [] }],
+            RD: [{ Sentence: '', Feature: [] }],
+          },
+        },
+        mode2: {
+          data: {
+            AA: [{ Sentence: '', Feature: [] }],
+            AD: [{ Sentence: '', Feature: [] }],
+            RA: [{ Sentence: '', Feature: [] }],
+            RD: [{ Sentence: '', Feature: [] }],
+          },
+        },
+        mode3: {
+          data: {
+            AA: [{ Sentence: '', Feature: [] }],
+            AD: [{ Sentence: '', Feature: [] }],
+            RA: [{ Sentence: '', Feature: [] }],
+            RD: [{ Sentence: '', Feature: [] }],
+          },
+        },
+      },
       showButton: false,
       ID: '',
       ground_truth: '',
@@ -185,14 +211,6 @@ export default {
           },
         ],
       },
-      result: {
-        data: {
-          AA: { Sentence: '', Feature: [] },
-          AD: { Sentence: '', Feature: [] },
-          RA: { Sentence: '', Feature: [] },
-          RD: { Sentence: '', Feature: [] },
-        },
-      },
     };
   },
   computed: {
@@ -227,23 +245,37 @@ export default {
       this.result = val;
       console.log('result:', this.result);
     },
-    addStatement(resultKey, statement) {
-      // this.isStartPredict = false;
-      this.isLoading = false;
-      if (this.checkStatement(resultKey, statement)) {
-        this.result.data[resultKey].Sentence = this.result.data[resultKey].Sentence.replace(statement, '');
-      } else {
-        this.result.data[resultKey].Sentence += statement;
+    clearInputForm() {
+      if (this.$refs.groupForm.$refs.inputForm) {
+        for (let i = 0; i < this.$refs.groupForm.$refs.inputForm.length; i += 1) {
+          this.$refs.groupForm.$refs.inputForm[i].clearAll();
+        }
       }
     },
-    checkStatement(resultKey, statement) {
-      if (this.result.data[resultKey].Sentence.indexOf(statement) >= 0) return true;
-      return false;
+    clearSelectForm() {
+      if (this.$refs.groupForm.$refs.selectForm) {
+        console.log('>>Clear');
+        for (let i = 0; i < this.$refs.groupForm.$refs.selectForm.length; i += 1) {
+          this.$refs.groupForm.$refs.selectForm[i].clearAll();
+        }
+      }
     },
     clearAllStatement() {
-      console.log(this.$refs.groupForm);
-      this.$refs.groupForm.clearAllStatement();
-      this.predict_result[this.$route.params.mode] = { Applicant: 0, Respondent: 0, Both: 0 };
+      console.log('clearAllStatement', this.$refs.groupForm.$refs);
+      this.result[this.$route.params.mode].data = {
+        AA: [{ Sentence: '', Feature: [] }],
+        AD: [{ Sentence: '', Feature: [] }],
+        RA: [{ Sentence: '', Feature: [] }],
+        RD: [{ Sentence: '', Feature: [] }],
+      };
+      if (this.$route.params.mode === 'mode1') {
+        this.clearSelectForm();
+      } else if (this.$route.params.mode === 'mode2') {
+        this.clearInputForm();
+      } else if (this.$route.params.mode === 'mode3') {
+        this.clearSelectForm();
+        this.clearInputForm();
+      }
     },
     checkContainChinese(str) {
       return /[\u4E00-\u9FA5]+/g.test(str);
@@ -308,8 +340,8 @@ export default {
       return outputData;
     },
     startPredict() {
-      console.log('>>>>>start predict ==> raw result:', this.result.data);
-      let result = this.mergeResult(this.result.data);
+      console.log('>>>>>start predict ==> raw result:', this.result[this.$route.params.mode].data);
+      let result = this.mergeResult(this.result[this.$route.params.mode].data);
       console.log('>>>>>start predict ==> merge result:', result);
       if (this.checkInputValid(result)) {
         this.isLoading = true;
@@ -328,6 +360,8 @@ export default {
           this.predict_result[this.$route.params.mode] = res.data;
           // this.isStartPredict = true;
           this.isLoading = false;
+        }).catch((error) => {
+          console.log('>>Error:', error);
         });
       } else {
         // this.isStartPredict = false;
