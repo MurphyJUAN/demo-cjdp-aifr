@@ -607,23 +607,11 @@
             }
         ]
     },
-    "花蓮": {
+    "南投": {
         "多元族群": [
-            {
-                "name": "現代婦女基金會",
-                "link": "https://www.38.org.tw/"
-            },
-            {
-                "name": "台灣國際家庭互助協會 TIFA",
-                "link": "https://www.facebook.com/TIFA1105/?locale=zh_TW"
-            },
             {
                 "name": "財團法人天主教善牧社會福利基金會",
                 "link": "https://www.goodshepherd.org.tw"
-            },
-            {
-                "name": "財團法人基督教芥菜種會",
-                "link": "https://www.mustard.org.tw/OnePageTabPic.aspx?mid=439&id=435"
             }
         ],
         "兒少照顧": [
@@ -632,12 +620,14 @@
                 "link": "https://www.ccf.org.tw/about/location"
             },
             {
-                "name": "居家托育服務中心",
-                "link": "https://www.mababy.com/knowledge-detail?id=13477"
-            },
+                "name": "財團法人南投縣私立南投仁愛之家附設仁愛兒少家園",
+                "link": "https://www.ntrah.org.tw/Child"
+            }
+        ],
+        "法律議題": [
             {
-                "name": "花蓮縣私立原住民少年兒童之家",
-                "link": "https://laqi.eoffering.org.tw/contents/text?id=3"
+                "name": "社團法人榮欣社會福利服務促進協會",
+                "link": "https://www.rongxin.org.tw/index.php"
             }
         ],
         "政府部門": [
@@ -833,160 +823,6 @@
             }
         ]
     },
-    "高雄": {
-        "多元族群": [
-            {
-                "name": "台灣國際家庭互助協會 TIFA",
-                "link": "https://www.facebook.com/TIFA1105/?locale=zh_TW"
-            },
-            {
-                "name": "財團法人天主教善牧社會福利基金會",
-                "link": "https://www.goodshepherd.org.tw"
-            }
-        ],
-        "兒少照顧": [
-            {
-                "name": "家扶基金會",
-                "link": "https://www.ccf.org.tw/about/location"
-            },
-            {
-                "name": "居家托育服務中心",
-                "link": "https://www.mababy.com/knowledge-detail?id=13477"
-            }
-        ],
-        "政府部門": [
-            {
-                "name": "113家暴保護專線",
-                "link": "https://dep.mohw.gov.tw/DOPS/cp-1183-6499-105.html"
-            },
-            {
-                "name": "社會福利服務中心",
-                "link": "https://topics.mohw.gov.tw/SS/lp-4528-204.html"
-            },
-            {
-                "name": "內政部戶政司",
-                "link": "https://www.ris.gov.tw/app/portal/841"
-            },
-            {
-                "name": "司法院",
-                "link": "https://www.judicial.gov.tw/tw/cp-107-58173-364a9-1.html"
-            }
-        ],
-        "家庭扶助": [
-            {
-                "name": "家扶資金會",
-                "link": "https://www.ccf.org.tw/"
-            },
-            {
-                "name": "兒福聯盟",
-                "link": "https://www.children.org.tw/"
-            },
-            {
-                "name": "台灣世界展望會",
-                "link": "https://www.worldvision.org.tw/"
-            },
-            {
-                "name": "社福中心",
-                "link": "https://topics.mohw.gov.tw/SS/mp-204.html"
-            }
-        ],
-        "家庭諮商": [
-            {
-                "name": "財團法人天使心家族社會福利基金會",
-                "link": "https://www.ah-h.org/contactus"
-            },
-            {
-                "name": "衛生福利部社會及家庭署",
-                "link": "https://www.sfaa.gov.tw/SFAA/"
-            },
-            {
-                "name": "家庭教育中心",
-                "link": "https://dep.mohw.gov.tw/DOMHAOH/cp-4558-69568-107.html"
-            }
-        ],
-        "親職教育": [
-            {
-                "name": "財團法人天主教善牧社會福利基金會",
-                "link": "http://cwv.goodshepherd.org.tw/seemore/parents/resource_1.html"
-            },
-            {
-                "name": "家庭教育中心",
-                "link": "https://familyedu.moe.gov.tw/docDetail.aspx?uid=8847&pid=8844&docid=294537"
-            }
-        ]
-    },
-    "南投": {
-        "多元族群": [
-            {
-                "name": "財團法人天主教善牧社會福利基金會",
-                "link": "https://www.goodshepherd.org.tw"
-            }
-        ],
-        "兒少照顧": [
-            {
-                "name": "家扶基金會",
-                "link": "https://www.ccf.org.tw/about/location"
-            },
-            {
-                "name": "財團法人南投縣私立南投仁愛之家附設仁愛兒少家園",
-                "link": "https://www.ntrah.org.tw/Child"
-            }
-        ],
-        "法律議題": [
-            {
-                "name": "社團法人榮欣社會福利服務促進協會",
-                "link": "https://www.rongxin.org.tw/index.php"
-            }
-        ],
-        "政府部門": [
-            {
-                "name": "113家暴保護專線",
-                "link": "https://dep.mohw.gov.tw/DOPS/cp-1183-6499-105.html"
-            },
-            {
-                "name": "社會福利服務中心",
-                "link": "https://topics.mohw.gov.tw/SS/lp-4528-204.html"
-            },
-            {
-                "name": "內政部戶政司",
-                "link": "https://www.ris.gov.tw/app/portal/841"
-            },
-            {
-                "name": "司法院",
-                "link": "https://www.judicial.gov.tw/tw/cp-107-58173-364a9-1.html"
-            }
-        ],
-        "家庭扶助": [
-            {
-                "name": "家扶資金會",
-                "link": "https://www.ccf.org.tw/"
-            },
-            {
-                "name": "台灣世界展望會",
-                "link": "https://www.worldvision.org.tw/"
-            },
-            {
-                "name": "社福中心",
-                "link": "https://topics.mohw.gov.tw/SS/mp-204.html"
-            }
-        ],
-        "家庭諮商": [
-            {
-                "name": "衛生福利部社會及家庭署",
-                "link": "https://www.sfaa.gov.tw/SFAA/"
-            },
-            {
-                "name": "家庭教育中心",
-                "link": "https://dep.mohw.gov.tw/DOMHAOH/cp-4558-69568-107.html"
-            }
-        ],
-        "親職教育": [
-            {
-                "name": "家庭教育中心",
-                "link": "https://familyedu.moe.gov.tw/docDetail.aspx?uid=8847&pid=8844&docid=294537"
-            }
-        ]
-    },
     "嘉義": {
         "多元族群": [
             {
@@ -1061,99 +897,15 @@
             }
         ]
     },
-    "台南": {
-        "多元族群": [
-            {
-                "name": "財團法人天主教善牧社會福利基金會",
-                "link": "https://www.goodshepherd.org.tw"
-            }
-        ],
+    "基隆": {
         "兒少照顧": [
             {
                 "name": "家扶基金會",
                 "link": "https://www.ccf.org.tw/about/location"
             },
             {
-                "name": "貝格爾托嬰中心",
-                "link": "https://www.begobaby.com/?gad_source=1&gclid=CjwKCAjw17qvBhBrEiwA1rU9w_B6tJ7m2p-768aERP0W5nabl_hQ9a0-6Y7hBNzl83tP_3RFmIDpDBoCSuQQAvD_BwE"
-            },
-            {
-                "name": "居家托育服務中心",
-                "link": "https://www.mababy.com/knowledge-detail?id=13477"
-            }
-        ],
-        "政府部門": [
-            {
-                "name": "113家暴保護專線",
-                "link": "https://dep.mohw.gov.tw/DOPS/cp-1183-6499-105.html"
-            },
-            {
-                "name": "社會福利服務中心",
-                "link": "https://topics.mohw.gov.tw/SS/lp-4528-204.html"
-            },
-            {
-                "name": "內政部戶政司",
-                "link": "https://www.ris.gov.tw/app/portal/841"
-            },
-            {
-                "name": "司法院",
-                "link": "https://www.judicial.gov.tw/tw/cp-107-58173-364a9-1.html"
-            }
-        ],
-        "家庭扶助": [
-            {
-                "name": "家扶資金會",
-                "link": "https://www.ccf.org.tw/"
-            },
-            {
-                "name": "台灣世界展望會",
-                "link": "https://www.worldvision.org.tw/"
-            },
-            {
-                "name": "社福中心",
-                "link": "https://topics.mohw.gov.tw/SS/mp-204.html"
-            }
-        ],
-        "家庭諮商": [
-            {
-                "name": "財團法人天使心家族社會福利基金會",
-                "link": "https://www.ah-h.org/contactus"
-            },
-            {
-                "name": "衛生福利部社會及家庭署",
-                "link": "https://www.sfaa.gov.tw/SFAA/"
-            },
-            {
-                "name": "家庭教育中心",
-                "link": "https://dep.mohw.gov.tw/DOMHAOH/cp-4558-69568-107.html"
-            }
-        ],
-        "親職教育": [
-            {
-                "name": "財團法人天主教善牧社會福利基金會",
-                "link": "http://cwv.goodshepherd.org.tw/seemore/parents/resource_1.html"
-            },
-            {
-                "name": "家庭教育中心",
-                "link": "https://familyedu.moe.gov.tw/docDetail.aspx?uid=8847&pid=8844&docid=294537"
-            }
-        ]
-    },
-    "台東": {
-        "多元族群": [
-            {
-                "name": "財團法人天主教善牧社會福利基金會",
-                "link": "https://www.goodshepherd.org.tw"
-            }
-        ],
-        "兒少照顧": [
-            {
-                "name": "家扶基金會",
-                "link": "https://www.ccf.org.tw/about/location"
-            },
-            {
-                "name": "台灣安心家庭關懷協會",
-                "link": "https://m.facebook.com/tw.carefamily/"
+                "name": "大光兒少之家",
+                "link": "https://www.cfcf.org.tw/about/"
             }
         ],
         "政府部門": [
@@ -1283,15 +1035,103 @@
             }
         ]
     },
-    "基隆": {
+    "花蓮": {
+        "多元族群": [
+            {
+                "name": "現代婦女基金會",
+                "link": "https://www.38.org.tw/"
+            },
+            {
+                "name": "台灣國際家庭互助協會 TIFA",
+                "link": "https://www.facebook.com/TIFA1105/?locale=zh_TW"
+            },
+            {
+                "name": "財團法人天主教善牧社會福利基金會",
+                "link": "https://www.goodshepherd.org.tw"
+            },
+            {
+                "name": "財團法人基督教芥菜種會",
+                "link": "https://www.mustard.org.tw/OnePageTabPic.aspx?mid=439&id=435"
+            }
+        ],
         "兒少照顧": [
             {
                 "name": "家扶基金會",
                 "link": "https://www.ccf.org.tw/about/location"
             },
             {
-                "name": "大光兒少之家",
-                "link": "https://www.cfcf.org.tw/about/"
+                "name": "居家托育服務中心",
+                "link": "https://www.mababy.com/knowledge-detail?id=13477"
+            },
+            {
+                "name": "花蓮縣私立原住民少年兒童之家",
+                "link": "https://laqi.eoffering.org.tw/contents/text?id=3"
+            }
+        ],
+        "政府部門": [
+            {
+                "name": "113家暴保護專線",
+                "link": "https://dep.mohw.gov.tw/DOPS/cp-1183-6499-105.html"
+            },
+            {
+                "name": "社會福利服務中心",
+                "link": "https://topics.mohw.gov.tw/SS/lp-4528-204.html"
+            },
+            {
+                "name": "內政部戶政司",
+                "link": "https://www.ris.gov.tw/app/portal/841"
+            },
+            {
+                "name": "司法院",
+                "link": "https://www.judicial.gov.tw/tw/cp-107-58173-364a9-1.html"
+            }
+        ],
+        "家庭扶助": [
+            {
+                "name": "家扶資金會",
+                "link": "https://www.ccf.org.tw/"
+            },
+            {
+                "name": "台灣世界展望會",
+                "link": "https://www.worldvision.org.tw/"
+            },
+            {
+                "name": "社福中心",
+                "link": "https://topics.mohw.gov.tw/SS/mp-204.html"
+            }
+        ],
+        "家庭諮商": [
+            {
+                "name": "衛生福利部社會及家庭署",
+                "link": "https://www.sfaa.gov.tw/SFAA/"
+            },
+            {
+                "name": "家庭教育中心",
+                "link": "https://dep.mohw.gov.tw/DOMHAOH/cp-4558-69568-107.html"
+            }
+        ],
+        "親職教育": [
+            {
+                "name": "家庭教育中心",
+                "link": "https://familyedu.moe.gov.tw/docDetail.aspx?uid=8847&pid=8844&docid=294537"
+            }
+        ]
+    },
+    "台東": {
+        "多元族群": [
+            {
+                "name": "財團法人天主教善牧社會福利基金會",
+                "link": "https://www.goodshepherd.org.tw"
+            }
+        ],
+        "兒少照顧": [
+            {
+                "name": "家扶基金會",
+                "link": "https://www.ccf.org.tw/about/location"
+            },
+            {
+                "name": "台灣安心家庭關懷協會",
+                "link": "https://m.facebook.com/tw.carefamily/"
             }
         ],
         "政府部門": [
@@ -1341,6 +1181,166 @@
             }
         ],
         "親職教育": [
+            {
+                "name": "家庭教育中心",
+                "link": "https://familyedu.moe.gov.tw/docDetail.aspx?uid=8847&pid=8844&docid=294537"
+            }
+        ]
+    },
+    "台南": {
+        "多元族群": [
+            {
+                "name": "財團法人天主教善牧社會福利基金會",
+                "link": "https://www.goodshepherd.org.tw"
+            }
+        ],
+        "兒少照顧": [
+            {
+                "name": "家扶基金會",
+                "link": "https://www.ccf.org.tw/about/location"
+            },
+            {
+                "name": "貝格爾托嬰中心",
+                "link": "https://www.begobaby.com/?gad_source=1&gclid=CjwKCAjw17qvBhBrEiwA1rU9w_B6tJ7m2p-768aERP0W5nabl_hQ9a0-6Y7hBNzl83tP_3RFmIDpDBoCSuQQAvD_BwE"
+            },
+            {
+                "name": "居家托育服務中心",
+                "link": "https://www.mababy.com/knowledge-detail?id=13477"
+            }
+        ],
+        "政府部門": [
+            {
+                "name": "113家暴保護專線",
+                "link": "https://dep.mohw.gov.tw/DOPS/cp-1183-6499-105.html"
+            },
+            {
+                "name": "社會福利服務中心",
+                "link": "https://topics.mohw.gov.tw/SS/lp-4528-204.html"
+            },
+            {
+                "name": "內政部戶政司",
+                "link": "https://www.ris.gov.tw/app/portal/841"
+            },
+            {
+                "name": "司法院",
+                "link": "https://www.judicial.gov.tw/tw/cp-107-58173-364a9-1.html"
+            }
+        ],
+        "家庭扶助": [
+            {
+                "name": "家扶資金會",
+                "link": "https://www.ccf.org.tw/"
+            },
+            {
+                "name": "台灣世界展望會",
+                "link": "https://www.worldvision.org.tw/"
+            },
+            {
+                "name": "社福中心",
+                "link": "https://topics.mohw.gov.tw/SS/mp-204.html"
+            }
+        ],
+        "家庭諮商": [
+            {
+                "name": "財團法人天使心家族社會福利基金會",
+                "link": "https://www.ah-h.org/contactus"
+            },
+            {
+                "name": "衛生福利部社會及家庭署",
+                "link": "https://www.sfaa.gov.tw/SFAA/"
+            },
+            {
+                "name": "家庭教育中心",
+                "link": "https://dep.mohw.gov.tw/DOMHAOH/cp-4558-69568-107.html"
+            }
+        ],
+        "親職教育": [
+            {
+                "name": "財團法人天主教善牧社會福利基金會",
+                "link": "http://cwv.goodshepherd.org.tw/seemore/parents/resource_1.html"
+            },
+            {
+                "name": "家庭教育中心",
+                "link": "https://familyedu.moe.gov.tw/docDetail.aspx?uid=8847&pid=8844&docid=294537"
+            }
+        ]
+    },
+    "高雄": {
+        "多元族群": [
+            {
+                "name": "台灣國際家庭互助協會 TIFA",
+                "link": "https://www.facebook.com/TIFA1105/?locale=zh_TW"
+            },
+            {
+                "name": "財團法人天主教善牧社會福利基金會",
+                "link": "https://www.goodshepherd.org.tw"
+            }
+        ],
+        "兒少照顧": [
+            {
+                "name": "家扶基金會",
+                "link": "https://www.ccf.org.tw/about/location"
+            },
+            {
+                "name": "居家托育服務中心",
+                "link": "https://www.mababy.com/knowledge-detail?id=13477"
+            }
+        ],
+        "政府部門": [
+            {
+                "name": "113家暴保護專線",
+                "link": "https://dep.mohw.gov.tw/DOPS/cp-1183-6499-105.html"
+            },
+            {
+                "name": "社會福利服務中心",
+                "link": "https://topics.mohw.gov.tw/SS/lp-4528-204.html"
+            },
+            {
+                "name": "內政部戶政司",
+                "link": "https://www.ris.gov.tw/app/portal/841"
+            },
+            {
+                "name": "司法院",
+                "link": "https://www.judicial.gov.tw/tw/cp-107-58173-364a9-1.html"
+            }
+        ],
+        "家庭扶助": [
+            {
+                "name": "家扶資金會",
+                "link": "https://www.ccf.org.tw/"
+            },
+            {
+                "name": "兒福聯盟",
+                "link": "https://www.children.org.tw/"
+            },
+            {
+                "name": "台灣世界展望會",
+                "link": "https://www.worldvision.org.tw/"
+            },
+            {
+                "name": "社福中心",
+                "link": "https://topics.mohw.gov.tw/SS/mp-204.html"
+            }
+        ],
+        "家庭諮商": [
+            {
+                "name": "財團法人天使心家族社會福利基金會",
+                "link": "https://www.ah-h.org/contactus"
+            },
+            {
+                "name": "衛生福利部社會及家庭署",
+                "link": "https://www.sfaa.gov.tw/SFAA/"
+            },
+            {
+                "name": "家庭教育中心",
+                "link": "https://dep.mohw.gov.tw/DOMHAOH/cp-4558-69568-107.html"
+            }
+        ],
+        "親職教育": [
+            {
+                "name": "財團法人天主教善牧社會福利基金會",
+                "link": "http://cwv.goodshepherd.org.tw/seemore/parents/resource_1.html"
+            },
             {
                 "name": "家庭教育中心",
                 "link": "https://familyedu.moe.gov.tw/docDetail.aspx?uid=8847&pid=8844&docid=294537"

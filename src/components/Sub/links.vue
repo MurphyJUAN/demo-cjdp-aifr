@@ -7,13 +7,30 @@
         <el-col :xs="24" :sm="12">
           <div class="map-container">
             <div class="map-btn-container">
-              <el-button type="danger" @click="clearAll()">清除</el-button>
-              <el-button :type="all_city.status?'primary':'default'" @click="all_city.status = !all_city.status" style="margin-left: 2px;">{{ all_city.name }}</el-button>
-              <el-button v-for="city in cities"
-              :key="city.name"
-              :type="city.status?'primary':'default'"
-              @click="city.status = !city.status"
-              >{{ city.name }}</el-button>
+              <div class="button-container">
+                <div class="left-buttons">
+                  <el-button type="danger" @click="clearAll()">清除</el-button>
+                  <el-button v-for="(city, index) in cities"
+                            v-if="index < 10"
+                            :key="city.name"
+                            :type="city.status ? 'primary' : 'default'"
+                            @click="toggleStatus(city)"
+                            class="city-btn-container">
+                    {{ city.name }}
+                  </el-button>
+                </div>
+                <div class="right-buttons">
+                  <el-button :type="all_city.status?'primary':'default'" @click="all_city.status = !all_city.status">{{ all_city.name }}</el-button>
+                  <el-button v-for="(city, index) in cities"
+                            v-if="index >= 10 && index < 20"
+                            :key="city.name"
+                            :type="city.status ? 'primary' : 'default'"
+                            @click="toggleStatus(city)"
+                            class="city-btn-container">
+                    {{ city.name }}
+                  </el-button>
+                </div>
+              </div>
             </div>
             <!-- <img class="map-img" src="../../../static/taiwan_map.png" /> -->
           </div>
@@ -199,6 +216,22 @@ export default {
   width: 180px;
 }
 .map-btn-container >>> button {
+  margin: 5px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.left-buttons, .right-buttons {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.city-btn-container {
   margin: 5px;
 }
 
