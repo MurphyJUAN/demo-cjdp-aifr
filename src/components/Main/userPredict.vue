@@ -38,7 +38,6 @@
             :isLoading="isLoading"
             :errorPrompt="errorPrompt"
             :errorCode="errorCode"
-            :maxResult="maxResult"
           />
         </el-col>
       </el-row>
@@ -62,7 +61,6 @@ export default {
       ground_truth: '',
       predict_result: { Applicant: 0, Respondent: 0, Both: 0 },
       elapsedTime: 0,
-      maxResult: 0,
       isLoading: false,
       isStartPredict: false,
       errorPrompt: false,
@@ -223,7 +221,6 @@ export default {
     addStatement(resultKey, statement) {
       this.isStartPredict = false;
       this.isLoading = false;
-      this.maxResult = 0;
       if (this.checkStatement(resultKey, statement)) {
         this.result.data[resultKey].Sentence = this.result.data[resultKey].Sentence.replace(statement, '');
       } else {
@@ -275,17 +272,6 @@ export default {
 
 
       return true;
-    },
-    findMaxResult(predictResult) {
-      if (predictResult.Applicant > this.maxResult) {
-        this.maxResult = predictResult.Applicant;
-      }
-      if (predictResult.Respondent > this.maxResult) {
-        this.maxResult = predictResult.Respondent;
-      }
-      if (predictResult.Both > this.maxResult) {
-        this.maxResult = predictResult.Both;
-      }
     },
     mergeResult(inputData) {
       const outputData = {};
@@ -341,14 +327,12 @@ export default {
           console.log('res.data:', res.data);
           // predict_result: { Applicant: 0, Respondent: 0, Both: 0 }
           this.predict_result = res.data;
-          this.findMaxResult(this.predict_result);
           this.isStartPredict = true;
           this.isLoading = false;
         });
       } else {
         this.isStartPredict = false;
         this.isLoading = false;
-        this.maxResult = 0;
       }
       // eslint-disable-next-line no-alert
     },
@@ -362,7 +346,6 @@ export default {
         // do stuff
         this.isStartPredict = false;
         this.isLoading = false;
-        this.maxResult = 0;
       },
       deep: true,
     },
