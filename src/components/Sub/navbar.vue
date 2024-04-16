@@ -11,7 +11,9 @@
       <el-menu :default-active="$route.path" class="el-menu-demo" mode="horizontal" :router="true" text-color="#000" active-text-color="#F3BB5C" v-if="!isMobile">
         <!-- <el-menu-item index="0">LOGO</el-menu-item>
         <div class="flex-grow" /> -->
-        <el-menu-item index="/">首頁</el-menu-item>
+        <!-- # TODO -->
+        <el-menu-item index="/" v-if="!$route.path.includes('chatbot')">首頁</el-menu-item>
+        <el-menu-item index="/chatbot" v-if="$route.path.includes('chatbot')">首頁</el-menu-item>
         <el-menu-item index="/userPredict/mode1">模式一：選項</el-menu-item>
         <el-menu-item index="/userPredict/mode2">模式二：文字</el-menu-item>
         <el-menu-item index="/userPredict/mode3">模式三：選項加文字</el-menu-item>
