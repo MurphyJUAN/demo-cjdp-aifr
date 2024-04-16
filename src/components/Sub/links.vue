@@ -51,7 +51,7 @@
             </div>
             <div style="margin-top: 10px;">##目前的內容還在建置中，若有未即時更新或缺少的資訊還請見諒，歡迎與我們聯繫作調整。</div>
           </div>
-          <div style="font-style: italic;">感謝育達科技大學社會工作系施睿宜教授 (現任臺灣司法社工學會秘書長)提供本網頁的相關專業資訊。</div>
+          <div style="font-style: italic;">感謝育達科技大學社會工作系施睿誼教授 (現任臺灣司法社工學會秘書長)提供本網頁的相關專業資訊。</div>
         </el-col>
       </el-row>
     </div>
@@ -187,7 +187,7 @@ export default {
 }
 .intro-text-container {
   width: 90%;
-  background-color: rgb(209, 232, 246);
+  background-color: #FFD286;
   margin: 10px auto;
   padding: 10px 20px;
   font-size: 1rem;
