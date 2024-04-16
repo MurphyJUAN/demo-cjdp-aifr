@@ -4,7 +4,7 @@
     <div class="content-container mt-2">
       <div class="intro-text-container rounded">使用說明：本網頁蒐集國內各縣市中，親權裁判當事人所可能會需要使用或參考的社會服務資源。請先從左方地圖上點選所要查詢的縣市，右方即會呈現該縣市目前相關資源之網頁連結。使用者可以直接點入即連結到該機構的網頁，進一步查詢相關資訊。</div>
       <el-row :gutter="20" class="links-container">
-        <el-col :xs="24" :sm="12">
+        <el-col :span="24" :md="12">
           <div class="map-container">
             <div class="map-btn-container">
               <div class="button-container">
@@ -35,7 +35,7 @@
             <!-- <img class="map-img" src="../../../static/taiwan_map.png" /> -->
           </div>
         </el-col>
-        <el-col :xs="24" :sm="12">
+        <el-col :span="24" :md="12">
           <div>本網頁目前包含的資源包括以下8大類：</div>
           <div>(1)政府部門、(2)法律議題、(3)家庭諮商、(4)家庭扶助、(5)親職教育、(6)兒少照顧、(7)心理健康、(8) 多元族群。</div>
           <div class="links-result-container rounded">
@@ -91,6 +91,9 @@ export default {
     });
   },
   methods: {
+    toggleStatus(city) {
+      city.status = !city.status;
+    },
     mergeUniqueResources(category, newResources) {
       const resourceMap = new Map(this.selectedResources[category].map(item => [item.name, item]));
       newResources.forEach((resource) => {
