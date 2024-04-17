@@ -8,10 +8,12 @@
       <div class="head-divider"></div>
     </div>
     <el-row class="menu-container">
-      <el-menu :default-active="$route.path" class="el-menu-demo" mode="horizontal" :router="true" text-color="#000" active-text-color="#F3BB5C">
+      <el-menu :default-active="$route.path" class="el-menu-demo" mode="horizontal" :router="true" text-color="#000" active-text-color="#F3BB5C" v-if="!isMobile">
         <!-- <el-menu-item index="0">LOGO</el-menu-item>
         <div class="flex-grow" /> -->
-        <el-menu-item index="/">首頁</el-menu-item>
+        <!-- # TODO -->
+        <el-menu-item index="/" v-if="!$route.path.includes('chatbot')">首頁</el-menu-item>
+        <el-menu-item index="/chatbot" v-if="$route.path.includes('chatbot')">首頁</el-menu-item>
         <el-menu-item index="/userPredict/mode1">模式一：選項</el-menu-item>
         <el-menu-item index="/userPredict/mode2">模式二：文字</el-menu-item>
         <el-menu-item index="/userPredict/mode3">模式三：選項加文字</el-menu-item>
@@ -21,6 +23,28 @@
         <el-menu-item index="/links">友善資源</el-menu-item>
         <el-menu-item index="/contactUs">開發團隊</el-menu-item>
       </el-menu>
+
+      <div class="hamburger-menu" @click="toggleSidebar" v-if="isMobile">
+        ☰
+      </div>
+      <!-- 側邊欄 -->
+      <el-drawer
+        :visible.sync="sidebarVisible"
+        direction="ltr"
+        size="200px"
+        v-if="isMobile">
+        <el-menu :default-active="$route.path" mode="vertical" :router="true">
+          <el-menu-item index="/" @click.native="closeSidebar">首頁</el-menu-item>
+          <el-menu-item index="/userPredict/mode1" @click.native="closeSidebar">模式一：選項</el-menu-item>
+          <el-menu-item index="/userPredict/mode2" @click.native="closeSidebar">模式二：文字</el-menu-item>
+          <el-menu-item index="/userPredict/mode3" @click.native="closeSidebar">模式三：選項加文字</el-menu-item>
+          <!-- <el-menu-item index="/predict-mode4">模式四：選項加文字(多模型)</el-menu-item> -->
+          <el-menu-item index="/userDoc" @click.native="closeSidebar">使用說明</el-menu-item>
+          <el-menu-item index="/techDoc" @click.native="closeSidebar">技術說明</el-menu-item>
+          <el-menu-item index="/links" @click.native="closeSidebar">友善資源</el-menu-item>
+          <el-menu-item index="/contactUs" @click.native="closeSidebar">開發團隊</el-menu-item>
+        </el-menu>
+      </el-drawer>
     </el-row>
   </div>
 </template>
@@ -31,7 +55,27 @@ export default {
   data() {
     return {
       activeIndex: '/',
+      sidebarVisible: false,
+      isMobile: false,
     };
+  },
+  created() {
+    this.handleResize();
+    window.addEventListener('resize', this.handleResize);
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize);
+  },
+  methods: {
+    toggleSidebar() {
+      this.sidebarVisible = !this.sidebarVisible;
+    },
+    handleResize() {
+      this.isMobile = window.innerWidth < 768; // 假設小於 768px 為手機屏幕
+    },
+    closeSidebar() {
+      this.sidebarVisible = false;
+    },
   },
 };
 </script>
@@ -83,15 +127,33 @@ a {
   margin: 0px;
   padding: 0px;
 }
-.el-menu {
+/* .el-menu {
   overflow: hidden;
   justify-content: center;
-}
-@media (max-width: 768px) {
+} */
+/* @media (max-width: 768px) {
   .el-menu {
     overflow-x: scroll;
     justify-content: flex-start;
   }
+} */
+.hamburger-menu {
+  cursor: pointer;
+  display: none;
 }
 
+@media (max-width: 768px) {
+  .el-menu-demo {
+    display: none;
+  }
+  .hamburger-menu {
+    display: block;
+    font-weight: bold;
+    color: #2F2620;
+    font-size: 1rem;
+  }
+  .el-menu {
+    display: block;
+  }
+}
 </style>

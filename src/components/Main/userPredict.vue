@@ -5,7 +5,7 @@
       <div class="page-title">{{ pageText[$route.params.mode].title }}</div>
       <div class="shadow-none p-2 mb-2 rounded quote">{{ pageText[$route.params.mode].instruction }}</div>
       <div v-loading="isLoading">
-        <router-view @resultUpdate="updateResult" @updatePrePredict="updatePrePredict" ref="groupForm"/>
+        <router-view @resultUpdate="updateResult" ref="groupForm"/>
       </div>
       <div class="shadow-none p-2 mb-2">{{ pageText[$route.params.mode].note }}</div>
       <el-row :gutter="20">
@@ -31,14 +31,13 @@
         </el-col>
         <el-col :span="24">
           <PredictResult
-            v-if="isStartPredict"
+            v-if="isModeKeyLengthTwo"
             class="predictResult"
-            :predict_result="predict_result"
+            :predict_result="predict_result[$route.params.mode]"
             :elapsedTime="elapsedTime"
             :isLoading="isLoading"
             :errorPrompt="errorPrompt"
             :errorCode="errorCode"
-            :maxResult="maxResult"
           />
         </el-col>
       </el-row>
@@ -57,14 +56,39 @@ export default {
   },
   data() {
     return {
+      result: {
+        mode1: {
+          data: {
+            AA: [{ Sentence: '', Feature: [] }],
+            AD: [{ Sentence: '', Feature: [] }],
+            RA: [{ Sentence: '', Feature: [] }],
+            RD: [{ Sentence: '', Feature: [] }],
+          },
+        },
+        mode2: {
+          data: {
+            AA: [{ Sentence: '', Feature: [] }],
+            AD: [{ Sentence: '', Feature: [] }],
+            RA: [{ Sentence: '', Feature: [] }],
+            RD: [{ Sentence: '', Feature: [] }],
+          },
+        },
+        mode3: {
+          data: {
+            AA: [{ Sentence: '', Feature: [] }],
+            AD: [{ Sentence: '', Feature: [] }],
+            RA: [{ Sentence: '', Feature: [] }],
+            RD: [{ Sentence: '', Feature: [] }],
+          },
+        },
+      },
       showButton: false,
       ID: '',
       ground_truth: '',
-      predict_result: { Applicant: 0, Respondent: 0, Both: 0 },
+      predict_result: { mode1: { Applicant: 0, Respondent: 0, Both: 0 }, mode2: { Applicant: 0, Respondent: 0, Both: 0 }, mode3: { Applicant: 0, Respondent: 0, Both: 0 } },
       elapsedTime: 0,
-      maxResult: 0,
       isLoading: false,
-      isStartPredict: false,
+      // isStartPredict: false,
       errorPrompt: false,
       errorCode: new Error(),
       pageText: {
@@ -187,16 +211,18 @@ export default {
           },
         ],
       },
-      result: {
-        data: {
-          AA: { Sentence: '', Feature: [] },
-          AD: { Sentence: '', Feature: [] },
-          RA: { Sentence: '', Feature: [] },
-          RD: { Sentence: '', Feature: [] },
-        },
-      },
-      prePredict: false,
     };
+  },
+  computed: {
+    isModeKeyLengthTwo() {
+      // 确保 predict_result 和 $route.params.mode 是存在的
+      const mode = this.$route.params.mode;
+      const result = this.predict_result[mode];
+      if (result) {
+        return Object.keys(result).length === 2;
+      }
+      return false; // 如果 result 不存在，返回 false
+    },
   },
   methods: {
     getTestCase() {
@@ -206,7 +232,6 @@ export default {
         url: `${this.$api}/api/get-testcase`,
       }).then((res) => {
         console.log('res.data:', res.data);
-        // predict_result: { Applicant: 0, Respondent: 0, Both: 0 }
         this.updateResult({ data: res.data.data });
         this.ground_truth = res.data.result;
         this.ID = res.data.ID;
@@ -220,23 +245,37 @@ export default {
       this.result = val;
       console.log('result:', this.result);
     },
-    addStatement(resultKey, statement) {
-      this.isStartPredict = false;
-      this.isLoading = false;
-      this.maxResult = 0;
-      if (this.checkStatement(resultKey, statement)) {
-        this.result.data[resultKey].Sentence = this.result.data[resultKey].Sentence.replace(statement, '');
-      } else {
-        this.result.data[resultKey].Sentence += statement;
+    clearInputForm() {
+      if (this.$refs.groupForm.$refs.inputForm) {
+        for (let i = 0; i < this.$refs.groupForm.$refs.inputForm.length; i += 1) {
+          this.$refs.groupForm.$refs.inputForm[i].clearAll();
+        }
       }
     },
-    checkStatement(resultKey, statement) {
-      if (this.result.data[resultKey].Sentence.indexOf(statement) >= 0) return true;
-      return false;
+    clearSelectForm() {
+      if (this.$refs.groupForm.$refs.selectForm) {
+        console.log('>>Clear');
+        for (let i = 0; i < this.$refs.groupForm.$refs.selectForm.length; i += 1) {
+          this.$refs.groupForm.$refs.selectForm[i].clearAll();
+        }
+      }
     },
     clearAllStatement() {
-      console.log(this.$refs.groupForm);
-      this.$refs.groupForm.clearAllStatement();
+      console.log('clearAllStatement', this.$refs.groupForm.$refs);
+      this.result[this.$route.params.mode].data = {
+        AA: [{ Sentence: '', Feature: [] }],
+        AD: [{ Sentence: '', Feature: [] }],
+        RA: [{ Sentence: '', Feature: [] }],
+        RD: [{ Sentence: '', Feature: [] }],
+      };
+      if (this.$route.params.mode === 'mode1') {
+        this.clearSelectForm();
+      } else if (this.$route.params.mode === 'mode2') {
+        this.clearInputForm();
+      } else if (this.$route.params.mode === 'mode3') {
+        this.clearSelectForm();
+        this.clearInputForm();
+      }
     },
     checkContainChinese(str) {
       return /[\u4E00-\u9FA5]+/g.test(str);
@@ -276,17 +315,6 @@ export default {
 
       return true;
     },
-    findMaxResult(predictResult) {
-      if (predictResult.Applicant > this.maxResult) {
-        this.maxResult = predictResult.Applicant;
-      }
-      if (predictResult.Respondent > this.maxResult) {
-        this.maxResult = predictResult.Respondent;
-      }
-      if (predictResult.Both > this.maxResult) {
-        this.maxResult = predictResult.Both;
-      }
-    },
     mergeResult(inputData) {
       const outputData = {};
       Object.entries(inputData).forEach(([key, value]) => {
@@ -311,19 +339,9 @@ export default {
 
       return outputData;
     },
-    updatePrePredict(val) {
-      this.prePredict = val;
-    },
     startPredict() {
-      // if (!this.prePredict) {
-      //   this.$message({
-      //     message: '請檢查是否皆已輸入因素與理由',
-      //     type: 'warning',
-      //   });
-      //   return;
-      // }
-      console.log('>>>>>start predict ==> raw result:', this.result.data);
-      let result = this.mergeResult(this.result.data);
+      console.log('>>>>>start predict ==> raw result:', this.result[this.$route.params.mode].data);
+      let result = this.mergeResult(this.result[this.$route.params.mode].data);
       console.log('>>>>>start predict ==> merge result:', result);
       if (this.checkInputValid(result)) {
         this.isLoading = true;
@@ -339,16 +357,17 @@ export default {
           data: result,
         }).then((res) => {
           console.log('res.data:', res.data);
-          // predict_result: { Applicant: 0, Respondent: 0, Both: 0 }
-          this.predict_result = res.data;
-          this.findMaxResult(this.predict_result);
-          this.isStartPredict = true;
+          this.predict_result[this.$route.params.mode] = res.data;
+          // this.isStartPredict = true;
+          this.isLoading = false;
+        }).catch((error) => {
+          console.log('>>Error:', error);
+          alert(`Oops! 看來出現了一些問題，請稍候再嘗試或是通知管理員！\n 錯誤如下：${error}`);
           this.isLoading = false;
         });
       } else {
-        this.isStartPredict = false;
+        // this.isStartPredict = false;
         this.isLoading = false;
-        this.maxResult = 0;
       }
       // eslint-disable-next-line no-alert
     },
@@ -360,9 +379,9 @@ export default {
     result: {
       handler(val) {
         // do stuff
-        this.isStartPredict = false;
+        // this.isStartPredict = false;
         this.isLoading = false;
-        this.maxResult = 0;
+        this.predict_result[this.$route.params.mode] = { Applicant: 0, Respondent: 0, Both: 0 };
       },
       deep: true,
     },

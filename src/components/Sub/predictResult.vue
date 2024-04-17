@@ -67,7 +67,6 @@ export default {
     isLoading: Boolean,
     errorPrompt: Boolean,
     errorCode: Error,
-    maxResult: Number,
   },
 };
 </script>

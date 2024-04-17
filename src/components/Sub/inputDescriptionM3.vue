@@ -39,8 +39,8 @@ export default {
   data() {
     return {
       result: {
-        feature: '',
-        sentence: '',
+        feature: this.initialFeature,
+        sentence: this.initialSentence,
       },
       dialogState: false,
       features: [
@@ -95,12 +95,14 @@ export default {
   props: {
     configKey: Object,
     rowIdx: Number,
+    initialFeature: String,
+    initialSentence: String,
   },
   watch: {
     result: {
       handler(val) {
         this.$emit('descriptionUpdate', { key: this.configKey.key, rowIdx: this.rowIdx, value: val.sentence });
-        this.$emit('featureUpdate', { key: this.configKey.key, rowIdx: this.rowIdx, value: val.feature });
+        this.$emit('featureUpdate', { key: this.configKey.key, rowIdx: this.rowIdx, value: this.features.filter(feature => feature.value === val.feature) });
       },
       deep: true,
     },
@@ -119,11 +121,6 @@ export default {
       }
       if (this.result.sentence == '') {
         obj.sentence = true;
-      }
-      if (obj.feature || obj.sentence) {
-        this.$emit('updatePrePredict', false);
-      } else {
-        this.$emit('updatePrePredict', true);
       }
       return obj;
     },
