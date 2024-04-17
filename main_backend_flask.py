@@ -23,6 +23,8 @@ import re
 import data_preprocess
 from data_preprocess import clean_to_seg
 from datetime import datetime
+import transformers
+transformers.logging.set_verbosity_error()
 # %%
 # For CORS Protocal
 app = Flask(__name__,
@@ -706,4 +708,4 @@ def predict():
 
 if __name__ == "__main__":
        port = int(os.environ.get("PORT", 8000))
-       app.run(host='0.0.0.0', port=port, debug=True)
+       app.run(host='0.0.0.0', port=port, debug=True, threaded=True)
