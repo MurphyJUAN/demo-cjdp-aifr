@@ -1,0 +1,65 @@
+{
+    "model": "mode1",
+    "data": {
+        "AA": {
+            "Feature": ["親子感情"],
+            "Sentence": ""
+        },
+        "AD": {
+            "Feature": [],
+            "Sentence": ""
+        },
+        "RA": {
+            "Feature": ["意願能力"],
+            "Sentence": ""
+        },
+        "RD": {
+            "Feature": [],
+            "Sentence": ""
+        }
+    }
+}
+
+{
+    "model": "mode2",
+    "data": {
+        "AA": {
+            "Feature": [],
+            "Sentence": "當事人能夠具體陳述對孩子之教育理念及教養態度，且皆會於休假及空閒時，陪伴子女外出遊玩，培養親子互動。"
+        },
+        "AD": {
+            "Feature": [],
+            "Sentence": ""
+        },
+        "RA": {
+            "Feature": [],
+            "Sentence": "當事人目前為孩子之主要照顧者，並能提供穩定生活及正向發展，並無受不當照顧情形，與當事人互動情形亦良好。"
+        },
+        "RD": {
+            "Feature": [],
+            "Sentence": ""
+        }
+    }
+}
+
+{
+    "model": "mode3",
+    "data": {
+        "AA": {
+            "Feature": ["親子感情"],
+            "Sentence": "孩子習慣由當事人照顧生活及一起行動，表現出對其依賴與信任，互動緊密。"
+        },
+        "AD": {
+            "Feature": [],
+            "Sentence": ""
+        },
+        "RA": {
+            "Feature": ["子女年齡"],
+            "Sentence": "孩子尚屬年幼，應極需有細心關照之需要，較適合由當事人長期照顧。"
+        },
+        "RD": {
+            "Feature": [],
+            "Sentence": ""
+        }
+    }
+}
