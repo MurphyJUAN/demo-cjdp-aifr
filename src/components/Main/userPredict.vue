@@ -363,6 +363,7 @@ export default {
         }).catch((error) => {
           console.log('>>Error:', error);
           alert(`Oops! 看來出現了一些問題，請稍候再嘗試或是通知管理員！\n 錯誤如下：${error}`);
+          this.isLoading = false;
         });
       } else {
         // this.isStartPredict = false;
