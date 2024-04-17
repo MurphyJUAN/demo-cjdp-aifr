@@ -3,76 +3,31 @@
     <div class="page-container">
         <div class="content-container mt-2">
             <b-row>
-                <b-col cols="5" class="chatbot-intro-block">
+                <b-col cols="7" class="chatbot-intro-block">
                     <!-- {{ messageList }} -->
                     <h6>一、說明</h6>
                     <p>透過家事調解員與「Le（Legel）姊家事商談好夥伴」的合作，GPT4模型會為當事人整理出符合民法第1055-1條子女最佳利益的條件，進而以親權判決模型進行獲得親權判決的預測分析，讓家事商談服務，從法庭走入家庭，促進雙方調解成功達成共識，陪伴無助的當事人解開離婚法庭上的搶子難題。</p>
                     <h6>[親權酌定法條：民法第 1055-1 條]</h6>
-                    <p>法院為前條裁判時，應依子女之最佳利益，審酌一切情狀，尤應注意下列事項：</p>
-                    <p>一、子女之年齡、性別、人數及健康情形。</p>
-                    <p>二、子女之意願及人格發展之需要。</p>
-                    <p>三、父母之年齡、職業、品行、健康情形、經濟能力及生活狀況。</p>
-                    <p>四、父母保護教養子女之意願及態度。</p>
-                    <p>五、父母子女間或未成年子女與其他共同生活之人間之感情狀況。</p>
-                    <p>六、父母之一方是否有妨礙他方對未成年子女權利義務行使負擔之行為。</p>
-                    <p>七、各族群之傳統習俗、文化及價值觀。</p>
-                    <p>前項子女最佳利益之審酌，法院除得參考社工人員之訪視報告或家事調查官之調查報告外，並得依囑託警察機關、稅捐機關、金融機構、學校及其他有關機關、團體或具有相關專業知識之適當人士就特定事項調查之結果認定之。</p>
-                    <p>如果調解員已熟悉本套系統，可直接點選模式一、二、三，逕行為當事人輸入雙方資訊以獲得判決結果預測。</p>
-                    <p>下面為不同模式的介紹：</p>
-                    <h6>二、模式介紹</h6>
-                    <div class="btn-content bg-white">
-                    <el-row :gutter="10" justify="space-around">
-                        <el-col :span="8" :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
-                        <router-link to="userPredict/mode1">
-                            <div class="grid-content bg-orange">
-                            <strong>輸入模式一(選項勾選)</strong>
-                            <div>優點：可快速勾選</div>
-                            <div>缺點：需判斷分類</div>
-                            <div>準確度：~75%-77%</div>
-                            </div>
-                        </router-link>
-                        </el-col>
-                        <el-col :span="8" :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
-                        <router-link to="userPredict/mode2">
-                            <div class="grid-content bg-green">
-                            <strong>輸入模式二(文字描述)</strong>
-                            <div>優點：可直接文字輸入不分類</div>
-                            <div>缺點：輸入需時較久不易完整</div>
-                            <div>準確度：~83%-88%</div>
-                            </div>
-                        </router-link>
-                        </el-col>
-                        <el-col :span="8" :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
-                        <router-link to="userPredict/mode3">
-                            <div class="grid-content bg-pink">
-                            <strong>輸入模式三(選項勾選+文字描述)</strong>
-                            <div>優點：準確度最高(特別是對共同親權)</div>
-                            <div>缺點：輸入需時最久且需要判斷分類</div>
-                            <div>準確度：~86%-90%</div>
-                            </div>
-                        </router-link>
-                        </el-col>
-                        <!-- <el-col :span="6">
-                        <router-link to="/predict-mode4">
-                            <div class="grid-content bg-info">
-                            <strong>輸入模式四(選項勾選+文字描述)(多模型)</strong>
-                            <div>優點：準確度最高(特別是對共同親權)、預測結果較具有魯棒性</div>
-                            <div>缺點：輸入需時最久且需要判斷分類</div>
-                            <div>準確度：~86%-90%</div>
-                            </div>
-                        </router-link>
-                        </el-col> -->
-                    </el-row>
+                    <div class="text-bold">
+                        <p>法院為前條裁判時，應依子女之最佳利益，審酌一切情狀，尤應注意下列事項：</p>
+                        <p>一、子女之年齡、性別、人數及健康情形。</p>
+                        <p>二、子女之意願及人格發展之需要。</p>
+                        <p>三、父母之年齡、職業、品行、健康情形、經濟能力及生活狀況。</p>
+                        <p>四、父母保護教養子女之意願及態度。</p>
+                        <p>五、父母子女間或未成年子女與其他共同生活之人間之感情狀況。</p>
+                        <p>六、父母之一方是否有妨礙他方對未成年子女權利義務行使負擔之行為。</p>
+                        <p>七、各族群之傳統習俗、文化及價值觀。</p>
+                        <p>前項子女最佳利益之審酌，法院除得參考社工人員之訪視報告或家事調查官之調查報告外，並得依囑託警察機關、稅捐機關、金融機構、學校及其他有關機關、團體或具有相關專業知識之適當人士就特定事項調查之結果認定之。</p>
                     </div>
-                    <p class=" mt-2">
-                        本系統AI模型所預測的結果僅供使用者參考用，建議由法律專業人士協助輸入資料並多方測試比較以發揮最大的效果。
-                    </p>
+
+                    <p>如果調解員已熟悉本套系統，可直接點選模式一、二、三，逕行為當事人輸入雙方資訊以獲得判決結果預測。</p>
+
                 </b-col>
 
-                <b-col cols="7" class="chabot-container-block">
+                <b-col cols="5" class="chabot-container-block">
                     <div class="chatbot-container">
                     <div class="header d-flex px-3 align-items-center">
-                        <div class="header-title d-inline-flex"><div class="circle mx-2"></div>Le姐 | 家事商談機器人</div>
+                        <div class="header-title d-inline-flex"><div class="circle mx-2"></div>Le姐 | 家事商談好夥伴</div>
 
                         <!-- <div class="d-flex">
                             <img class="title-icon mx-1" src="../../../static/moon.png">
@@ -515,6 +470,10 @@ a {
 }
 .bg-pink {
   background: #FBCACA;
+}
+.text-bold {
+    font-weight: bold;
+    font-style: italic;
 }
 </style>
 
