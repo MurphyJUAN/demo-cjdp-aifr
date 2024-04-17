@@ -74,6 +74,7 @@ export default {
   },
   data() {
     return {
+      // 以後加到環境變量
       apiKey: '',
       inputMessageContent: '',
       isTalking: false,
