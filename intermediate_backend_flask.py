@@ -8,6 +8,8 @@ import requests
 import pandas as pd
 import tempfile
 import shutil
+import openai
+openai.api_key = os.getenv('OPENAI_KEY')
 
 # %%
 # For CORS Protocal
@@ -77,11 +79,38 @@ def forward_download():
 
     return response
 
+def prepare_openai_msg(messages):
+    new_messages = [{'role': item['role'], 'content': item['content']} for item in messages]
+    return new_messages
+
+@app.route('/api/send-messages', methods=['POST', 'GET'])
+def send_messages():
+    # 在生成器外部提前获取数据
+    payload = request.get_json()
+    model = payload['model']
+    messages = prepare_openai_msg(payload['messages'])
+    stage = payload['stage']
+    def stream(model, messages):
+        # 使用传入的数据，不依赖请求上下文
+        completion = openai.ChatCompletion.create(
+            model=model,
+            messages=messages,
+            stream=True
+        )
+        for chunk in completion:
+            content = chunk.choices[0].delta.get("content", "")
+            yield content
+
+    # 将数据传递到生成器函数
+    return Response(stream(model, messages), mimetype='text/plain')
+
 @app.route('/api/intermediate-predict', methods=['POST', 'GET'])
 def forward_predict():
     payload = request.get_json()
     external_url = 'http://140.114.80.46:5556/api/predict'
+    print('>>>payload', payload)
     response = requests.post(external_url, json=payload)
+    print('>>>Predict Result:', jsonify(response.json()))
     return jsonify(response.json())
 
 @app.route('/api/get-testcase', methods=['GET'])
@@ -123,6 +152,6 @@ def get_testcase():
 # %%
 
 if __name__ == "__main__":
-        port = int(os.environ.get("PORT", 8080))
+        port = int(os.environ.get("PORT", 8000))
     #    app.run(host='0.0.0.0', port=port, debug=True, ssl_context=('cert.pem', 'key.pem'))
         app.run(host='0.0.0.0', port=port, debug=True, threaded=True)

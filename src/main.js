@@ -29,8 +29,8 @@ Vue.prototype.$testApi = 'http://127.0.0.1:8000';
 // Vue.prototype.$globalApi = 'http://140.114.80.46:5556';
 // Vue.prototype.$globalApi = 'http://140.114.80.195:8080';
 Vue.prototype.$globalApi = 'https://hssai-custodiAI.phys.nthu.edu.tw';
-Vue.prototype.$api = Vue.prototype.$globalApi;
-// Vue.prototype.$api = Vue.prototype.$testApi;
+// Vue.prototype.$api = Vue.prototype.$globalApi;
+Vue.prototype.$api = Vue.prototype.$testApi;
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

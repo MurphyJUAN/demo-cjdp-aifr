@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="app" class="web-body" v-if="!$route.path.includes('vote')">
+    <div id="app" class="web-body" v-if="!$route.path.includes('vote') && !$route.path.includes('ai')">
       <!-- <img class="pinkCircle" src="static/pinkCircle.png" />
       <img class="blueCircle" src="static/blueCircle.png" />
       <img class="purpleBar" src="static/purpleBar.png" />
@@ -14,6 +14,11 @@
       <appFooter :currentApi="currentApi" />
     </div>
     <router-view v-if="$route.path.includes('vote')" :currentApi="currentApi" class="content" />
+    <div v-if="$route.path.includes('ai')">
+      <router-view :currentApi="currentApi" class="content" />
+      <appFooter :currentApi="currentApi" />
+    </div>
+
   </div>
 </template>
 

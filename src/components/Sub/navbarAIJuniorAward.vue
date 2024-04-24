@@ -2,7 +2,7 @@
 <template>
     <div>
       <div class="web-header">
-        <router-link to="/chatbot">
+        <router-link to="/ai_junior_award">
           <span class="web-title">Le（Legel）姊家事商談好夥伴</span>
         </router-link>
         <div class="head-divider"></div>
@@ -10,7 +10,7 @@
       <el-row class="menu-container">
         <el-menu :default-active="$route.path" class="el-menu-demo" mode="horizontal" :router="true" text-color="#000" active-text-color="#F3BB5C" v-if="!isMobile">
 
-          <el-menu-item index="/chatbot" v-if="$route.path.includes('chatbot')">首頁</el-menu-item>
+          <el-menu-item index="/ai_junior_award" v-if="$route.path.includes('chatbot')">首頁</el-menu-item>
           <el-menu-item index="/chatbot-userPredict/mode1">模式一：選項</el-menu-item>
           <el-menu-item index="/chatbot-userPredict/mode2">模式二：文字</el-menu-item>
           <el-menu-item index="/chatbot-userPredict/mode3">模式三：選項加文字</el-menu-item>
