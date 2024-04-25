@@ -67,7 +67,7 @@
               <h5>調解員</h5>
             </div>
             <div class="button-block">
-              <b-button variant="warning" class="start-button"><a @click="scrollToSection('intro-and-chatbot-section')" >開始使用&nbsp↓</a></b-button>
+              <b-button variant="warning" class="start-button"><a href="#intro-and-chatbot-section">開始使用&nbsp↓</a></b-button>
             </div>
           </div>
         </header>
@@ -105,6 +105,7 @@
                     <div class="chatbot-container">
                       <div class="header d-flex px-3 align-items-center">
                         <div class="header-title d-inline-flex"><div class="circle mx-2"></div>Le姐</div>
+                        <img class="icon" src="../../../static/edit.png" @click="exportPDF()">
                       </div>
 
                       <div ref="scrollContainer" class="conversation-container">
@@ -172,7 +173,8 @@ import OpenCC from 'opencc-js';
 import skrollr from 'skrollr';
 import axios from 'axios';
 import violinPlotChat from '../sub/violinPlotChat.vue';
-// 创建一个转换器，这里是从简体中文（cn）转换到繁体中文（tw）
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 export default {
 
@@ -236,11 +238,11 @@ export default {
         //   status: 'summary',
         //   content: '對母親有利的敘述：當事人與孩子的親子互動自然，具有良好的親職能力。能適時的指正孩子的不良行為，具有基本的教養能力。母親阿霞歷來是孩子的主要照顧者，孩子與母親建立了深厚的感情依附關係，並且對孩子的日常起居提供了充分的照顧。母親已規劃具體且階段性的未來教養計畫，突顯其對孩子教育和情感發展的長期承諾。 對母親不利的敘述：當事人目前無穩定工作和收入來源，經濟狀況可能影響其提供孩子更廣泛的教育和生活資源的能力。母親缺乏較高的教育背景，且在台灣沒有其他親友可以協助照顧孩子，這可能對其提供孩子全面支持造成困難。 對父親有利的敘述：當事人有穩定及較高的經濟狀況，可以為孩子提供更充足的教育和生活資源。父親表現出對孩子的關懷，定期通過通話了解孩子的日常生活和學習情況，顯示其對與孩子保持聯繫的高度意願。 對父親不利的敘述：當事人過去曾有將孩子獨留家中的情形，沒有充分注意孩子的日常需要，這可能對孩子的安全形成風險。儘管有積極的態度，但目前對於如何具體教養孩子仍缺乏明確的規劃和準備，這可能影響他作為主要照顧者的能力。 <SUMMARY>',
         // },
-        {
-          role: 'assistant',
-          status: 'summary',
-          content: '對母親有利的敘述：當事人無明顯有利的敘述。 對母親不利的敘述：當事人目前吸毒神智不清，又患有精神病，不利於孩子的教養。 對父親有利的敘述：當事人對孩子極其負責並且關係密切。 對父親不利的敘述：當事人無明顯不利的敘述。 <SUMMARY>',
-        },
+        // {
+        //   role: 'assistant',
+        //   status: 'summary',
+        //   content: '對母親有利的敘述：當事人無明顯有利的敘述。 對母親不利的敘述：當事人目前吸毒神智不清，又患有精神病，不利於孩子的教養。 對父親有利的敘述：當事人對孩子極其負責並且關係密切。 對父親不利的敘述：當事人無明顯不利的敘述。 <SUMMARY>',
+        // },
       ],
 
     };
@@ -262,9 +264,41 @@ export default {
   },
   updated() {
     // # TODO: 滑到最下面
-    this.scrollToBottom();
+    // this.scrollToBottom();
   },
   methods: {
+    // exportPDF() {
+    //   const element = this.$refs.scrollContainer;
+
+    //   html2canvas(element, {
+    //     scale: 0.5, // 调整 scale 值以适应页面大小，这个值可能需要根据实际情况调整
+    //   }).then((canvas) => {
+    //     const imgWidth = 210; // A4纸的宽度为210mm
+    //     const imgHeight = canvas.height * imgWidth / canvas.width;
+    //     const imgData = canvas.toDataURL('image/png');
+    //     const pdf = new jsPDF('p', 'mm', 'a4'); // 使用毫米作为单位
+    //     const position = 0;
+    //     pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+    //     pdf.save('conversation.pdf');
+    //   });
+    // },
+    exportPDF() {
+      const element = this.$refs.scrollContainer;
+
+      html2canvas(element, {
+        scale: 2, // 增加 scale 提高清晰度
+      }).then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF('p', 'mm', 'a4');
+
+        const imgWidth = 210; // A4纸的宽度为210mm
+        const imgHeight = (canvas.height * imgWidth / canvas.width) / 2; // 调整这里的除数以匹配 PDF 页面大小
+        const position = 0;
+
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        pdf.save('conversation.pdf');
+      });
+    },
     convertToTraditional(simplifiedText) {
       const converter = OpenCC.Converter({ from: 'cn', to: 'tw' });
       const traditionalText = converter(simplifiedText);
@@ -301,13 +335,13 @@ export default {
           content: `你現在是一個擁有多年數據分析經驗的家事調解分析師，你的工作是以最大化子女最佳利益的核心角度，根據要爭取親權的雙方當事人(父母)各自有利與不利的敘述，解讀兩種BERT-based判決模型(S1, S2)對於(判給父親、判給母親、判給雙方)等三種結果預測出來的機率分佈，結合雙方當事人的情況，做出合理的法官親權判決預測的解讀，以促進調解員根據你的數據解讀進行調解。以下是你的工作流程：
           1. 收到使用者提供的雙方當事人有利與不利的敘述，以及有多個分別來自 S1, S2 模型所做的判決結果預測的數據，這些包括模型們對於三種可能的判決結果(判給父親、判給母親、判給雙方)，所預測出來的平均機率值、最小最大的機率值、Q1, Q2, Q3 的機率值以及這些機率值的標準差。
           2. 請結合雙方當事人有利不利的敘述，以及多個模型所提供的三種可能的判決結果(判給父親、判給母親、判給雙方)的機率分佈，做出合理的解讀。這些機率分佈可以從平均值、標準差、q1, q2, q3 等數值分析，例如標準差越大的話，可能代表模型對這個預測結果比較沒有信心，這時候就需要提醒調解員和當事人審慎使用這個預測結果。記住，我們之所以提供多個來自兩種不同演算法的多個模型的預測機率分佈，就是希望提供一種可信賴的 AI，讓調解員和當事人不要只參考一種模型的預測結果就做出決定，因為每個模型都可能學到不同的 bias。
-          3. 在你分析完之後，記得詢問「關於數據分析的結果是否還有需要討論的問題？」
+          3. 在你分析完之後，記得詢問「關於數據分析的結果是否還有需要討論的問題？」，如果有的話，你就根據使用者的問題再進行解讀並跟他討論；如果使用者沒有問題的話，你就進入下一階段，說出「當調解員熟悉本套系統後，可直接點選上方導覽列的模式一、二、三直接進行判決預測呦！完成判決結果預測後，調解員也可帶領當事人點選導覽列上方的『友善資源』，共同討論適合當事人使用的友善社會資源，以幫助當事人在離婚後適應生活的變化。」必須一字不漏地照說。
           以下是一些可能出現的狀況：
           * 有時候兩種算法的模型所產生的機率分佈可能是相反的，例如 S1 的模型預測判給母親的機率比較高，但是 S2 模型判給父親的機率卻比母親還要高，這時候你要結合雙方當事人有利不利的敘述，根據經驗去分析哪一種模型的結果比較可信以及原因是什麼，並且提醒調解員和當事人，這種情況發生，很可能因為遇到的法官不同而有不同的結果，(因為有時候某方當事人可能會很篤定自己一定會贏得親權，如果出現這種相反的結果，就可以給調解員解釋的空間，你可以多從這個角度去分析數據來協助後續調解員跟兩方的溝通)，另外可以請調解員多補充當事人的資訊，提供更詳盡的資料來預測判決結果。
           * 有時候兩種算法所產生的機率分佈都差不多，都傾向判給某一方，這時候你也要分析雙方當事人是什麼樣的條件差距，使得模型會有這樣一致的結果，並建議調解員和當事人由於分佈一致，可以放心參考本次預測結果。
           * 有時候可能是S1的模型傾向判給雙方，但是S2的模型，判給父親的平均機率是 49% ，判給母親的機率是 45% 之類的，這種情況雖然兩種模型預測出來的結果不同，但其實都意味著雙方父母的條件對孩子都是差不多有利或不利的，法官有很高的機率會交給雙方共同擁有親權。
           
-          請你嚴格遵守上面的工作流程執行，包括參考雙方當事人以及預測數據的統計資料進行數據解讀，並在最後詢問「關於數據分析的結果是否還有需要討論的問題？」，以及禁止使用 Markdown 語法，你只能用純文字和數字輸出，否則你會遭到罰款！
+          請你嚴格遵守上面的工作流程執行，包括參考雙方當事人以及預測數據的統計資料進行數據解讀，並在最後詢問「關於數據分析的結果是否還有需要討論的問題？」，如果沒有的話，你最後必須說：「「當調解員熟悉本套系統後，可直接點選上方導覽列的模式一、二、三直接進行判決預測呦！完成判決結果預測後，調解員也可帶領當事人點選導覽列上方的『友善資源』，共同討論適合當事人使用的友善社會資源，以幫助當事人在離婚後適應生活的變化。」然後結束對話。你被禁止使用 Markdown 語法，你只能用純文字和數字輸出，否則你會遭到罰款！
           `,
         },
         {
