@@ -172,7 +172,7 @@
 import OpenCC from 'opencc-js';
 import skrollr from 'skrollr';
 import axios from 'axios';
-import violinPlotChat from '../sub/violinPlotChat.vue';
+import violinPlotChat from '../Sub/violinPlotChat';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 
