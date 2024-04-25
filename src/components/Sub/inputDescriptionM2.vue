@@ -138,9 +138,8 @@ export default {
   },
   methods: {
     addStatement(statement) {
-      this.isStartPredict = false;
+      // this.isStartPredict = false;
       this.isLoading = false;
-      this.maxResult = 0;
       if (this.checkStatement(statement)) {
         this.result = this.result.replace(statement, '');
       } else {

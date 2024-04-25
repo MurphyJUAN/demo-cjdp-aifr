@@ -6,7 +6,8 @@
       <img class="purpleBar" src="static/purpleBar.png" />
       <img class="yellowBar" src="static/yellowBar.png" />-->
       <div class="headerContainer">
-        <appNavbar v-if="!$route.path.includes('demo')" id="appNavbar"/>
+        <appNavbar v-if="!$route.path.includes('demo') && !$route.path.includes('chat')" id="appNavbar"/>
+        <appNavbarAIJuniorAward v-if="$route.path.includes('chat')" id="appNavbarAIJuniorAward"/>
         <appNavbarDemo v-if="$route.path.includes('demo')" id="appNavbarDemo"/>
       </div>
       <router-view :currentApi="currentApi" class="content" />
@@ -20,6 +21,7 @@
 import Navbar from './components/Sub/navbar';
 import NavbarDemo from './components/Sub/navbarDemo';
 import Footer from './components/Sub/footer';
+import NavbarAIJuniorAward from './components/Sub/navbarAIJuniorAward';
 
 
 export default {
@@ -28,6 +30,7 @@ export default {
     appNavbar: Navbar,
     appNavbarDemo: NavbarDemo,
     appFooter: Footer,
+    appNavbarAIJuniorAward: NavbarAIJuniorAward,
   },
   data() {
     // test api

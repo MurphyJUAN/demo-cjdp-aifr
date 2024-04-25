@@ -4,7 +4,6 @@ from flask import Flask, request, render_template, jsonify, make_response, send_
 import os
 from flask_cors import CORS, cross_origin
 import random
-from model.MyJointBert import MyJointRoberta
 import copy
 import pandas as pd
 import math
@@ -24,6 +23,8 @@ import re
 import data_preprocess
 from data_preprocess import clean_to_seg
 from datetime import datetime
+import transformers
+transformers.logging.set_verbosity_error()
 # %%
 # For CORS Protocal
 app = Flask(__name__,
@@ -44,6 +45,7 @@ features = ['親子感情', '意願能力', '父母經濟', '支持系統', '父
        '子女年齡', '人格發展', '父母健康', '父母職業', '子女意願', '友善父母', '父母品行']
 # %%
 # Parameter For Pertubation
+# 原先 20 FIXME
 copy_ratio = 20
 with open('./neu_string.txt', 'r', encoding='utf-8') as file:
     neu_string = file.read()
@@ -72,7 +74,7 @@ our_switch_5_model_3 = None
 our_switch_10_model = None
 our_switch_15_model = None
 
-def load_demo_models():
+def load_demo_models(device="cuda"):
     global our_switch_model 
     global our_switch_5_model_1 
     global our_switch_5_model_2 
@@ -129,7 +131,7 @@ dnn_switch_15_model = None
 dnn_switch_20_model = None
 dnn_switch_30_model = None
 
-def load_dnn_models():
+def load_dnn_models(device="cuda"):
     global dnn_switch_0_model
     global dnn_switch_5_model
     global dnn_switch_10_model
@@ -165,7 +167,7 @@ lawformer_switch_5_model = None
 lawformer_switch_10_model = None
 lawformer_switch_15_model = None
 
-def load_lawformer_models():
+def load_lawformer_models(device="cuda"):
     global lawformer_switch_0_model 
     global lawformer_switch_5_model 
     global lawformer_switch_10_model 
@@ -297,9 +299,9 @@ def get_perturbation_data(data, convert=True):
         s_rd.append(cc.convert("[RD] " + new_rd) if convert else "[RD] " + new_rd)
         f_rd.append(cc.convert("[RD] " + data['RD']['Feature']) if convert else "[RD] " + data['RD']['Feature'])
     return s_aa, f_aa, s_ad, f_ad, s_ra, f_ra, s_rd, f_rd
-def get_perturbation_result(data, model, device):
+def get_perturbation_result(data, model, device, copy_ratio=20):
     model.eval()
-    model.to(device)
+    # model.to(device)
     s_aa, f_aa, s_ad, f_ad, s_ra, f_ra, s_rd, f_rd = get_perturbation_data(data)
     
     all_probs = []
@@ -402,12 +404,12 @@ def get_dnn_augment_result(vector_data_list, model, device):
         all_probs += prob_
     return all_probs
 
-def get_predict(data, model_list, type, device):
+def get_predict(data, model_list, type, device, copy_ratio=20):
     print('>>>>> Start Predict ...')
     if type == "bert-based":
         all_probs = []
         for model in model_list:
-            all_probs += get_perturbation_result(data, model, device)
+            all_probs += get_perturbation_result(data, model, device, copy_ratio)
         prob = np.mean(np.array(all_probs), axis=0).tolist()
         std = np.std(np.array(all_probs), ddof=1, axis=0).tolist()
         min_values = np.min(all_probs, axis=0).tolist()
@@ -614,6 +616,7 @@ def predict():
 
     if torch.cuda.is_available():
         device = torch.device('cuda')
+    print('>>>當前Predict使用的Device:', device)
 
     our_model_list = [our_switch_model, our_switch_5_model_1, our_switch_5_model_2, our_switch_5_model_3, our_switch_10_model, our_switch_15_model]
     prob_our_bert, std_our_bert, (min_our_bert, q1_our_bert, q2_our_bert, q3_our_bert, max_our_bert), all_our_bert_probs = get_predict(data=data, model_list=our_model_list, type="bert-based", device=device)
@@ -671,7 +674,7 @@ def predict():
         
     elif mode == "mode3":
         lawformer_model_list = [lawformer_switch_0_model, lawformer_switch_5_model, lawformer_switch_10_model, lawformer_switch_15_model]
-        prob_lawformer, std_lawformer, (min_lawformer, q1_lawformer, q2_lawformer, q3_lawformer, max_lawformer), all_lawformer_probs = get_predict(data=data, model_list=lawformer_model_list, type="bert-based", device=device)
+        prob_lawformer, std_lawformer, (min_lawformer, q1_lawformer, q2_lawformer, q3_lawformer, max_lawformer), all_lawformer_probs = get_predict(data=data, model_list=lawformer_model_list, type="bert-based", device=device, copy_ratio=4)
 
         result = {
         'C1': {
@@ -688,7 +691,7 @@ def predict():
         # for m in lawformer_model_list:
         #     m.cpu()
         # del lawformer_model_list
-        # torch.cuda.empty_cache()
+        torch.cuda.empty_cache()
     else:
         print(f'>>>>Error: Not exist mode: {mode}')
 
@@ -705,4 +708,4 @@ def predict():
 
 if __name__ == "__main__":
        port = int(os.environ.get("PORT", 8000))
-       app.run(host='0.0.0.0', port=port, debug=True)
+       app.run(host='0.0.0.0', port=port, debug=True, threaded=True)

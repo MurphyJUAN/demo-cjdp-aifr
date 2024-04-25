@@ -16,6 +16,7 @@ import UserDoc from '@/components/Main/UserDoc';
 import ContactUs from '@/components/Main/contactUs';
 import ChatBotDemo from '@/components/Main/chatBotDemo';
 import VoteMonitor from '@/components/Main/voteMonitor';
+import AIJuniorAward from '@/components/Main/AIJuniorAward.vue';
 
 Vue.use(Router);
 
@@ -60,7 +61,17 @@ export default new Router({
       component: Links,
     },
     {
+      path: '/chatbot-links',
+      name: 'Link',
+      component: Links,
+    },
+    {
       path: '/userDoc',
+      name: 'UserDoc',
+      component: UserDoc,
+    },
+    {
+      path: '/chatbot-userDoc',
       name: 'UserDoc',
       component: UserDoc,
     },
@@ -70,9 +81,24 @@ export default new Router({
       component: TechDoc,
     },
     {
+      path: '/chatbot-techDoc',
+      name: 'TechDoc',
+      component: TechDoc,
+    },
+    {
       path: '/contactUs',
       name: 'ContactUs',
       component: ContactUs,
+    },
+    {
+      path: '/chatbot-contactUs',
+      name: 'ContactUs',
+      component: ContactUs,
+    },
+    {
+      path: '/ai_junior_award',
+      name: 'AIJuniorAward',
+      component: AIJuniorAward,
     },
     {
       path: '/userPredict',
@@ -88,9 +114,22 @@ export default new Router({
       ],
     },
     {
+      path: '/chatbot-userPredict',
+      name: 'UserPredict',
+      component: UserPredict,
+      children: [
+        // { path: '/userPredict/genderSelect', component: GenderSelect },
+        // { path: '/userPredict/checkboxGroup', component: CheckboxGroup },
+        // { path: '/userPredict/supplementDescription', component: SupplementDescription },
+        // { path: '/userPredict/predictResult', component: PredictResult },
+        // { path: '/userPredict/resultFeedback', component: ResultFeedback },
+        { path: ':mode', component: UserInputGroup },
+      ],
+    },
+    {
       path: '/chatbot',
       name: 'ChatBotDemo',
-      component: ChatBotDemo,
+      component: ChatBotDemo, // 簡單的透明容器
     },
     {
       path: '/:pathMatch(.*)*',
