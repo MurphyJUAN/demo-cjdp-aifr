@@ -352,8 +352,8 @@ export default {
         console.log('>>>>>start predict ==> provide result:', result);
         axios({
           method: 'post',
-          // url: `${this.$api}/api/predict`,
-          url: `/api/intermediate-predict`,
+          url: `${this.$api}/api/intermediate-predict`,
+          // url: `/api/intermediate-predict`,
           data: result,
         }).then((res) => {
           console.log('res.data:', res.data);
