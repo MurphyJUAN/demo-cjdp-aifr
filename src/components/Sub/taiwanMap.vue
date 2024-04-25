@@ -116,13 +116,13 @@ export default {
 
 #map >>> path {
   fill: transparent;
-  stroke: #ffd694;
+  stroke: #007bff;
   transition: fill 0.2s ease, stroke 0.2s ease, transform 0.2s ease;
 }
 
 #map >>> path.active {
-  fill: #ffd694;
-  stroke: #ffd694;
+  fill:  #007bff;
+  stroke:  #007bff;
 }
 #svg {
   height: inherit;
