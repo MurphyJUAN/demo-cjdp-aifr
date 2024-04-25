@@ -6,10 +6,13 @@
       <el-row :gutter="20" class="links-container">
         <el-col :span="24" :md="12">
           <div class="map-container">
+            <div class="taiwan-map-container">
+              <taiwanMap :cities="cities"></taiwanMap>
+            </div>
             <div class="map-btn-container">
               <div class="button-container">
                 <div class="left-buttons">
-                  <el-button type="danger" @click="clearAll()">清除</el-button>
+                  <el-button type="danger" @click="clearAll()" class="city-btn-container">清除</el-button>
                   <el-button v-for="(city, index) in cities"
                             v-if="index < 10"
                             :key="city.name"
@@ -20,7 +23,7 @@
                   </el-button>
                 </div>
                 <div class="right-buttons">
-                  <el-button :type="all_city.status?'primary':'default'" @click="all_city.status = !all_city.status">{{ all_city.name }}</el-button>
+                  <el-button :type="all_city.status?'primary':'default'" @click="all_city.status = !all_city.status" class="city-btn-container">{{ all_city.name }}</el-button>
                   <el-button v-for="(city, index) in cities"
                             v-if="index >= 10 && index < 20"
                             :key="city.name"
@@ -32,7 +35,6 @@
                 </div>
               </div>
             </div>
-            <!-- <img class="map-img" src="../../../static/taiwan_map.png" /> -->
           </div>
         </el-col>
         <el-col :span="24" :md="12">
@@ -60,10 +62,12 @@
 
 <script>
 import Resources from '../../../static/resources_by_city.json';
+import taiwanMap from './taiwanMap';
 
 export default {
   name: 'Link',
   components: {
+    taiwanMap,
   },
   data() {
     return {
@@ -119,7 +123,7 @@ export default {
         allCity.push({ name: key, status: false });
       });
       this.cities = allCity;
-    }
+    },
   },
   watch: {
     all_city: {
@@ -204,11 +208,27 @@ export default {
 }
 .map-container {
   display: flex;
-  justify-content: flex-end;
-  background-image: url('../../../static/taiwan_map.png');
-  background-size: contain;
-  background-position: left;
-  background-repeat: no-repeat;
+  justify-content: center;
+}
+
+.taiwan-map-container {
+  height: auto;
+  min-width: 300px;
+}
+@media only screen and (max-width: 1440px) {
+  .taiwan-map-container {
+    min-width: 200px;
+  }
+}
+@media only screen and (max-width: 500px) {
+  .map-container {
+    flex-wrap: wrap;
+  }
+}
+@media only screen and (max-width: 360px) {
+  .taiwan-map-container {
+    width: 100%;
+  }
 }
 .map-img {
   width: 65%;
