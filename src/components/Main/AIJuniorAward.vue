@@ -3,7 +3,7 @@
     <div class="ai_junior_award">
         <!-- Navbar -->
           <!-- 大螢幕 -->
-          <b-navbar toggleable="lg" fixed="top" :class="{ navbarDefault: hasScrolled,  navbarTop: !hasScrolled}">
+          <b-navbar class="navbar-default-large" toggleable="lg" fixed="top" :class="{ navbarDefault: hasScrolled,  navbarTop: !hasScrolled}">
             <b-container>
               <b-navbar-nav>
                 <b-nav-item href="/ai_junior_award">AIFRxAI Junior Award 2024</b-nav-item>
@@ -26,52 +26,90 @@
             </b-container>
           </b-navbar>
 
-
-          <!-- <nav class="navbar navbar-default navbar-fixed-top navbar-top">
-            <div class="container">
-              <div class="navbar-header"><a class="navbar-brand" href="#front_page">PRINT</a></div>
-              <div class="navbar-collapse collapse">
-                <div class="nav navbar-nav navbar-right">
-                  <li><a href="#section_ask">引言 INTRO</a></li>
-                  <li><a href="#section_about">簡介 ABOUT</a></li>
-                  <li><a href="#section_story">故事 STORY</a></li>
-                  <li><a href="#section_future">未來 FUTURE</a></li>
-                </div>
-              </div>
-            </div>
-          </nav> -->
           <!-- 大螢幕 -->
+          <b-navbar class="navbar-default-small navbarDefault" toggleable="lg" fixed="top">
+            <b-container>
+              <b-navbar-nav>
+                <b-nav-item href="/ai_junior_award">AIFRxAI Junior Award 2024</b-nav-item>
+              </b-navbar-nav>
+              <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+              <!-- <b-navbar-nav href="/ai_junior_award">AIFRxAI Junior Award 2024</b-navbar-nav> -->
+              <b-collapse id="nav-collapse" is-nav >
+                <b-navbar-nav class="ml-auto">
+                  <b-nav-item href="/chatbot">首頁</b-nav-item>
+                  <b-nav-item href="/chatbot-userPredict/mode1">模式一：選項</b-nav-item>
+                  <b-nav-item href="/chatbot-userPredict/mode2">模式二：文字</b-nav-item>
+                  <b-nav-item href="/chatbot-userPredict/mode3">模式三：選項加文字</b-nav-item>
+                  <!-- <b-nav-item href="/predict-mode4">模式四：選項加文字(多模型)</b-nav-item> -->
+                  <b-nav-item href="/chatbot-userDoc">使用說明</b-nav-item>
+                  <b-nav-item href="/chatbot-techDoc">技術說明</b-nav-item>
+                  <b-nav-item href="/chatbot-links">友善資源</b-nav-item>
+                  <b-nav-item href="/chatbot-contactUs">開發團隊</b-nav-item>
+                </b-navbar-nav>
+              </b-collapse>
+            </b-container>
+          </b-navbar>
 
         <!-- Navbar -->
 
         <!-- 首頁 -->
 
           <!-- 大螢幕 -->
-        <header class="jumbotron_front_page" id="front_page">
-          <div class="my_container">
-            <div class="front_page_title_group" >
-              <div data-0="transform: translateY(-50px)" data-600="transform: translateY(100px)">
-                <div class="d-inline-flex">
-                  <img src="../../../static/le-pfp.png" class="le-icon">
-                  <h1 class="front_page_title">Le姐</h1>
+        <div class="navbar-default-large">
+          <header class="jumbotron_front_page" id="front_page">
+            <div class="my_container">
+              <div class="front_page_title_group" >
+                <div data-0="transform: translateY(-50px)" data-600="transform: translateY(100px)">
+                  <div class="d-inline-flex">
+                    <img src="../../../static/le-pfp.png" class="le-icon">
+                    <h1 class="front_page_title">Le姐</h1>
+                  </div>
+                  <h1 class="front_page_title">家事商談好夥伴</h1>
                 </div>
-                <h1 class="front_page_title">家事商談好夥伴</h1>
+                <hr>
+                <h4 class="front_page_title">結合&nbsp生成式AI&nbsp與&nbsp親權判決模型&nbsp解決親權難題</h4>
               </div>
-              <hr>
-              <h4 class="front_page_title">結合&nbsp生成式AI&nbsp與&nbsp親權判決模型&nbsp解決親權難題</h4>
             </div>
-          </div>
-          <div class="start-block">
-            <div class="ta-block">
-              <img src="../../../static/user.png" class="icon-img">
-              <h5>調解員</h5>
+            <div class="start-block">
+              <div class="ta-block">
+                <img src="../../../static/user.png" class="icon-img">
+                <h5>調解員</h5>
+              </div>
+              <div class="button-block">
+                <b-button variant="warning" class="start-button"><a href="#intro-and-chatbot-section">開始使用&nbsp↓</a></b-button>
+              </div>
             </div>
-            <div class="button-block">
-              <b-button variant="warning" class="start-button"><a href="#intro-and-chatbot-section">開始使用&nbsp↓</a></b-button>
-            </div>
-          </div>
-        </header>
+          </header>
+
+        </div>
+
           <!-- 大螢幕 -->
+        <div class="navbar-default-small">
+          <header class="jumbotron_front_page_small  px-5" id="front_page">
+            <div class="my_container_small">
+              <div class="front_page_title_group" >
+                <div data-0="transform: translateY(-25px)" data-600="transform: translateY(70px)">
+                  <div class="d-inline-flex">
+                    <img src="../../../static/le-pfp.png" class="le-icon">
+                    <h4 class="front_page_title">Le姐</h4>
+                  </div>
+                  <h4 class="front_page_title">家事商談好夥伴</h4>
+                </div>
+                <hr>
+                <h5 class="front_page_title">結合&nbsp生成式AI&nbsp與&nbsp親權判決模型&nbsp解決親權難題</h5>
+              </div>
+            </div>
+            <div class="start-block-small mt-2">
+              <div class="ta-block">
+                <img src="../../../static/user.png" class="icon-img">
+                <h5>調解員</h5>
+              </div>
+              <div class="button-block">
+                <b-button variant="warning" class="start-button"><a href="#intro-and-chatbot-section">開始使用&nbsp↓</a></b-button>
+              </div>
+            </div>
+          </header>
+        </div>
 
         <!-- 首頁 -->
 
@@ -116,17 +154,25 @@
                                   <div class="font-weight-bold">{{ roleAlias[item.role].name }}：</div>
                                 </div>
 
-                                <div>{{ item.content }}</div>
-                                <div v-if="item.status === 'summary'">
-                                  如果不需修改，請點擊按鈕：
-                                  <button @click="handleStartPredict()">開始預測判決結果...</button>
-                                </div>
                                 <div v-if="item.status === 'predict'">
                                   <div class="justify-content-center mt-4" :span="24" :xs="24" :sm="24" :md="12" :lg="12" :xl="12" v-for="model in models" :key="model">
                                     <!-- <OnlyViolinPlot :predict_result="predict_result" :model_used="model"></OnlyViolinPlot> -->
                                     <violinPlotChat :predict_result="predict_result['mode2']" :model_used="model"></violinPlotChat>
                                   </div>
+                                  <p></p>
                                 </div>
+
+                                <div>{{ item.content }}</div>
+
+                                <div v-if="item.status === 'initial'" class="w-100 d-flex justify-content-end">
+                                  <b-button class="function-btn" @click="handleInitialTalk()" variant="light">好</b-button>
+                                </div>
+
+                                <div v-if="item.status === 'summary'" class="w-100 d-flex justify-content-end">
+                                  如果不需修改，請點擊按鈕：
+                                  <b-button class="function-btn" @click="handleStartPredict()" variant="light">開始預測判決結果...</b-button>
+                                </div>
+
 
                               </div>
                           </div>
@@ -225,11 +271,13 @@ export default {
 
 開頭請都用「對母親(或父親)有利(或不利)的敘述：」並且參考這種判決書的專業用語，用這種writing style來歸納雙方的客觀條件。
 在總結summary完成之後，必須詢問使用者是否有需要補充或更正的部分，然後在後面加上 <SUMMARY> 的token，這樣我就知道你已經總結完成了。總結非常重要，只需要做一次，在雙方都問完之後，並且要「嚴格遵守」上面有利不利敘述的格式規範以及<SUMMARY>的token，不然你會被罰款！
-  13. 如果使用者回覆他需要更改，就在他補充說明以及更改後再做一次總結的步驟，總結的形式跟第12步驟一樣， 開頭請都用「對母親(或父親)有利(或不利)的敘述：」並且參考這種判決書的專業用語，用這種writing style來歸納雙方的客觀條件。
-在總結summary完成之後，必須詢問使用者是否有需要補充或更正的部分，然後在後面加上 <SUMMARY> 的token，這樣我就知道你已經總結完成了。總結非常重要，只需要做一次，在雙方都問完之後，並且要嚴格遵守上面有利不利敘述的格式規範以及<SUMMARY>的token，不然你會被罰款！ 如果使用者回覆不需要再調整或補充，你就回覆「謝謝您，接下來會開始進行判決結果預測，請稍等片刻...」必須一字不漏地仿照這個回覆，不要刪減或增加新的字。`,
+  13. 如果使用者回覆他需要更改，就在他補充說明以及更改後再做一次總結的步驟，總結的形式跟第12步驟一樣， 開頭請都用「對母親(或父親)有利(或不利)的敘述：」並且參考這種判決書的專業用語，用這種writing style來歸納雙方的客觀條件。在總結summary完成之後，必須詢問使用者是否有需要補充或更正的部分，然後在後面加上 <SUMMARY> 的token，這樣我就知道你已經總結完成了。總結非常重要，只需要做一次，在雙方都問完之後，並且要嚴格遵守上面有利不利敘述的格式規範以及<SUMMARY>的token，不然你會被罰款！ 如果使用者回覆不需要再調整或補充，你就回覆「謝謝您，接下來會開始進行判決結果預測，請稍等片刻...」必須一字不漏地仿照這個回覆，不要刪減或增加新的字。
+  14. 之後以會進行判決結果預測，預測結束後如果使用者有其他數據分析的問題你就繼續跟使用者討論。我在畫面上有將多個判決模型預測出來的判決結果的機率分佈用violin plot呈現，所以如果使用者有關於 violinplot (畫面上有三坨像小提琴一樣胖胖的圖形)，請你跟他解釋這個圖呈現的資訊、意義，如果有關於機器學習、模型預測以及機率分佈是什麼的問題，請你用你的知識告訴他。如無的話，你就建議他可以點擊「友善連結」給當事人看相關可用社會資源。
+  
+  以上步驟中，最重要的是前面做總結的部分！你在收集完雙方當事人足夠的訊息後，需要做總結，總共只需要做一次總結，並且開頭請都用「對母親(或父親)有利(或不利)的敘述：」並且參考這種判決書的專業用語，用這種writing style來歸納雙方的客觀條件。在總結summary完成之後，必須詢問使用者是否有需要補充或更正的部分，然後在後面加上 <SUMMARY> 的token。這點非常重要！你一定要做好總結的部分，不然會遭到嚴厲的懲罰！`,
         }, {
           role: 'assistant',
-          status: 'noraml',
+          status: 'initial',
           content: '調解委員您好！我是Le姊，一個專門設計來協助處理家事調解相關問題的對話機器人。我可以使用適當的法律用語以及親權相關的法律概念，協助您逐步釐清當事人的情況，並提供親權判決結果預測與專業建議以及推薦適合當事人的的友善資源，以協助您促進雙方達成共識。當然，若在對話過程中，您的問題已超出我程式設計所涵蓋的範圍，我也會建議您直接尋求專業的法律諮詢。現在，你準備好開始對話了嗎？',
         },
         // Debug
@@ -264,24 +312,12 @@ export default {
   },
   updated() {
     // # TODO: 滑到最下面
-    // this.scrollToBottom();
+    this.scrollToBottom();
   },
   methods: {
-    // exportPDF() {
-    //   const element = this.$refs.scrollContainer;
-
-    //   html2canvas(element, {
-    //     scale: 0.5, // 调整 scale 值以适应页面大小，这个值可能需要根据实际情况调整
-    //   }).then((canvas) => {
-    //     const imgWidth = 210; // A4纸的宽度为210mm
-    //     const imgHeight = canvas.height * imgWidth / canvas.width;
-    //     const imgData = canvas.toDataURL('image/png');
-    //     const pdf = new jsPDF('p', 'mm', 'a4'); // 使用毫米作为单位
-    //     const position = 0;
-    //     pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-    //     pdf.save('conversation.pdf');
-    //   });
-    // },
+    handleInitialTalk() {
+      this.sendChatMessage('好了', this.currentStage);
+    },
     exportPDF() {
       const element = this.$refs.scrollContainer;
 
@@ -335,13 +371,12 @@ export default {
           content: `你現在是一個擁有多年數據分析經驗的家事調解分析師，你的工作是以最大化子女最佳利益的核心角度，根據要爭取親權的雙方當事人(父母)各自有利與不利的敘述，解讀兩種BERT-based判決模型(S1, S2)對於(判給父親、判給母親、判給雙方)等三種結果預測出來的機率分佈，結合雙方當事人的情況，做出合理的法官親權判決預測的解讀，以促進調解員根據你的數據解讀進行調解。以下是你的工作流程：
           1. 收到使用者提供的雙方當事人有利與不利的敘述，以及有多個分別來自 S1, S2 模型所做的判決結果預測的數據，這些包括模型們對於三種可能的判決結果(判給父親、判給母親、判給雙方)，所預測出來的平均機率值、最小最大的機率值、Q1, Q2, Q3 的機率值以及這些機率值的標準差。
           2. 請結合雙方當事人有利不利的敘述，以及多個模型所提供的三種可能的判決結果(判給父親、判給母親、判給雙方)的機率分佈，做出合理的解讀。這些機率分佈可以從平均值、標準差、q1, q2, q3 等數值分析，例如標準差越大的話，可能代表模型對這個預測結果比較沒有信心，這時候就需要提醒調解員和當事人審慎使用這個預測結果。記住，我們之所以提供多個來自兩種不同演算法的多個模型的預測機率分佈，就是希望提供一種可信賴的 AI，讓調解員和當事人不要只參考一種模型的預測結果就做出決定，因為每個模型都可能學到不同的 bias。
-          3. 在你分析完之後，記得詢問「關於數據分析的結果是否還有需要討論的問題？」，如果有的話，你就根據使用者的問題再進行解讀並跟他討論；如果使用者沒有問題的話，你就進入下一階段，說出「當調解員熟悉本套系統後，可直接點選上方導覽列的模式一、二、三直接進行判決預測呦！完成判決結果預測後，調解員也可帶領當事人點選導覽列上方的『友善資源』，共同討論適合當事人使用的友善社會資源，以幫助當事人在離婚後適應生活的變化。」必須一字不漏地照說。
           以下是一些可能出現的狀況：
           * 有時候兩種算法的模型所產生的機率分佈可能是相反的，例如 S1 的模型預測判給母親的機率比較高，但是 S2 模型判給父親的機率卻比母親還要高，這時候你要結合雙方當事人有利不利的敘述，根據經驗去分析哪一種模型的結果比較可信以及原因是什麼，並且提醒調解員和當事人，這種情況發生，很可能因為遇到的法官不同而有不同的結果，(因為有時候某方當事人可能會很篤定自己一定會贏得親權，如果出現這種相反的結果，就可以給調解員解釋的空間，你可以多從這個角度去分析數據來協助後續調解員跟兩方的溝通)，另外可以請調解員多補充當事人的資訊，提供更詳盡的資料來預測判決結果。
           * 有時候兩種算法所產生的機率分佈都差不多，都傾向判給某一方，這時候你也要分析雙方當事人是什麼樣的條件差距，使得模型會有這樣一致的結果，並建議調解員和當事人由於分佈一致，可以放心參考本次預測結果。
           * 有時候可能是S1的模型傾向判給雙方，但是S2的模型，判給父親的平均機率是 49% ，判給母親的機率是 45% 之類的，這種情況雖然兩種模型預測出來的結果不同，但其實都意味著雙方父母的條件對孩子都是差不多有利或不利的，法官有很高的機率會交給雙方共同擁有親權。
           
-          請你嚴格遵守上面的工作流程執行，包括參考雙方當事人以及預測數據的統計資料進行數據解讀，並在最後詢問「關於數據分析的結果是否還有需要討論的問題？」，如果沒有的話，你最後必須說：「「當調解員熟悉本套系統後，可直接點選上方導覽列的模式一、二、三直接進行判決預測呦！完成判決結果預測後，調解員也可帶領當事人點選導覽列上方的『友善資源』，共同討論適合當事人使用的友善社會資源，以幫助當事人在離婚後適應生活的變化。」然後結束對話。你被禁止使用 Markdown 語法，你只能用純文字和數字輸出，否則你會遭到罰款！
+          請你嚴格遵守上面的工作流程執行，包括參考雙方當事人以及預測數據的統計資料進行數據解讀，你被禁止使用 Markdown 語法，你只能用純文字和數字輸出，否則你會遭到罰款！
           `,
         },
         {
@@ -393,11 +428,11 @@ export default {
       ];
 
       this.chat(meseageLst, stage).then((response) => {
-        console.log('>>>response', response.body, response.status);
         if (response) {
           const reader = response.body.getReader();
           const status = response.status;
           this.readStream(reader, status);
+          this.appendLastMessageContent('關於數據分析的結果是否還有需要討論的問題？如果沒有的話，在這邊提醒調解員，當您熟悉本套系統後，可直接點選上方導覽列的模式一、二、三直接進行判決預測呦！完成判決結果預測後，調解員也可帶領當事人點選導覽列上方的『友善資源』，共同討論適合當事人使用的友善社會資源，以幫助當事人在離婚後適應生活的變化。謝謝！');
         }
       });
     },
@@ -416,7 +451,7 @@ export default {
         this.messageList.push({
           role: 'assistant',
           status: 'predict',
-          content: '以下是親權判決模型根據雙方當事人有利與不利的敘述，所做的判決結果預測：',
+          content: '以上是親權判決模型根據雙方當事人有利與不利的敘述，所做的判決結果預測：',
         });
 
         // # 開始要求解釋數據
@@ -518,12 +553,9 @@ export default {
 
       while (true) {
         const { value, done } = await reader.read();
-        console.log('>>>value, done', value, done);
         if (done) break;
 
         const decodedText = this.convertToTraditional(decoder.decode(value, { stream: true }));
-
-        console.log('>>>decodedText', decodedText);
 
         if (status !== 200) {
           this.appendLastMessageContent(decodedText);
@@ -613,7 +645,49 @@ html, body {
   background: white !important;
   position: relative;
 }
-header.jumbotron_front_page {
+
+.navbar-default-small {
+  display: block; /* 显示默认样式的 navbar */
+}
+
+.navbar-default-large {
+  display: none; /* 在小屏幕上隐藏大屏幕的 navbar */
+}
+
+/* 媒体查询，适用于大屏幕设备（如宽度大于 992px） */
+
+@media (min-width: 992px) {
+  .navbar-default-small {
+    display: none; /* 在大屏幕上隐藏小屏幕的 navbar */
+  }
+
+  .navbar-default-large {
+    display: block; /* 显示大屏幕的 navbar */
+  }
+
+}
+
+.jumbotron_front_page_small {
+  background-image: url(../../../static/Le_small.png);
+  background-size: cover;
+  width: 100%;
+  height: 100vh;
+  background-attachment: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.my_container_small {
+  display: inline-block; /* 讓容器的寬度自適應內容 */
+}
+
+.start-block-small{
+  display: inline-block; /* 讓容器的寬度自適應內容 */
+  text-align: center;
+}
+
+.jumbotron_front_page {
   background-image: url(../../../static/Le姐_cut.png);
   background-size: cover;
   width: 100%;
@@ -746,6 +820,18 @@ header h4 {
     margin: auto;
 }
 
+.navbarTop {
+  background-color: transparent !important;
+  border-bottom: 1px solid #e7e7e7 !important;
+  color: white !important;
+  a {
+    color: white !important;
+    transition: 0.5s !important;
+    &:hover {
+      color: #FF6F39 !important;
+    }
+  }
+}
 
 .navbarDefault {
   background-color: #F8F8F8;
@@ -760,18 +846,6 @@ header h4 {
   }
 }
 
-.navbarTop {
-  background-color: transparent !important;
-  border-bottom: 1px solid #e7e7e7 !important;
-  color: white !important;
-  a {
-    color: white !important;
-    transition: 0.5s !important;
-    &:hover {
-      color: #FF6F39 !important;
-    }
-  }
-}
 
 .header {
   width: 100%;
@@ -840,6 +914,10 @@ header h4 {
 
 .navbar-toggler {
   background: #F8F8F8;
+}
+
+.function-btn {
+  border: 1px solid #777;
 }
 
 
