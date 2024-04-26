@@ -376,10 +376,11 @@ export default {
   },
   mounted() {
     window.addEventListener('scroll', this.handleScroll);
-    this.skrollrInstance = skrollr.init({
-      smoothScrolling: true,
-    });
-    // this.checkDeviceType();
+    if (!this.checkMobileType()) {
+      this.skrollrInstance = skrollr.init({
+        smoothScrolling: true,
+      });
+    }
     this.checkScreenSize();
     window.addEventListener('resize', this.checkScreenSize);
   },
@@ -425,12 +426,13 @@ export default {
       const traditionalText = converter(simplifiedText);
       return traditionalText;
     },
-    checkDeviceType() {
+    checkMobileType() {
       const userAgent = navigator.userAgent || navigator.vendor || window.opera;
       // 使用正则表达式检查 userAgent 字符串是否含有移动设备的标识
       if (/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent.toLowerCase())) {
-        alert('本網站暫時不適合在手機上使用(很快就會解決)。');
+        return true;
       }
+      return false;
     },
     scrollToSection(refName) {
       const element = document.getElementById(refName);
