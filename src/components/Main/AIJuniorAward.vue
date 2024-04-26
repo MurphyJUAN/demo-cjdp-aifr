@@ -88,7 +88,7 @@
           <header class="jumbotron_front_page_small  px-5" id="front_page">
             <div class="my_container_small">
               <div class="front_page_title_group" >
-                <div id="skrollr-body" data-0="transform: translateY(-20px)" data-600="transform: translateY(70px)">
+                <div>
                   <div class="d-inline-flex" >
                     <img src="../../../static/le-pfp.png" class="le-icon">
                     <h4 class="front_page_title">Le姐</h4>
@@ -378,7 +378,7 @@ export default {
     this.skrollrInstance = skrollr.init({
       smoothScrolling: true,
     });
-    this.checkDeviceType();
+    // this.checkDeviceType();
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.handleScroll);
