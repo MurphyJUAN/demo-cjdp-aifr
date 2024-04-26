@@ -3,7 +3,7 @@
     <div class="ai_junior_award">
         <!-- Navbar -->
           <!-- 大螢幕 -->
-          <b-navbar class="navbar-default-large" toggleable="lg" fixed="top" :class="{ navbarDefault: hasScrolled,  navbarTop: !hasScrolled}">
+          <b-navbar v-if="!isSmallScreen" toggleable="lg" fixed="top" :class="{ navbarDefault: hasScrolled,  navbarTop: !hasScrolled}">
             <b-container>
               <b-navbar-nav>
                 <b-nav-item href="/ai_junior_award">AIFRxAI Junior Award 2024</b-nav-item>
@@ -27,7 +27,7 @@
           </b-navbar>
 
           <!-- 大螢幕 -->
-          <b-navbar class="navbar-default-small navbarDefault" toggleable="lg" fixed="top">
+          <b-navbar v-if="isSmallScreen" class="navbarDefault" toggleable="lg" fixed="top">
             <b-container>
               <b-navbar-nav>
                 <b-nav-item href="/ai_junior_award">AIFRxAI Junior Award 2024</b-nav-item>
@@ -55,7 +55,7 @@
         <!-- 首頁 -->
 
           <!-- 大螢幕 -->
-        <div class="navbar-default-large">
+        <div  v-if="!isSmallScreen">
           <header class="jumbotron_front_page" id="front_page">
             <div class="my_container">
               <div class="front_page_title_group" >
@@ -84,7 +84,7 @@
         </div>
 
           <!-- 大螢幕 -->
-        <div class="navbar-default-small">
+        <div v-if="isSmallScreen">
           <header class="jumbotron_front_page_small  px-5" id="front_page">
             <div class="my_container_small">
               <div class="front_page_title_group" >
@@ -115,7 +115,7 @@
 
         <!-- 說明文字 -->
           <!-- 大螢幕 -->
-          <div class="navbar-default-large">
+          <div  v-if="!isSmallScreen">
             <section id="intro-and-chatbot-section">
               <img src="../../../static/negotiate.png" class="background-img" data-300="transform: translateX(-200px)" data-700="transform: translateX(0px)">
               <b-container fluid>
@@ -202,7 +202,7 @@
 
           <!-- 大螢幕 -->
 
-            <div  class="navbar-default-small">
+            <div   v-if="isSmallScreen">
               <section id="intro-and-chatbot-section-small">
                 <b-container fluid>
                   <b-row>
@@ -308,6 +308,7 @@ export default {
   },
   data() {
     return {
+      isSmallScreen: false,
       currentStage: 'collect-info',
       extractResult: {},
       models: ['S1', 'S2'],
@@ -379,12 +380,15 @@ export default {
       smoothScrolling: true,
     });
     // this.checkDeviceType();
+    this.checkScreenSize();
+    window.addEventListener('resize', this.checkScreenSize);
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.handleScroll);
     if (this.skrollrInstance) {
       this.skrollrInstance.destroy();
     }
+    window.removeEventListener('resize', this.checkScreenSize);
   },
   created() {
   },
@@ -393,6 +397,9 @@ export default {
     this.scrollToBottom();
   },
   methods: {
+    checkScreenSize() {
+      this.isSmallScreen = window.innerWidth < 992; // 例如，992px 可以是你定义的小屏幕最大宽度
+    },
     handleInitialTalk() {
       this.sendChatMessage('好', this.currentStage);
     },
