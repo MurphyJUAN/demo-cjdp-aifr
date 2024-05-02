@@ -1,55 +1,50 @@
 <!-- eslint-disable max-len -->
 <template>
   <div class="home-content" id="Home">
-    <div class="Home-title">系統說明</div>
-    <UserGuide :guide="mainIntro" :isHome="true"></UserGuide>
-    <div class="btn-content bg-white">
-      <el-row :gutter="10" justify="space-around">
-        <el-col :span="8" :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
-          <router-link to="userPredict/mode1">
-            <div class="grid-content bg-orange">
-              <strong>輸入模式一(選項勾選)</strong>
-              <div>優點：可快速勾選</div>
-              <div>缺點：需判斷分類</div>
-              <div>準確度：~75%-77%</div>
-            </div>
-          </router-link>
-        </el-col>
-        <el-col :span="8" :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
-          <router-link to="userPredict/mode2">
-            <div class="grid-content bg-green">
-              <strong>輸入模式二(文字描述)</strong>
-              <div>優點：可直接文字輸入不分類</div>
-              <div>缺點：輸入需時較久不易完整</div>
-              <div>準確度：~83%-88%</div>
-            </div>
-          </router-link>
-        </el-col>
-        <el-col :span="8" :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
-          <router-link to="userPredict/mode3">
-            <div class="grid-content bg-pink">
-              <strong>輸入模式三(選項勾選+文字描述)</strong>
-              <div>優點：準確度最高(特別是對共同親權)</div>
-              <div>缺點：輸入需時最久且需要判斷分類</div>
-              <div>準確度：~86%-90%</div>
-            </div>
-          </router-link>
-        </el-col>
-        <!-- <el-col :span="6">
-          <router-link to="/predict-mode4">
-            <div class="grid-content bg-info">
-              <strong>輸入模式四(選項勾選+文字描述)(多模型)</strong>
-              <div>優點：準確度最高(特別是對共同親權)、預測結果較具有魯棒性</div>
-              <div>缺點：輸入需時最久且需要判斷分類</div>
-              <div>準確度：~86%-90%</div>
-            </div>
-          </router-link>
-        </el-col> -->
-      </el-row>
-    </div>
-    <div class="user-instruction mt-2 text-center">
-      本系統AI模型所預測的結果僅供使用者參考用，建議由家事調解員或法律專業人士協助，多方測試比較以發揮最大的效果。但本系統預測的結果並無任何法律效力。使用者仍須以法院實際審理結果為最後依據。
-    </div>
+    hi
+
+    <!-- Original -->
+    
+      <!-- <div class="Home-title">系統說明</div>
+      <UserGuide :guide="mainIntro" :isHome="true"></UserGuide>
+      <div class="btn-content bg-white">
+        <el-row :gutter="10" justify="space-around">
+          <el-col :span="8" :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
+            <router-link to="userPredict/mode1">
+              <div class="grid-content bg-orange">
+                <strong>輸入模式一(選項勾選)</strong>
+                <div>優點：可快速勾選</div>
+                <div>缺點：需判斷分類</div>
+                <div>準確度：~75%-77%</div>
+              </div>
+            </router-link>
+          </el-col>
+          <el-col :span="8" :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
+            <router-link to="userPredict/mode2">
+              <div class="grid-content bg-green">
+                <strong>輸入模式二(文字描述)</strong>
+                <div>優點：可直接文字輸入不分類</div>
+                <div>缺點：輸入需時較久不易完整</div>
+                <div>準確度：~83%-88%</div>
+              </div>
+            </router-link>
+          </el-col>
+          <el-col :span="8" :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
+            <router-link to="userPredict/mode3">
+              <div class="grid-content bg-pink">
+                <strong>輸入模式三(選項勾選+文字描述)</strong>
+                <div>優點：準確度最高(特別是對共同親權)</div>
+                <div>缺點：輸入需時最久且需要判斷分類</div>
+                <div>準確度：~86%-90%</div>
+              </div>
+            </router-link>
+          </el-col>
+        </el-row>
+      </div>
+      <div class="user-instruction mt-2 text-center">
+        本系統AI模型所預測的結果僅供使用者參考用，建議由家事調解員或法律專業人士協助，多方測試比較以發揮最大的效果。但本系統預測的結果並無任何法律效力。使用者仍須以法院實際審理結果為最後依據。
+      </div> -->
+
   </div>
 </template>
 
@@ -84,17 +79,27 @@ export default {
 @import "~bootstrap/scss/mixins/_breakpoints";
 
 #Home {
-  background-color: #1f191b;
+  background-color: #FEB59C;
   position: relative;
   text-align: center;
   color: #fff;
+}
+.Home-title {
+  color: #333;
 }
 .home-content {
   width: 90%;
   max-width: 1680px;
   margin: auto;
   padding: 20px 10px 20px 10px;
-  min-height: calc(100vh - 255px);
+  min-height: 100vh;
+}
+
+/* 媒体查询（大屏幕） */
+@media (max-width: 768px) { /* 例如，使用 768px 作为小屏幕和大屏幕的分界点 */
+  .home-content {
+    padding: 0;
+  }
 }
 .btn-content {
   width: 100%;
@@ -117,6 +122,10 @@ a {
     opacity: 0.8;
     font-size: 1.1rem;
   }
+}
+
+.user-instruction {
+  color: #333;
 }
 .grid-content > strong {
   font-size: 1.2rem;

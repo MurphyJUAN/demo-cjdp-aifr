@@ -10,7 +10,9 @@
         <appNavbarAIJuniorAward v-if="$route.path.includes('chat')" id="appNavbarAIJuniorAward"/>
         <appNavbarDemo v-if="$route.path.includes('demo')" id="appNavbarDemo"/>
       </div>
-      <router-view :currentApi="currentApi" class="content" />
+      <div class="content-block">
+        <router-view :currentApi="currentApi" class="content" />
+      </div>
       <appFooter :currentApi="currentApi" />
     </div>
     <router-view v-if="$route.path.includes('vote')" :currentApi="currentApi" class="content" />
@@ -73,22 +75,37 @@ export default {
 <style lang="scss">
 @import url(https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap);
 
+@charset "UTF-8";
+* {
+  font-family: 宋體-繁;
+}
+
 body {
-  background: #1f191b;
+  background: #FEB59C;
 }
 
 #app {
   font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #1f191b;
+  background-color: #FEB59C;
 }
 .headerContainer {
   background-color: #fff;
 }
 .page-container {
     max-width: 1680px;
-    min-height: calc(100vh - 305px);
+    // min-height: calc(100vh - 305px);
+}
+.content-block {
+  margin-top: 4rem;
+  min-height: 80vh;
+}
+
+@media (min-width: 768px) {
+  .content-block {
+    margin-top: 6rem;
+  }
 }
 
 /* 媒体查询（大屏幕） */
@@ -97,7 +114,7 @@ body {
         width: calc(90% - 40px);
         margin: 0px auto 50px auto;
         max-width: 1680px;
-        min-height: calc(100vh - 305px);
+        // min-height: calc(100vh - 305px);
     }
 }
 
@@ -124,7 +141,7 @@ body {
 .web-body {
   overflow: hidden;
   position: relative;
-  background-color: #1f191b;
+  background-color: #FEB59C;
 }
 .pinkCircle {
   position: absolute;
