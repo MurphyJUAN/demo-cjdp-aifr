@@ -33,6 +33,7 @@
 		"http-proxy-middleware": "^2.0.6",
 		"http-server": "^14.1.1",
 		"jspdf": "^2.5.1",
+		"le-markdown-editor": "^1.1.4",
 		"plotly.js": "^2.24.2",
 		"sass": "^1.75.0",
 		"skrollr": "^0.6.26",

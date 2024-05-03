@@ -13,6 +13,11 @@ import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 
+import leMarkdownEditor from 'le-markdown-editor';
+
+Vue.use(leMarkdownEditor);
+
+
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue);
 // Optionally install the BootstrapVue icon components plugin
@@ -28,7 +33,7 @@ Vue.config.productionTip = false;
 Vue.prototype.$testApi = 'http://127.0.0.1:8000';
 // Vue.prototype.$globalApi = 'http://140.114.80.46:5556';
 // Vue.prototype.$globalApi = 'http://140.114.80.195:8080';
-Vue.prototype.$globalApi = 'https://hssai-custodiAI.phys.nthu.edu.tw';
+// Vue.prototype.$globalApi = 'https://hssai-custodiAI.phys.nthu.edu.tw';
 Vue.prototype.$globalApi = '';
 Vue.prototype.$api = Vue.prototype.$globalApi;
 // Vue.prototype.$api = Vue.prototype.$testApi;

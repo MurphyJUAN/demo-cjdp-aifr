@@ -1,6 +1,7 @@
 <!-- eslint-disable max-len -->
 <template>
     <div class="page-container">
+      <b-container>
         <div class="content-container mt-2">
           <div>
           <h6>資工技術</h6>
@@ -61,6 +62,9 @@
 
         </div>
 
+      </b-container>
+
+
     </div>
   </template>
 
@@ -87,7 +91,7 @@ export default {
 @import "~bootstrap/scss/mixins/_breakpoints";
 
 .page-container {
-    width: calc( 95% - 40px );
+    // width: calc( 95% - 40px );
     max-width: 2000px;
     margin: auto;
 }

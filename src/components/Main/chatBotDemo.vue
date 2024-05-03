@@ -1,81 +1,17 @@
 <!-- eslint-disable max-len -->
 <template>
     <div class="page-container">
-        <div class="content-container mt-2">
-            <b-row>
-                <b-col md="7" cols="12" class="chatbot-intro-block">
-                    <!-- {{ messageList }} -->
-                    <h6>一、說明</h6>
-                    <p>透過家事調解員與「Le（Legel）姊家事商談好夥伴」的合作，GPT4模型會為當事人整理出符合民法第1055-1條子女最佳利益的條件，進而以親權判決模型進行獲得親權判決的預測分析，讓家事商談服務，從法庭走入家庭，促進雙方調解成功達成共識，陪伴無助的當事人解開離婚法庭上的搶子難題。</p>
-                    <h6>[親權酌定法條：民法第 1055-1 條]</h6>
-                    <div class="text-bold">
-                        <p>法院為前條裁判時，應依子女之最佳利益，審酌一切情狀，尤應注意下列事項：</p>
-                        <p>一、子女之年齡、性別、人數及健康情形。</p>
-                        <p>二、子女之意願及人格發展之需要。</p>
-                        <p>三、父母之年齡、職業、品行、健康情形、經濟能力及生活狀況。</p>
-                        <p>四、父母保護教養子女之意願及態度。</p>
-                        <p>五、父母子女間或未成年子女與其他共同生活之人間之感情狀況。</p>
-                        <p>六、父母之一方是否有妨礙他方對未成年子女權利義務行使負擔之行為。</p>
-                        <p>七、各族群之傳統習俗、文化及價值觀。</p>
-                        <p>前項子女最佳利益之審酌，法院除得參考社工人員之訪視報告或家事調查官之調查報告外，並得依囑託警察機關、稅捐機關、金融機構、學校及其他有關機關、團體或具有相關專業知識之適當人士就特定事項調查之結果認定之。</p>
-                    </div>
-
-                    <p>如果調解員已熟悉本套系統，可直接點選模式一、二、三，逕行為當事人輸入雙方資訊以獲得判決結果預測。</p>
-
-                </b-col>
-
-                <b-col md="5" cols="12" class="chabot-container-block">
-                    <div class="chatbot-container">
-                    <div class="header d-flex px-3 align-items-center">
-                        <div class="header-title d-inline-flex"><div class="circle mx-2"></div>Le姐</div>
-                    </div>
-
-                    <div ref="scrollContainer" class="conversation-container">
-                        <!-- <div class="le-talk-block b-w">hi</div> -->
-                        <div class="" v-for="item of messageList.filter((v) => v.role !== 'system')">
-                            <div class=" px-4 py-3">
-                              <div class="conversation-card">
-                                <div class="d-inline-flex">
-                                  <img :src="roleAlias[item.role].src" class="icon mr-2">
-                                  <div class="font-weight-bold">{{ roleAlias[item.role].name }}：</div>
-                                </div>
-                                <div>{{ item.content }}</div>
-                              </div>
-                            </div>
-                        </div>
-                        <div v-if="isShowViolinPlot" class="conversation-card px-4 py-3">
-                          <div class="d-inline-flex">
-                            <img :src="roleAlias['assistant'].src" class="icon mr-2">
-                            <div class="font-weight-bold">{{ roleAlias['assistant'].name }}：</div>
-                          </div>
-
-                            <div>以下是根據雙方有利不利的條件所做的親權判決預測的結果：
-                              <PredictResult
-                                class="predictResult"
-                                :predict_result="predict_result['mode2']"
-                                :elapsedTime="elapsedTime"
-                                :isLoading="isLoading"
-                                :errorPrompt="errorPrompt"
-                                :errorCode="errorCode"
-                              />
-                            </div>
-                        </div>
-                    </div>
-
-                    <b-row class="le-foot d-inline-flex w-100">
-                        <b-col cols="11" class="bottom-input">
-                            <textarea rows="1" style="height:auto;" placeholder="請輸入..." v-model="inputMessageContent" @keydown.enter="isTalking || handleSendMessage()"> </textarea>
-                        </b-col>
-                        <b-col cols="1" class="bottom-send">
-                          <img src="../../../static/send.png" class="icon" @click="handleSendMessage()">
-                        </b-col>
-                    </b-row>
-
-                    </div>
-                </b-col>
-            </b-row>
-
-        </div>
+      <div class="dialog-box">
+  <div class="dialog-header">
+    <h2>对话框标题</h2>
+  </div>
+  <div class="dialog-content">
+    <p>这里是对话框的内容。可以包括文字、链接、图片等元素。</p>
+  </div>
+  <div class="dialog-footer">
+    <button class="btn-close">关闭</button>
+  </div>
+</div>
     </div>
 
 </template>
@@ -490,6 +426,50 @@ a {
 }
 .icon {
   width: 2rem;
+}
+
+.dialog-box {
+  width: 300px;
+  margin: 50px auto;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.dialog-header {
+  padding: 10px 20px;
+  background-color: #007BFF;
+  color: white;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.dialog-content {
+  padding: 20px;
+  color: #333;
+}
+
+.dialog-footer {
+  padding: 10px 20px;
+  text-align: right;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  background-color: #f1f1f1;
+}
+
+.button {
+  padding: 6px 12px;
+  color: white;
+  background-color: #007BFF;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none;
+}
+
+.button:hover {
+  background-color: #0056b3;
 }
 </style>
 
