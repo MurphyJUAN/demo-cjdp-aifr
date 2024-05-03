@@ -42,7 +42,22 @@
           <div class="predict-btn mx-1"  style="background-color:#F3BB5C" @click="startPredict()">申請預測</div>
         </el-col>
         <el-col :span="24" class="my-2 d-inline-flex align-items-center justify-content-center">
-          <div class="ml-2"><b-button variant="light" class="interpretor-btn" id="tooltip-target-interpretor"> <img v-b-modal.modal-1 class="icon-func mx-2" src="../../../static/info.png">結果解讀<b-spinner v-if="isLoading" class="spinner ml-1" variant="secondary" label="Spinning"></b-spinner></b-button></div>
+          <el-tooltip placement="right" effect="light" class="tooltip-base-box">
+              <template #content>
+                <div v-if="(isLoading || isTalking) && interpreterContent.length === 0">
+                  正在生成結果解讀中....<b-spinner class="spinner ml-1" variant="secondary" label="Spinning"></b-spinner>
+                </div>
+
+                <div v-if="interpreterContent.length > 0">
+                  <le-preview ref="md-preview" :is-md="true" :value="interpreterContent" :hljs-css="hljsCss"></le-preview>
+                </div>
+              </template>
+              <el-button>
+                <img class="icon-func mx-2" src="../../../static/info.png">
+                結果解讀
+                <b-spinner v-if="isLoading || isTalking" class="spinner ml-1" variant="secondary" label="Spinning"></b-spinner>
+              </el-button>
+            </el-tooltip>
         </el-col>
         </div>
 
