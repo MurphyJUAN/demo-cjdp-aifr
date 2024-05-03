@@ -1,37 +1,124 @@
 <!-- eslint-disable max-len -->
 <template>
-    <div>
-        <!-- 說明文字 -->
-          <!-- 大螢幕 -->
-          <div  v-if="!isSmallScreen">
-            <section id="intro-and-chatbot-section">
-              <img src="../../../static/negotiate.png" class="background-img">
-              <div class="background-hint"><img src="../../../static/lightbulb.png" class="icon" >基於<span class="text-bold">「可信賴之AI」</span>的開發原則，本系統提供三種資料輸入模式且各兩種AI預測結果來對照比較。對本系統尚不熟悉者可藉由右側的Le姊家事協商好夥伴來協助，並歡迎參考網頁上方各欄位的資訊。</div>
+  <div>
+      <!-- 說明文字 -->
+        <!-- 大螢幕 -->
+        <div  v-if="!isSmallScreen">
+          <section id="intro-and-chatbot-section">
+            <img src="../../../static/negotiate.png" class="background-img">
+            <div class="background-hint"><img src="../../../static/lightbulb.png" class="icon" >基於<span class="text-bold">「可信賴之AI」</span>的開發原則，本系統提供三種資料輸入模式且各兩種AI預測結果來對照比較。對本系統尚不熟悉者可藉由右側的Le姊家事協商好夥伴來協助，並歡迎參考網頁上方各欄位的資訊。</div>
+            <b-container fluid>
+              <b-row>
+                <b-col class="intro-block" cols="6">
+                  <p><span class="text-bold">系統說明：</span>本系統是國立清華大學人文社會AI應用與發展研究中心之成果展示與社會服務。所使用的AI模型是以司法院少家廳所公開的家事裁判書為訓練資料，按使用者所輸入的個案狀況提供親權酌定結果的機率預測來作家事調解的參考。建議使用者由家事調解員或法律專業人士協助，多方測試比較來對結果作合適的解讀，並以法院實際審理結果為最後依據。</p>
+                  <p><span class="text-bold">子女最佳利益：</span>親權酌定所依據的「子女最佳利益」明列於《民法》第 1055-1 條，條文如下：</p>
+                  <div class="text-bold text-italic">
+                      <p>法院為前條裁判時，應依子女之最佳利益，審酌一切情狀，尤應注意下列事項：</p>
+                      <p>一、子女之年齡、性別、人數及健康情形。</p>
+                      <p>二、子女之意願及人格發展之需要。</p>
+                      <p>三、父母之年齡、職業、品行、健康情形、經濟能力及生活狀況。</p>
+                      <p>四、父母保護教養子女之意願及態度。</p>
+                      <p>五、父母子女間或未成年子女與其他共同生活之人間之感情狀況。</p>
+                      <p>六、父母之一方是否有妨礙他方對未成年子女權利義務行使負擔之行為。</p>
+                      <p>七、各族群之傳統習俗、文化及價值觀。</p>
+                      <p>前項子女最佳利益之審酌，法院除得參考社工人員之訪視報告或家事調查官之調查報告外，並得依囑託警察機關、稅捐機關、金融機構、學校及其他有關機關、團體或具有相關專業知識之適當人士就特定事項調查之結果認定之。</p>
+                  </div>
+
+                </b-col>
+
+                <b-col cols="6">
+                  <div class="chabot-container-block">
+                    <div class="chatbot-container">
+                      <div class="header d-flex px-3 align-items-center">
+                        <div class="header-title d-inline-flex"><div class="circle mx-2"></div>Le姊家事協商好夥伴 (限以家事調解員的身分來使用)</div>
+                        <img class="icon" src="../../../static/edit.png" @click="exportPDF()">
+                      </div>
+
+                      <div ref="scrollContainer" class="conversation-container">
+                          <div class="" v-for="item of messageList.filter((v) => v.role !== 'system')">
+                              <div class="conversation-card px-4 py-3">
+                                <div class="d-inline-flex">
+                                  <img :src="roleAlias[item.role].src" class="icon mr-2 circle-icon">
+                                  <div class="font-weight-bold">{{ roleAlias[item.role].name }}：</div>
+                                </div>
+
+                                <div v-if="item.status === 'predict'">
+                                  <div class="justify-content-center mt-4" :span="24" :xs="24" :sm="24" :md="12" :lg="12" :xl="12" v-for="model in models" :key="model">
+                                    <!-- <OnlyViolinPlot :predict_result="predict_result" :model_used="model"></OnlyViolinPlot> -->
+                                    <violinPlotChat :predict_result="predict_result['mode2']" :model_used="model"></violinPlotChat>
+                                  </div>
+                                  <p></p>
+                                </div>
+
+                                <le-preview ref="md-preview" :is-md="true" :value="item.content " :hljs-css="hljsCss"></le-preview>
+
+                                <div v-if="item.status === 'initial'" class="w-100 d-flex justify-content-end">
+                                  <b-button class="function-btn" @click="handleInitialTalk()" variant="light">好</b-button>
+                                </div>
+
+                                <div v-if="item.status === 'summary'" class="w-100 d-flex justify-content-end">
+                                  如果不需修改，請點擊按鈕：
+                                  <b-button class="function-btn" @click="handleStartPredict()" variant="light">開始預測判決結果...</b-button>
+                                </div>
+
+
+                              </div>
+                          </div>
+                      </div>
+
+                      <div class="le-foot d-inline-flex w-100">
+                        <div class="bottom-input">
+                            <textarea rows="1" style="height:auto;" placeholder="請輸入..."
+                            :disabled="isTalking"
+                            v-model="inputMessageContent" @keydown.enter="handleEnter"
+                            @compositionstart="compositionStart"
+                            @compositionend="compositionEnd"> </textarea>
+                        </div>
+                          <div class="bottom-send">
+                            <img src="../../../static/send.png" class="icon" @click="handleSendMessage()">
+                          </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </b-col>
+              </b-row>
+            </b-container>
+          </section>
+        </div>
+
+        <!-- 大螢幕 -->
+
+          <div   v-if="isSmallScreen">
+            <section id="intro-and-chatbot-section-small">
               <b-container fluid>
                 <b-row>
-                  <b-col class="intro-block" cols="6">
-                    <p><span class="text-bold">系統說明：</span>本系統是國立清華大學人文社會AI應用與發展研究中心之成果展示與社會服務。所使用的AI模型是以司法院少家廳所公開的家事裁判書為訓練資料，按使用者所輸入的個案狀況提供親權酌定結果的機率預測來作家事調解的參考。建議使用者由家事調解員或法律專業人士協助，多方測試比較來對結果作合適的解讀，並以法院實際審理結果為最後依據。</p>
-                    <p><span class="text-bold">子女最佳利益：</span>親權酌定所依據的「子女最佳利益」明列於《民法》第 1055-1 條，條文如下：</p>
-                    <div class="text-bold text-italic">
-                        <p>法院為前條裁判時，應依子女之最佳利益，審酌一切情狀，尤應注意下列事項：</p>
-                        <p>一、子女之年齡、性別、人數及健康情形。</p>
-                        <p>二、子女之意願及人格發展之需要。</p>
-                        <p>三、父母之年齡、職業、品行、健康情形、經濟能力及生活狀況。</p>
-                        <p>四、父母保護教養子女之意願及態度。</p>
-                        <p>五、父母子女間或未成年子女與其他共同生活之人間之感情狀況。</p>
-                        <p>六、父母之一方是否有妨礙他方對未成年子女權利義務行使負擔之行為。</p>
-                        <p>七、各族群之傳統習俗、文化及價值觀。</p>
-                        <p>前項子女最佳利益之審酌，法院除得參考社工人員之訪視報告或家事調查官之調查報告外，並得依囑託警察機關、稅捐機關、金融機構、學校及其他有關機關、團體或具有相關專業知識之適當人士就特定事項調查之結果認定之。</p>
-                    </div>
-
-                  </b-col>
-
-                  <b-col cols="6">
+                  <div class="w-100">
+                    <b-modal id="modal-1" title="說明">
+                      <img src="../../../static/negotiate.png" class="background-img">
+                      <p><span class="text-bold">系統說明：</span>本系統是國立清華大學人文社會AI應用與發展研究中心之成果展示與社會服務。所使用的AI模型是以司法院少家廳所公開的家事裁判書為訓練資料，按使用者所輸入的個案狀況提供親權酌定結果的機率預測來作家事調解的參考。建議使用者由家事調解員或法律專業人士協助，多方測試比較來對結果作合適的解讀，並以法院實際審理結果為最後依據。</p>
+                  <p><span class="text-bold">子女最佳利益：</span>親權酌定所依據的「子女最佳利益」明列於《民法》第 1055-1 條，條文如下：</p>
+                  <div class="text-bold text-italic">
+                      <p>法院為前條裁判時，應依子女之最佳利益，審酌一切情狀，尤應注意下列事項：</p>
+                      <p>一、子女之年齡、性別、人數及健康情形。</p>
+                      <p>二、子女之意願及人格發展之需要。</p>
+                      <p>三、父母之年齡、職業、品行、健康情形、經濟能力及生活狀況。</p>
+                      <p>四、父母保護教養子女之意願及態度。</p>
+                      <p>五、父母子女間或未成年子女與其他共同生活之人間之感情狀況。</p>
+                      <p>六、父母之一方是否有妨礙他方對未成年子女權利義務行使負擔之行為。</p>
+                      <p>七、各族群之傳統習俗、文化及價值觀。</p>
+                      <p>前項子女最佳利益之審酌，法院除得參考社工人員之訪視報告或家事調查官之調查報告外，並得依囑託警察機關、稅捐機關、金融機構、學校及其他有關機關、團體或具有相關專業知識之適當人士就特定事項調查之結果認定之。</p>
+                  </div>
+                  <p><img src="../../../static/lightbulb.png" class="icon" >基於<span class="text-bold">「可信賴之AI」</span>的開發原則，本系統提供三種資料輸入模式且各兩種AI預測結果來對照比較。對本系統尚不熟悉者可藉由右側的Le姊家事協商好夥伴來協助，並歡迎參考網頁上方各欄位的資訊。</p>
+                    </b-modal>
                     <div class="chabot-container-block">
                       <div class="chatbot-container">
                         <div class="header d-flex px-3 align-items-center">
-                          <div class="header-title d-inline-flex"><div class="circle mx-2"></div>Le姐</div>
-                          <img class="icon" src="../../../static/edit.png" @click="exportPDF()">
+                          <div class="header-title d-inline-flex"><div class="circle mx-2"></div>Le姊家事協商好夥伴 (限以家事調解員的身分來使用)</div>
+                          <div class="d-inline-flex">
+                            <img v-b-modal.modal-1 class="icon-func mx-2" src="../../../static/info.png">
+                            <img class="icon-func" src="../../../static/edit.png" @click="exportPDF()">
+                          </div>
                         </div>
 
                         <div ref="scrollContainer" class="conversation-container">
@@ -81,101 +168,14 @@
 
                       </div>
                     </div>
-                  </b-col>
+                  </div>
                 </b-row>
               </b-container>
             </section>
+
           </div>
 
-          <!-- 大螢幕 -->
-
-            <div   v-if="isSmallScreen">
-              <section id="intro-and-chatbot-section-small">
-                <b-container fluid>
-                  <b-row>
-                    <div class="w-100">
-                      <b-modal id="modal-1" title="說明">
-                        <img src="../../../static/negotiate.png" class="background-img">
-                        <p><span class="text-bold">系統說明：</span>本系統是國立清華大學人文社會AI應用與發展研究中心之成果展示與社會服務。所使用的AI模型是以司法院少家廳所公開的家事裁判書為訓練資料，按使用者所輸入的個案狀況提供親權酌定結果的機率預測來作家事調解的參考。建議使用者由家事調解員或法律專業人士協助，多方測試比較來對結果作合適的解讀，並以法院實際審理結果為最後依據。</p>
-                    <p><span class="text-bold">子女最佳利益：</span>親權酌定所依據的「子女最佳利益」明列於《民法》第 1055-1 條，條文如下：</p>
-                    <div class="text-bold text-italic">
-                        <p>法院為前條裁判時，應依子女之最佳利益，審酌一切情狀，尤應注意下列事項：</p>
-                        <p>一、子女之年齡、性別、人數及健康情形。</p>
-                        <p>二、子女之意願及人格發展之需要。</p>
-                        <p>三、父母之年齡、職業、品行、健康情形、經濟能力及生活狀況。</p>
-                        <p>四、父母保護教養子女之意願及態度。</p>
-                        <p>五、父母子女間或未成年子女與其他共同生活之人間之感情狀況。</p>
-                        <p>六、父母之一方是否有妨礙他方對未成年子女權利義務行使負擔之行為。</p>
-                        <p>七、各族群之傳統習俗、文化及價值觀。</p>
-                        <p>前項子女最佳利益之審酌，法院除得參考社工人員之訪視報告或家事調查官之調查報告外，並得依囑託警察機關、稅捐機關、金融機構、學校及其他有關機關、團體或具有相關專業知識之適當人士就特定事項調查之結果認定之。</p>
-                    </div>
-                    <p><img src="../../../static/lightbulb.png" class="icon" >基於<span class="text-bold">「可信賴之AI」</span>的開發原則，本系統提供三種資料輸入模式且各兩種AI預測結果來對照比較。對本系統尚不熟悉者可藉由右側的Le姊家事協商好夥伴來協助，並歡迎參考網頁上方各欄位的資訊。</p>
-                      </b-modal>
-                      <div class="chabot-container-block">
-                        <div class="chatbot-container">
-                          <div class="header d-flex px-3 align-items-center">
-                            <div class="header-title d-inline-flex"><div class="circle mx-2"></div>Le姐</div>
-                            <div class="d-inline-flex">
-                              <img v-b-modal.modal-1 class="icon-func mx-2" src="../../../static/info.png">
-                              <img class="icon-func" src="../../../static/edit.png" @click="exportPDF()">
-                            </div>
-                          </div>
-
-                          <div ref="scrollContainer" class="conversation-container">
-                              <div class="" v-for="item of messageList.filter((v) => v.role !== 'system')">
-                                  <div class="conversation-card px-4 py-3">
-                                    <div class="d-inline-flex">
-                                      <img :src="roleAlias[item.role].src" class="icon mr-2 circle-icon">
-                                      <div class="font-weight-bold">{{ roleAlias[item.role].name }}：</div>
-                                    </div>
-
-                                    <div v-if="item.status === 'predict'">
-                                      <div class="justify-content-center mt-4" :span="24" :xs="24" :sm="24" :md="12" :lg="12" :xl="12" v-for="model in models" :key="model">
-                                        <!-- <OnlyViolinPlot :predict_result="predict_result" :model_used="model"></OnlyViolinPlot> -->
-                                        <violinPlotChat :predict_result="predict_result['mode2']" :model_used="model"></violinPlotChat>
-                                      </div>
-                                      <p></p>
-                                    </div>
-
-                                    <div>{{ item.content }}</div>
-
-                                    <div v-if="item.status === 'initial'" class="w-100 d-flex justify-content-end">
-                                      <b-button class="function-btn" @click="handleInitialTalk()" variant="light">好</b-button>
-                                    </div>
-
-                                    <div v-if="item.status === 'summary'" class="w-100 d-flex justify-content-end">
-                                      如果不需修改，請點擊按鈕：
-                                      <b-button class="function-btn" @click="handleStartPredict()" variant="light">開始預測判決結果...</b-button>
-                                    </div>
-
-
-                                  </div>
-                              </div>
-                          </div>
-
-                          <div class="le-foot d-inline-flex w-100">
-                            <div class="bottom-input">
-                                <textarea rows="1" style="height:auto;" placeholder="請輸入..."
-                                :disabled="isTalking"
-                                v-model="inputMessageContent" @keydown.enter="handleEnter"
-                                @compositionstart="compositionStart"
-                                @compositionend="compositionEnd"> </textarea>
-                            </div>
-                              <div class="bottom-send">
-                                <img src="../../../static/send.png" class="icon" @click="handleSendMessage()">
-                              </div>
-                          </div>
-
-                        </div>
-                      </div>
-                    </div>
-                  </b-row>
-                </b-container>
-              </section>
-
-            </div>
-
-    </div>
+  </div>
 
 </template>
 
@@ -194,6 +194,7 @@ export default {
   },
   data() {
     return {
+      hljsCss: 'agate',
       isSmallScreen: false,
       currentStage: 'collect-info',
       extractResult: {},
@@ -236,26 +237,26 @@ export default {
 
 開頭請都用「對母親(或父親)有利(或不利)的敘述：」並且參考這種判決書的專業用語，用這種writing style來歸納雙方的客觀條件。
 在總結summary完成之後，必須詢問使用者是否有需要補充或更正的部分，然後在後面加上 <SUMMARY> 的token，這樣我就知道你已經總結完成了。總結非常重要，只需要做一次，在雙方都問完之後，並且要「嚴格遵守」上面有利不利敘述的格式規範以及<SUMMARY>的token，不然你會被罰款！
-  13. 如果使用者回覆他需要更改，就在他補充說明以及更改後再做一次總結的步驟，總結的形式跟第12步驟一樣， 開頭請都用「對母親(或父親)有利(或不利)的敘述：」並且參考這種判決書的專業用語，用這種writing style來歸納雙方的客觀條件。在總結summary完成之後，必須詢問使用者是否有需要補充或更正的部分，然後在後面加上 <SUMMARY> 的token，這樣我就知道你已經總結完成了。總結非常重要，只需要做一次，在雙方都問完之後，並且要嚴格遵守上面有利不利敘述的格式規範以及<SUMMARY>的token，不然你會被罰款！ 如果使用者回覆不需要再調整或補充，你就回覆「謝謝您，接下來會開始進行判決結果預測，請稍等片刻...」必須一字不漏地仿照這個回覆，不要刪減或增加新的字。
-  14. 之後以會進行判決結果預測，預測結束後如果使用者有其他數據分析的問題你就繼續跟使用者討論。我在畫面上有將多個判決模型預測出來的判決結果的機率分佈用violin plot呈現，所以如果使用者有關於 violinplot (畫面上有三坨像小提琴一樣胖胖的圖形)，請你跟他解釋這個圖呈現的資訊、意義，如果有關於機器學習、模型預測以及機率分佈是什麼的問題，請你用你的知識告訴他。如無的話，你就建議他可以點擊「友善連結」給當事人看相關可用社會資源。
-  
-  以上步驟中，最重要的是前面做總結的部分！你在收集完雙方當事人足夠的訊息後，需要做總結，總共只需要做一次總結，並且開頭請都用「對母親(或父親)有利(或不利)的敘述：」並且參考這種判決書的專業用語，用這種writing style來歸納雙方的客觀條件。在總結summary完成之後，必須詢問使用者是否有需要補充或更正的部分，然後在後面加上 <SUMMARY> 的token。這點非常重要！你一定要做好總結的部分，不然會遭到嚴厲的懲罰！`,
+13. 如果使用者回覆他需要更改，就在他補充說明以及更改後再做一次總結的步驟，總結的形式跟第12步驟一樣， 開頭請都用「對母親(或父親)有利(或不利)的敘述：」並且參考這種判決書的專業用語，用這種writing style來歸納雙方的客觀條件。在總結summary完成之後，必須詢問使用者是否有需要補充或更正的部分，然後在後面加上 <SUMMARY> 的token，這樣我就知道你已經總結完成了。總結非常重要，只需要做一次，在雙方都問完之後，並且要嚴格遵守上面有利不利敘述的格式規範以及<SUMMARY>的token，不然你會被罰款！ 如果使用者回覆不需要再調整或補充，你就回覆「謝謝您，接下來會開始進行判決結果預測，請稍等片刻...」必須一字不漏地仿照這個回覆，不要刪減或增加新的字。
+14. 之後以會進行判決結果預測，預測結束後如果使用者有其他數據分析的問題你就繼續跟使用者討論。我在畫面上有將多個判決模型預測出來的判決結果的機率分佈用violin plot呈現，所以如果使用者有關於 violinplot (畫面上有三坨像小提琴一樣胖胖的圖形)，請你跟他解釋這個圖呈現的資訊、意義，如果有關於機器學習、模型預測以及機率分佈是什麼的問題，請你用你的知識告訴他。如無的話，你就建議他可以點擊「友善連結」給當事人看相關可用社會資源。
+
+以上步驟中，最重要的是前面做總結的部分！你在收集完雙方當事人足夠的訊息後，需要做總結，總共只需要做一次總結，並且開頭請都用「對母親(或父親)有利(或不利)的敘述：」並且參考這種判決書的專業用語，用這種writing style來歸納雙方的客觀條件。在總結summary完成之後，必須詢問使用者是否有需要補充或更正的部分，然後在後面加上 <SUMMARY> 的token。這點非常重要！你一定要做好總結的部分，不然會遭到嚴厲的懲罰！`,
         }, {
           role: 'assistant',
           status: 'initial',
           content: '調解委員您好！我是Le姊，一個專門設計來協助處理家事調解相關問題的對話機器人。我可以使用適當的法律用語以及親權相關的法律概念，協助您逐步釐清當事人的情況，並提供親權判決結果預測與專業建議以及推薦適合當事人的的友善資源，以協助您促進雙方達成共識。當然，若在對話過程中，您的問題已超出我程式設計所涵蓋的範圍，我也會建議您直接尋求專業的法律諮詢。現在，你準備好開始對話了嗎？',
         },
-        // Debug
-        // {
-        //   role: 'assistant',
-        //   status: 'summary',
-        //   content: '對母親有利的敘述：當事人與孩子的親子互動自然，具有良好的親職能力。能適時的指正孩子的不良行為，具有基本的教養能力。母親阿霞歷來是孩子的主要照顧者，孩子與母親建立了深厚的感情依附關係，並且對孩子的日常起居提供了充分的照顧。母親已規劃具體且階段性的未來教養計畫，突顯其對孩子教育和情感發展的長期承諾。 對母親不利的敘述：當事人目前無穩定工作和收入來源，經濟狀況可能影響其提供孩子更廣泛的教育和生活資源的能力。母親缺乏較高的教育背景，且在台灣沒有其他親友可以協助照顧孩子，這可能對其提供孩子全面支持造成困難。 對父親有利的敘述：當事人有穩定及較高的經濟狀況，可以為孩子提供更充足的教育和生活資源。父親表現出對孩子的關懷，定期通過通話了解孩子的日常生活和學習情況，顯示其對與孩子保持聯繫的高度意願。 對父親不利的敘述：當事人過去曾有將孩子獨留家中的情形，沒有充分注意孩子的日常需要，這可能對孩子的安全形成風險。儘管有積極的態度，但目前對於如何具體教養孩子仍缺乏明確的規劃和準備，這可能影響他作為主要照顧者的能力。 <SUMMARY>',
-        // },
-        // {
-        //   role: 'assistant',
-        //   status: 'summary',
-        //   content: '對母親有利的敘述：當事人無明顯有利的敘述。 對母親不利的敘述：當事人目前吸毒神智不清，又患有精神病，不利於孩子的教養。 對父親有利的敘述：當事人對孩子極其負責並且關係密切。 對父親不利的敘述：當事人無明顯不利的敘述。 <SUMMARY>',
-        // },
+      // Debug
+      // {
+      //   role: 'assistant',
+      //   status: 'summary',
+      //   content: '對母親有利的敘述：當事人與孩子的親子互動自然，具有良好的親職能力。能適時的指正孩子的不良行為，具有基本的教養能力。母親阿霞歷來是孩子的主要照顧者，孩子與母親建立了深厚的感情依附關係，並且對孩子的日常起居提供了充分的照顧。母親已規劃具體且階段性的未來教養計畫，突顯其對孩子教育和情感發展的長期承諾。 對母親不利的敘述：當事人目前無穩定工作和收入來源，經濟狀況可能影響其提供孩子更廣泛的教育和生活資源的能力。母親缺乏較高的教育背景，且在台灣沒有其他親友可以協助照顧孩子，這可能對其提供孩子全面支持造成困難。 對父親有利的敘述：當事人有穩定及較高的經濟狀況，可以為孩子提供更充足的教育和生活資源。父親表現出對孩子的關懷，定期通過通話了解孩子的日常生活和學習情況，顯示其對與孩子保持聯繫的高度意願。 對父親不利的敘述：當事人過去曾有將孩子獨留家中的情形，沒有充分注意孩子的日常需要，這可能對孩子的安全形成風險。儘管有積極的態度，但目前對於如何具體教養孩子仍缺乏明確的規劃和準備，這可能影響他作為主要照顧者的能力。 <SUMMARY>',
+      // },
+      // {
+      //   role: 'assistant',
+      //   status: 'summary',
+      //   content: '對母親有利的敘述：當事人無明顯有利的敘述。 對母親不利的敘述：當事人目前吸毒神智不清，又患有精神病，不利於孩子的教養。 對父親有利的敘述：當事人對孩子極其負責並且關係密切。 對父親不利的敘述：當事人無明顯不利的敘述。 <SUMMARY>',
+      // },
       ],
 
     };
@@ -272,7 +273,7 @@ export default {
   created() {
   },
   updated() {
-    // # TODO: 滑到最下面
+  // # TODO: 滑到最下面
     this.scrollToBottom();
   },
   methods: {
@@ -334,60 +335,60 @@ export default {
           role: 'system',
           status: 'predict',
           content: `你現在是一個擁有多年數據分析經驗的家事調解分析師，你的工作是以最大化子女最佳利益的核心角度，根據要爭取親權的雙方當事人(父母)各自有利與不利的敘述，解讀兩種BERT-based判決模型(S1, S2)對於(判給父親、判給母親、判給雙方)等三種結果預測出來的機率分佈，結合雙方當事人的情況，做出合理的法官親權判決預測的解讀，以促進調解員根據你的數據解讀進行調解。以下是你的工作流程：
-          1. 收到使用者提供的雙方當事人有利與不利的敘述，以及有多個分別來自 S1, S2 模型所做的判決結果預測的數據，這些包括模型們對於三種可能的判決結果(判給父親、判給母親、判給雙方)，所預測出來的平均機率值、最小最大的機率值、Q1, Q2, Q3 的機率值以及這些機率值的標準差。
-          2. 請結合雙方當事人有利不利的敘述，以及多個模型所提供的三種可能的判決結果(判給父親、判給母親、判給雙方)的機率分佈，做出合理的解讀。這些機率分佈可以從平均值、標準差、q1, q2, q3 等數值分析，例如標準差越大的話，可能代表模型對這個預測結果比較沒有信心，這時候就需要提醒調解員和當事人審慎使用這個預測結果。記住，我們之所以提供多個來自兩種不同演算法的多個模型的預測機率分佈，就是希望提供一種可信賴的 AI，讓調解員和當事人不要只參考一種模型的預測結果就做出決定，因為每個模型都可能學到不同的 bias。
-          以下是一些可能出現的狀況：
-          * 有時候兩種算法的模型所產生的機率分佈可能是相反的，例如 S1 的模型預測判給母親的機率比較高，但是 S2 模型判給父親的機率卻比母親還要高，這時候你要結合雙方當事人有利不利的敘述，根據經驗去分析哪一種模型的結果比較可信以及原因是什麼，並且提醒調解員和當事人，這種情況發生，很可能因為遇到的法官不同而有不同的結果，(因為有時候某方當事人可能會很篤定自己一定會贏得親權，如果出現這種相反的結果，就可以給調解員解釋的空間，你可以多從這個角度去分析數據來協助後續調解員跟兩方的溝通)，另外可以請調解員多補充當事人的資訊，提供更詳盡的資料來預測判決結果。
-          * 有時候兩種算法所產生的機率分佈都差不多，都傾向判給某一方，這時候你也要分析雙方當事人是什麼樣的條件差距，使得模型會有這樣一致的結果，並建議調解員和當事人由於分佈一致，可以放心參考本次預測結果。
-          * 有時候可能是S1的模型傾向判給雙方，但是S2的模型，判給父親的平均機率是 49% ，判給母親的機率是 45% 之類的，這種情況雖然兩種模型預測出來的結果不同，但其實都意味著雙方父母的條件對孩子都是差不多有利或不利的，法官有很高的機率會交給雙方共同擁有親權。
-          
-          請你嚴格遵守上面的工作流程執行，包括參考雙方當事人以及預測數據的統計資料進行數據解讀，你被禁止使用 Markdown 語法，你只能用純文字和數字輸出，否則你會遭到罰款！
-          `,
+        1. 收到使用者提供的雙方當事人有利與不利的敘述，以及有多個分別來自 S1, S2 模型所做的判決結果預測的數據，這些包括模型們對於三種可能的判決結果(判給父親、判給母親、判給雙方)，所預測出來的平均機率值、最小最大的機率值、Q1, Q2, Q3 的機率值以及這些機率值的標準差。
+        2. 請結合雙方當事人有利不利的敘述，以及多個模型所提供的三種可能的判決結果(判給父親、判給母親、判給雙方)的機率分佈，做出合理的解讀。這些機率分佈可以從平均值、標準差、q1, q2, q3 等數值分析，例如標準差越大的話，可能代表模型對這個預測結果比較沒有信心，這時候就需要提醒調解員和當事人審慎使用這個預測結果。記住，我們之所以提供多個來自兩種不同演算法的多個模型的預測機率分佈，就是希望提供一種可信賴的 AI，讓調解員和當事人不要只參考一種模型的預測結果就做出決定，因為每個模型都可能學到不同的 bias。
+        以下是一些可能出現的狀況：
+        * 有時候兩種算法的模型所產生的機率分佈可能是相反的，例如 S1 的模型預測判給母親的機率比較高，但是 S2 模型判給父親的機率卻比母親還要高，這時候你要結合雙方當事人有利不利的敘述，根據經驗去分析哪一種模型的結果比較可信以及原因是什麼，並且提醒調解員和當事人，這種情況發生，很可能因為遇到的法官不同而有不同的結果，(因為有時候某方當事人可能會很篤定自己一定會贏得親權，如果出現這種相反的結果，就可以給調解員解釋的空間，你可以多從這個角度去分析數據來協助後續調解員跟兩方的溝通)，另外可以請調解員多補充當事人的資訊，提供更詳盡的資料來預測判決結果。
+        * 有時候兩種算法所產生的機率分佈都差不多，都傾向判給某一方，這時候你也要分析雙方當事人是什麼樣的條件差距，使得模型會有這樣一致的結果，並建議調解員和當事人由於分佈一致，可以放心參考本次預測結果。
+        * 有時候可能是S1的模型傾向判給雙方，但是S2的模型，判給父親的平均機率是 49% ，判給母親的機率是 45% 之類的，這種情況雖然兩種模型預測出來的結果不同，但其實都意味著雙方父母的條件對孩子都是差不多有利或不利的，法官有很高的機率會交給雙方共同擁有親權。
+        
+        請你嚴格遵守上面的工作流程執行，包括參考雙方當事人以及預測數據的統計資料進行數據解讀，你被禁止使用 Markdown 語法，你只能用純文字和數字輸出，否則你會遭到罰款！
+        `,
         },
         {
           role: 'user',
           status: 'predict',
           content: `以下是雙方當事人有利不利的敘述：
-          對母親有利的敘述：當事人與孩子的親子互動自然，具有良好的親職能力。能適時的指正孩子的不良行為，具有基本的教養能力。母親阿霞歷來是孩子的主要照顧者，孩子與母親建立了深厚的感情依附關係，並且對孩子的日常起居提供了充分的照顧。母親已規劃具體且階段性的未來教養計畫，突顯其對孩子教育和情感發展的長期承諾。 對母親不利的敘述：當事人目前無穩定工作和收入來源，經濟狀況可能影響其提供孩子更廣泛的教育和生活資源的能力。母親缺乏較高的教育背景，且在台灣沒有其他親友可以協助照顧孩子，這可能對其提供孩子全面支持造成困難。 對父親有利的敘述：當事人有穩定及較高的經濟狀況，可以為孩子提供更充足的教育和生活資源。父親表現出對孩子的關懷，定期通過通話了解孩子的日常生活和學習情況，顯示其對與孩子保持聯繫的高度意願。 對父親不利的敘述：當事人過去曾有將孩子獨留家中的情形，沒有充分注意孩子的日常需要，這可能對孩子的安全形成風險。儘管有積極的態度，但目前對於如何具體教養孩子仍缺乏明確的規劃和準備，這可能影響他作為主要照顧者的能力。
-          以下是多個來自兩種不同演算法所預測出來的判決結果機率分佈：
-          1. S1模型：
-            *判給父親: [平均機率：12.438500921548421, 最小機率：0, 最大機率：99.83, Q1:0.07, Q2:0.56, Q3:4.59, 標準差:27.92]
-            *判給母親: [平均機率：45.331100512521516, 最小機率：0.01, 最大機率：100, Q1:1.06, Q2:19.87, Q3:98.12, 標準差:45.28]
-            *判給雙方: [平均機率：42.230399545115084, 最小機率：0, 最大機率：99.98, Q1:1.41, Q2:19.75, Q3:92.97, 標準差:43.31]
-          2. 
-            *判給父親: [平均機率：18.312848778841726, 最小機率：0, 最大機率：90.1, Q1:1.39, Q2:11.02, Q3:24.63, 標準差:22.33]
-            *判給母親: [平均機率：51.317591493110136, 最小機率：0.02, 最大機率：99.48, Q1:17.15, Q2:54.37, Q3:85.47, 標準差:34.89]
-            *判給雙方: [平均機率：30.369559255583834, 最小機率：0.35, 最大機率：99.12, Q1:5.81, Q2:24.61, Q3:43.36, 標準差:28.41]
-          請開始結合雙方當事人的有利不利條件，與上面多個模型預測的機率分佈，進行結果分析，以協助調解員調解當事人。
-          `,
+        對母親有利的敘述：當事人與孩子的親子互動自然，具有良好的親職能力。能適時的指正孩子的不良行為，具有基本的教養能力。母親阿霞歷來是孩子的主要照顧者，孩子與母親建立了深厚的感情依附關係，並且對孩子的日常起居提供了充分的照顧。母親已規劃具體且階段性的未來教養計畫，突顯其對孩子教育和情感發展的長期承諾。 對母親不利的敘述：當事人目前無穩定工作和收入來源，經濟狀況可能影響其提供孩子更廣泛的教育和生活資源的能力。母親缺乏較高的教育背景，且在台灣沒有其他親友可以協助照顧孩子，這可能對其提供孩子全面支持造成困難。 對父親有利的敘述：當事人有穩定及較高的經濟狀況，可以為孩子提供更充足的教育和生活資源。父親表現出對孩子的關懷，定期通過通話了解孩子的日常生活和學習情況，顯示其對與孩子保持聯繫的高度意願。 對父親不利的敘述：當事人過去曾有將孩子獨留家中的情形，沒有充分注意孩子的日常需要，這可能對孩子的安全形成風險。儘管有積極的態度，但目前對於如何具體教養孩子仍缺乏明確的規劃和準備，這可能影響他作為主要照顧者的能力。
+        以下是多個來自兩種不同演算法所預測出來的判決結果機率分佈：
+        1. S1模型：
+          *判給父親: [平均機率：12.438500921548421, 最小機率：0, 最大機率：99.83, Q1:0.07, Q2:0.56, Q3:4.59, 標準差:27.92]
+          *判給母親: [平均機率：45.331100512521516, 最小機率：0.01, 最大機率：100, Q1:1.06, Q2:19.87, Q3:98.12, 標準差:45.28]
+          *判給雙方: [平均機率：42.230399545115084, 最小機率：0, 最大機率：99.98, Q1:1.41, Q2:19.75, Q3:92.97, 標準差:43.31]
+        2. 
+          *判給父親: [平均機率：18.312848778841726, 最小機率：0, 最大機率：90.1, Q1:1.39, Q2:11.02, Q3:24.63, 標準差:22.33]
+          *判給母親: [平均機率：51.317591493110136, 最小機率：0.02, 最大機率：99.48, Q1:17.15, Q2:54.37, Q3:85.47, 標準差:34.89]
+          *判給雙方: [平均機率：30.369559255583834, 最小機率：0.35, 最大機率：99.12, Q1:5.81, Q2:24.61, Q3:43.36, 標準差:28.41]
+        請開始結合雙方當事人的有利不利條件，與上面多個模型預測的機率分佈，進行結果分析，以協助調解員調解當事人。
+        `,
         },
         {
           role: 'assistant',
           status: 'predict',
           content: `鑑於兩個模型的數據，結合當事人情況，以下是我的建議：
-          1. 母親方案的可能性高：兩個模型都顯示判給母親的機率相對較高，這與她作為主要照顧者的事實相符。但調解員應注意她的經濟和教育狀況，可能需要提供額外支持或資源。
-          2. 考慮共同親權的可能性：如果法官認為父親能改善對孩子的照顧方式，共同親權也可能是一個適合的選擇，特別是因為兩個模型在許多情況下都給予了不低的機率。
-          3. 積極溝通和信息補充：鑑於標準差較大，表明模型預測存在不確定性，建議調解員在實際操作中積極收集更多具體信息，以做出最符合孩子最佳利益的決策。`,
+        1. 母親方案的可能性高：兩個模型都顯示判給母親的機率相對較高，這與她作為主要照顧者的事實相符。但調解員應注意她的經濟和教育狀況，可能需要提供額外支持或資源。
+        2. 考慮共同親權的可能性：如果法官認為父親能改善對孩子的照顧方式，共同親權也可能是一個適合的選擇，特別是因為兩個模型在許多情況下都給予了不低的機率。
+        3. 積極溝通和信息補充：鑑於標準差較大，表明模型預測存在不確定性，建議調解員在實際操作中積極收集更多具體信息，以做出最符合孩子最佳利益的決策。`,
         },
         {
           role: 'user',
           status: 'predict',
           content: `以下是雙方當事人有利不利的敘述：
-          對母親有利的敘述：${this.extractResult['對母親有利的敘述：']} 
-          對母親不利的敘述：${this.extractResult['對母親不利的敘述：']} 
-          對父親有利的敘述：${this.extractResult['對父親有利的敘述：']}  
-          對父親不利的敘述：${this.extractResult['對父親不利的敘述：']} 
-          以下是多個來自兩種不同演算法所預測出來的判決結果機率分佈：
-          1. S1模型：
-            *判給父親: [平均機率：${this.predict_result.mode2.S1.Applicant.avg_prob}, 最小機率：${this.predict_result.mode2.S1.Applicant.min}, 最大機率：${this.predict_result.mode2.S1.Applicant.max}, Q1:${this.predict_result.mode2.S1.Applicant.q1}, Q2:${this.predict_result.mode2.S1.Applicant.q2}, Q3:${this.predict_result.mode2.S1.Applicant.q3}, 標準差:${this.predict_result.mode2.S1.Applicant.std}]
-            *判給母親: [平均機率：${this.predict_result.mode2.S1.Respondent.avg_prob}, 最小機率：${this.predict_result.mode2.S1.Respondent.min}, 最大機率：${this.predict_result.mode2.S1.Respondent.max}, Q1:${this.predict_result.mode2.S1.Respondent.q1}, Q2:${this.predict_result.mode2.S1.Respondent.q2}, Q3:${this.predict_result.mode2.S1.Respondent.q3}, 標準差:${this.predict_result.mode2.S1.Respondent.std}]
-            *判給雙方: [平均機率：${this.predict_result.mode2.S1.Both.avg_prob}, 最小機率：${this.predict_result.mode2.S1.Both.min}, 最大機率：${this.predict_result.mode2.S1.Both.max}, Q1:${this.predict_result.mode2.S1.Both.q1}, Q2:${this.predict_result.mode2.S1.Both.q2}, Q3:${this.predict_result.mode2.S1.Both.q3}, 標準差:${this.predict_result.mode2.S1.Both.std}]
-          2. S2
-            *判給父親: [平均機率：${this.predict_result.mode2.S2.Applicant.avg_prob}, 最小機率：${this.predict_result.mode2.S2.Applicant.min}, 最大機率：${this.predict_result.mode2.S2.Applicant.max}, Q1:${this.predict_result.mode2.S2.Applicant.q1}, Q2:${this.predict_result.mode2.S2.Applicant.q2}, Q3:${this.predict_result.mode2.S2.Applicant.q3}, 標準差:${this.predict_result.mode2.S2.Applicant.std}]
-            *判給母親: [平均機率：${this.predict_result.mode2.S2.Respondent.avg_prob}, 最小機率：${this.predict_result.mode2.S2.Respondent.min}, 最大機率：${this.predict_result.mode2.S2.Respondent.max}, Q1:${this.predict_result.mode2.S2.Respondent.q1}, Q2:${this.predict_result.mode2.S2.Respondent.q2}, Q3:${this.predict_result.mode2.S2.Respondent.q3}, 標準差:${this.predict_result.mode2.S2.Respondent.std}]
-            *判給雙方: [平均機率：${this.predict_result.mode2.S2.Both.avg_prob}, 最小機率：${this.predict_result.mode2.S2.Both.min}, 最大機率：${this.predict_result.mode2.S2.Both.max}, Q1:${this.predict_result.mode2.S2.Both.q1}, Q2:${this.predict_result.mode2.S2.Both.q2}, Q3:${this.predict_result.mode2.S2.Both.q3}, 標準差:${this.predict_result.mode2.S1.Both.std}]
-          請開始結合雙方當事人的有利不利條件，與上面多個模型預測的機率分佈，進行結果分析，以協助調解員調解當事人。
-          `,
+        對母親有利的敘述：${this.extractResult['對母親有利的敘述：']} 
+        對母親不利的敘述：${this.extractResult['對母親不利的敘述：']} 
+        對父親有利的敘述：${this.extractResult['對父親有利的敘述：']}  
+        對父親不利的敘述：${this.extractResult['對父親不利的敘述：']} 
+        以下是多個來自兩種不同演算法所預測出來的判決結果機率分佈：
+        1. S1模型：
+          *判給父親: [平均機率：${this.predict_result.mode2.S1.Applicant.avg_prob}, 最小機率：${this.predict_result.mode2.S1.Applicant.min}, 最大機率：${this.predict_result.mode2.S1.Applicant.max}, Q1:${this.predict_result.mode2.S1.Applicant.q1}, Q2:${this.predict_result.mode2.S1.Applicant.q2}, Q3:${this.predict_result.mode2.S1.Applicant.q3}, 標準差:${this.predict_result.mode2.S1.Applicant.std}]
+          *判給母親: [平均機率：${this.predict_result.mode2.S1.Respondent.avg_prob}, 最小機率：${this.predict_result.mode2.S1.Respondent.min}, 最大機率：${this.predict_result.mode2.S1.Respondent.max}, Q1:${this.predict_result.mode2.S1.Respondent.q1}, Q2:${this.predict_result.mode2.S1.Respondent.q2}, Q3:${this.predict_result.mode2.S1.Respondent.q3}, 標準差:${this.predict_result.mode2.S1.Respondent.std}]
+          *判給雙方: [平均機率：${this.predict_result.mode2.S1.Both.avg_prob}, 最小機率：${this.predict_result.mode2.S1.Both.min}, 最大機率：${this.predict_result.mode2.S1.Both.max}, Q1:${this.predict_result.mode2.S1.Both.q1}, Q2:${this.predict_result.mode2.S1.Both.q2}, Q3:${this.predict_result.mode2.S1.Both.q3}, 標準差:${this.predict_result.mode2.S1.Both.std}]
+        2. S2
+          *判給父親: [平均機率：${this.predict_result.mode2.S2.Applicant.avg_prob}, 最小機率：${this.predict_result.mode2.S2.Applicant.min}, 最大機率：${this.predict_result.mode2.S2.Applicant.max}, Q1:${this.predict_result.mode2.S2.Applicant.q1}, Q2:${this.predict_result.mode2.S2.Applicant.q2}, Q3:${this.predict_result.mode2.S2.Applicant.q3}, 標準差:${this.predict_result.mode2.S2.Applicant.std}]
+          *判給母親: [平均機率：${this.predict_result.mode2.S2.Respondent.avg_prob}, 最小機率：${this.predict_result.mode2.S2.Respondent.min}, 最大機率：${this.predict_result.mode2.S2.Respondent.max}, Q1:${this.predict_result.mode2.S2.Respondent.q1}, Q2:${this.predict_result.mode2.S2.Respondent.q2}, Q3:${this.predict_result.mode2.S2.Respondent.q3}, 標準差:${this.predict_result.mode2.S2.Respondent.std}]
+          *判給雙方: [平均機率：${this.predict_result.mode2.S2.Both.avg_prob}, 最小機率：${this.predict_result.mode2.S2.Both.min}, 最大機率：${this.predict_result.mode2.S2.Both.max}, Q1:${this.predict_result.mode2.S2.Both.q1}, Q2:${this.predict_result.mode2.S2.Both.q2}, Q3:${this.predict_result.mode2.S2.Both.q3}, 標準差:${this.predict_result.mode2.S1.Both.std}]
+        請開始結合雙方當事人的有利不利條件，與上面多個模型預測的機率分佈，進行結果分析，以協助調解員調解當事人。
+        `,
         },
 
       ];
@@ -479,7 +480,7 @@ export default {
       this.inputMessageContent = '';
     },
     appendLastMessageContent(content) {
-      // 这个方法用来将消息内容添加到 messageList，你可能还需要实现其他逻辑
+    // 这个方法用来将消息内容添加到 messageList，你可能还需要实现其他逻辑
       this.messageList[this.messageList.length - 1].content += content;
     },
     changeLastMessageStatus(status) {
@@ -586,7 +587,7 @@ export default {
 };
 </script>
 
-  <!-- Add "scoped" attribute to limit CSS to this component only -->
+<!-- Add "scoped" attribute to limit CSS to this component only -->
 
 <style lang="scss" scoped>
 @import "vue-select/src/scss/vue-select.scss";
@@ -596,338 +597,338 @@ export default {
 
 @charset "UTF-8";
 * {
-  font-family: 宋體-繁;
+font-family: 宋體-繁;
 }
 
 html, body {
-  padding: 0;
-  margin: 0;
-  background: white !important;
+padding: 0;
+margin: 0;
+background: white !important;
 }
 
 
 .ai_junior_award {
-  padding: 0;
-  margin: 0;
-  background: white !important;
-  position: relative;
+padding: 0;
+margin: 0;
+background: white !important;
+position: relative;
 }
 
 .navbar-default-small {
-  display: block; /* 显示默认样式的 navbar */
+display: block; /* 显示默认样式的 navbar */
 }
 
 .navbar-default-large {
-  display: none; /* 在小屏幕上隐藏大屏幕的 navbar */
+display: none; /* 在小屏幕上隐藏大屏幕的 navbar */
 }
 
 /* 媒体查询，适用于大屏幕设备（如宽度大于 992px） */
 
 @media (min-width: 992px) {
-  .navbar-default-small {
-    display: none; /* 在大屏幕上隐藏小屏幕的 navbar */
-  }
+.navbar-default-small {
+  display: none; /* 在大屏幕上隐藏小屏幕的 navbar */
+}
 
-  .navbar-default-large {
-    display: block; /* 显示大屏幕的 navbar */
-  }
+.navbar-default-large {
+  display: block; /* 显示大屏幕的 navbar */
+}
 
 }
 
 .jumbotron_front_page_small {
-  background-image: url(../../../static/Le_small.png);
-  background-size: cover;
-  width: 100%;
-  height: 100vh;
-  background-attachment: fixed;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+background-image: url(../../../static/Le_small.png);
+background-size: cover;
+width: 100%;
+height: 100vh;
+background-attachment: fixed;
+display: flex;
+justify-content: center;
+align-items: center;
+flex-direction: column;
 }
 .my_container_small {
-  display: inline-block; /* 讓容器的寬度自適應內容 */
+display: inline-block; /* 讓容器的寬度自適應內容 */
 }
 
 .start-block-small{
-  display: inline-block; /* 讓容器的寬度自適應內容 */
-  text-align: center;
+display: inline-block; /* 讓容器的寬度自適應內容 */
+text-align: center;
 }
 
 .jumbotron_front_page {
-  background-image: url(../../../static/Le姐_cut.png);
-  background-size: cover;
-  width: 100%;
-  height: 100vh;
-  background-attachment: fixed;
-  position: relative;
+background-image: url(../../../static/Le姐_cut.png);
+background-size: cover;
+width: 100%;
+height: 100vh;
+background-attachment: fixed;
+position: relative;
 }
 
 .start-block{
-  position: absolute; /* 使用絕對定位 */
-  left: 20%; /* 與右邊界對齊 */
-  bottom: 15%; /* 與底部對齊 */
-  display: inline-block; /* 讓容器的寬度自適應內容 */
-  text-align: center;
+position: absolute; /* 使用絕對定位 */
+left: 20%; /* 與右邊界對齊 */
+bottom: 15%; /* 與底部對齊 */
+display: inline-block; /* 讓容器的寬度自適應內容 */
+text-align: center;
 }
 
 .my_container {
-  position: absolute; /* 使用絕對定位 */
-  left: 10%; /* 與右邊界對齊 */
-  bottom: 50%; /* 與底部對齊 */
-  display: inline-block; /* 讓容器的寬度自適應內容 */
+position: absolute; /* 使用絕對定位 */
+left: 10%; /* 與右邊界對齊 */
+bottom: 50%; /* 與底部對齊 */
+display: inline-block; /* 讓容器的寬度自適應內容 */
 }
 
 .front_page_title_group {
-  color: white;
-  font-weight: bold;
-  text-align: left;
+color: white;
+font-weight: bold;
+text-align: left;
 }
 
- hr {
-  transform: translateX(-150%);       /* 從右側開始定位 */
-  border: 2px solid #ff6e3a;
-  width: 25%;
+hr {
+transform: translateX(-150%);       /* 從右側開始定位 */
+border: 2px solid #ff6e3a;
+width: 25%;
 }
 
 .circle-icon {
-  border-radius: 50%; /* 這會使圖片變成圓形 */
+border-radius: 50%; /* 這會使圖片變成圓形 */
 }
 
 .le-icon {
-  width: 3.5rem;
-  height: 3.5rem;
-  border-radius: 50%; /* 這會使圖片變成圓形 */
-  border: 3px solid #ff6e3a; /* 白色邊框，3px 寬 */
-  margin-right: 1rem;
+width: 3.5rem;
+height: 3.5rem;
+border-radius: 50%; /* 這會使圖片變成圓形 */
+border: 3px solid #ff6e3a; /* 白色邊框，3px 寬 */
+margin-right: 1rem;
 }
 
 .icon-img {
-  width: 5rem;
-  margin-bottom: 1rem;
-  opacity: 0.5;
+width: 5rem;
+margin-bottom: 1rem;
+opacity: 0.5;
 
 }
 
 .ta-block {
-  border: 1px solid rgba(white, 0.5);
-  border-radius: 10px;
-  padding: 1rem 2rem;
-  color: rgba(white, 0.5);
+border: 1px solid rgba(white, 0.5);
+border-radius: 10px;
+padding: 1rem 2rem;
+color: rgba(white, 0.5);
 }
 .button-block {
-  margin-top: 1rem;
+margin-top: 1rem;
 }
 
 .start-button {
-  background: #ff6e3a;
-  font-weight: bold;
-  width: 10rem;
-  border-radius: 20px;
+background: #ff6e3a;
+font-weight: bold;
+width: 10rem;
+border-radius: 20px;
 
 }
 .start-button a {
-  color: white;
+color: white;
 }
 
 header h4 {
-  color: rgba(white, 0.8);
+color: rgba(white, 0.8);
 }
 
 #intro-and-chatbot-section {
-  background: #FEB59C;
-  width: 100%;
-  min-height: 100vh;
-  position: relative;
+background: #FEB59C;
+width: 100%;
+min-height: 100vh;
+position: relative;
 }
 
 #intro-and-chatbot-section-small {
-  background: #FEB59C;
-  width: 100%;
-  min-height: 100vh;
-  position: relative;
-  padding: 0.5rem 0.5rem;
+background: #FEB59C;
+width: 100%;
+min-height: 100vh;
+position: relative;
+padding: 0.5rem 0.5rem;
 }
 
 
 .text-bold {
-    font-weight: bold;
+  font-weight: bold;
 
 }
 .text-italic {
-    font-style: italic;
+  font-style: italic;
 }
 
 .intro-block {
-  color: #333333;
-  padding-right: 50px;
+color: #333333;
+padding-right: 50px;
 }
 
 .background-img {
-  width: 30rem;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  opacity: 0.3;
+width: 30rem;
+position: absolute;
+bottom: 0;
+left: 0;
+opacity: 0.3;
 }
 
 .background-hint {
-  font-size: 0.9rem;
-  position: absolute;
-  bottom: 8%;
-  left: 30%;
-  background: rgba(white, 0.5);
-  border-radius: 30px;
-  width: 20vw;
-  padding: 1rem;
+font-size: 0.9rem;
+position: absolute;
+bottom: 8%;
+left: 30%;
+background: rgba(white, 0.5);
+border-radius: 30px;
+width: 20vw;
+padding: 1rem;
 }
 
 .chatbot-container {
-  width: 100%;
-  height: 100%;
-  background: #F0E9FE;
-  opacity: 1;
-  box-shadow: 10px 10px 20px 0 rgba(0, 0, 0, 0.5);
-  position: relative;
-  border-radius: 50px;
+width: 100%;
+height: 100%;
+background: #F0E9FE;
+opacity: 1;
+box-shadow: 10px 10px 20px 0 rgba(0, 0, 0, 0.5);
+position: relative;
+border-radius: 50px;
 }
 
 .chabot-container-block {
-  width: 100%;
-  // height: calc(100vh - 85px);
-  height: calc(100vh);
-  position: relative;
+width: 100%;
+// height: calc(100vh - 85px);
+height: calc(100vh);
+position: relative;
 }
 
 @media (min-width: 992px) {
-  .chabot-container-block {
-    width: 100%;
-    height: calc(100vh - 85px);
-    padding-left: 50px;
-    position: relative;
-  }
+.chabot-container-block {
+  width: 100%;
+  height: calc(100vh - 85px);
+  padding-left: 50px;
+  position: relative;
+}
 }
 
 
 .brand-title {
-  color: white;
+color: white;
 }
 .circle {
-    width: 5px;
-    height: 5px;
-    border-radius: 100%;
-    background: #D2E854;
-    margin: auto;
+  width: 5px;
+  height: 5px;
+  border-radius: 100%;
+  background: #D2E854;
+  margin: auto;
 }
 
 .navbarTop {
-  background-color: transparent !important;
-  border-bottom: 1px solid #e7e7e7 !important;
+background-color: transparent !important;
+border-bottom: 1px solid #e7e7e7 !important;
+color: white !important;
+a {
   color: white !important;
-  a {
-    color: white !important;
-    transition: 0.5s !important;
-    &:hover {
-      color: #FF6F39 !important;
-    }
+  transition: 0.5s !important;
+  &:hover {
+    color: #FF6F39 !important;
   }
+}
 }
 
 .navbarDefault {
-  background-color: #F8F8F8;
-  border-bottom: 1px solid #F8F8F8;
-  color: #777;
-  a {
-    color: #fff;
-    transition: 0.5s;
-    &:hover {
-      color: black;
-    }
+background-color: #F8F8F8;
+border-bottom: 1px solid #F8F8F8;
+color: #777;
+a {
+  color: #fff;
+  transition: 0.5s;
+  &:hover {
+    color: black;
   }
+}
 }
 
 
 .header {
-  width: 100%;
-  height: 45px;
-  background: #F9F9F9;
-  // color: white;
-  font-weight: bold;
-  justify-content: space-between;
-  border-bottom: 1px solid #E5E8E9;
-  font-size: 1rem;
-  border-radius: 50px 50px 0px 0px;
+width: 100%;
+height: 45px;
+background: #F9F9F9;
+// color: white;
+font-weight: bold;
+justify-content: space-between;
+border-bottom: 1px solid #E5E8E9;
+font-size: 1rem;
+border-radius: 50px 50px 0px 0px;
 }
 
 .conversation-container {
-    max-height: calc(100vh - 50px - 60px);
-    overflow-y: scroll;
+  max-height: calc(100vh - 50px - 60px);
+  overflow-y: scroll;
 }
 
 @media (min-width: 992px) {
-  .conversation-container {
-    max-height: calc(100vh - 85px - 50px - 60px);
-  }
+.conversation-container {
+  max-height: calc(100vh - 85px - 50px - 60px);
+}
 }
 
 .icon {
-  width: 2rem;
+width: 2rem;
 }
 
 .icon-func {
-  width: 1.5rem;
+width: 1.5rem;
 }
 
 .conversation-card {
-  background: white;
-  margin: 1rem;
-  border-radius: 10px;
-  border: 1px solid white;
-  // box-shadow: 5px 5px 10px 0 rgba(0, 0, 0, 0.2);
+background: white;
+margin: 1rem;
+border-radius: 10px;
+border: 1px solid white;
+// box-shadow: 5px 5px 10px 0 rgba(0, 0, 0, 0.2);
 }
 
 .bottom-input {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 5px 5px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5px 5px;
 }
 .bottom-input > textarea {
-    width: 100%;
-    height: 100%;
-    border:  1px solid white;
-    border-radius: 5px;
-    background: transparent;
-    padding: 0.5rem;
+  width: 100%;
+  height: 100%;
+  border:  1px solid white;
+  border-radius: 5px;
+  background: transparent;
+  padding: 0.5rem;
 }
 .bottom-send{
-    // width: 100%;
-    // height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    // height: 100%;  /* 确保列有足够的高度进行居中对齐 */
-    // border: 1px solid rgb(117, 197, 241);
-    padding: 5px;
-    // background: rgb(117, 197, 241);
-    // border-radius: 5px;
+  // width: 100%;
+  // height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // height: 100%;  /* 确保列有足够的高度进行居中对齐 */
+  // border: 1px solid rgb(117, 197, 241);
+  padding: 5px;
+  // background: rgb(117, 197, 241);
+  // border-radius: 5px;
 }
 .le-foot{
-    width: 100%;
-    position: absolute;
-    bottom: 0;
-    height: 60px;
-    padding: 1.5rem;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  height: 60px;
+  padding: 1.5rem;
 }
 
 .navbar-toggler {
-  background: #F8F8F8;
+background: #F8F8F8;
 }
 
 .function-btn {
-  border: 1px solid #777;
+border: 1px solid #777;
 }
 
 
