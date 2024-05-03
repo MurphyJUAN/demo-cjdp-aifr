@@ -26,7 +26,7 @@
     <b-navbar v-if="isSmallScreen" class="navbarDefault" toggleable="lg" fixed="top">
       <b-container>
         <b-navbar-nav>
-          <b-nav-item :to="'/'">AI輔助親權裁判預測系統</b-nav-item>
+          <b-nav-item href="'/'">AI輔助親權裁判預測系統</b-nav-item>
         </b-navbar-nav>
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
         <!-- <b-navbar-nav :to="/ai_junior_award">AIFRxAI Junior Award 2024</b-navbar-nav> -->

@@ -10,7 +10,7 @@
         <appNavbarAIJuniorAward v-if="$route.path.includes('chat')" id="appNavbarAIJuniorAward"/>
         <appNavbarDemo v-if="$route.path.includes('demo')" id="appNavbarDemo"/>
       </div>
-      <div class="content-block">
+      <div class="content-block" id="content-block-id">
         <router-view :currentApi="currentApi" class="content" />
       </div>
       <appFooter :currentApi="currentApi" />
@@ -104,7 +104,7 @@ body {
 
 @media (min-width: 768px) {
   .content-block {
-    margin-top: 6rem;
+    margin-top: 5rem;
   }
 }
 
