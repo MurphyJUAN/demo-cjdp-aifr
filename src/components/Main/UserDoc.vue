@@ -1,7 +1,8 @@
 <!-- eslint-disable max-len -->
 <template>
     <div class="page-container">
-      <div class="content-container mt-2">
+      <b-container>
+        <div class="content-container mt-2">
       <h6>一、簡介：</h6>
       <p>本系統大部分的使用方式可以根據網頁的文字提示與使用者的直覺來進行，應無須另外說明，歡迎使用者儘量嘗試，相信很快可以熟悉。因此，此處僅針對比較容易有誤解的地方(多是關於名詞的定義與結果的詮釋)作進一步的說明。與AI技術相關的部分請見本系統中的「<a href="https://hssai-custodiai.phys.nthu.edu.tw/techDoc">技術說明</a>」。</p>
 
@@ -169,6 +170,9 @@
         </table>
         <p>[1]「父母的意願與親職能力」這個因素的全稱包含了兩個看似應該獨立的概念，也就是扶養的意願與能力。但是本研究所蒐集的案件都是兩造辯論，也就是至少在形式上是雙方都有扶養意願的判決。因此關於父母意願的部分，法官於判決書中多會以其積極性的作為來描述，而同時提及為了扶養孩子而有的扶養經驗與相關規劃，也就牽涉到親職能力的部分。因此本研究認為此兩者雖然在概念上是獨立的，但是在司法實務上常是緊密相連的，與其勉強區分不如合併考慮。但不排除未來可能可以透過更明確的定義或更仔細的研究來有所區別。</p>
     </div>
+
+      </b-container>
+
       </div>
   </template>
 
@@ -199,7 +203,7 @@ export default {
 @import "~bootstrap/scss/mixins/_breakpoints";
 
 .page-container {
-    width: calc( 95% - 40px );
+    // width: calc( 95% - 40px );
     max-width: 2000px;
     margin: auto;
 }

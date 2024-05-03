@@ -1,6 +1,7 @@
 <!-- eslint-disable max-len -->
 <template>
     <div class="page-container">
+      <b-container>
         <div class="content-container mt-2">
           <h6>一、背景說明</h6>
           <p>人工智慧應用在人文與社會領域中有一個共同且困難的挑戰在於，絕大部分的人文社會資料是經由作者仔細思維後所寫作產生的文本(text)，是較不容易被標準化標註的資料型態。而文字意義的歧異性與許多非結構化的背景脈絡更增添機器學習的困難度。對此本研究嘗試提出一個解決方案，亦即從民事裁判著手，發展一套自然語言處理的流程來協助克服資料標註與分類的困難，未來亦可能應用到其他類型的文件分析。</p>
@@ -59,6 +60,8 @@
             <img class="w-50 mx-auto d-block" src="../../../static/summary.png" />
           </div>
         </div>
+      </b-container>
+
 
     </div>
   </template>
@@ -86,7 +89,7 @@ export default {
 @import "~bootstrap/scss/mixins/_breakpoints";
 
 .page-container {
-    width: calc( 95% - 40px );
+    // width: calc( 95% - 40px );
     max-width: 2000px;
     margin: auto;
 }

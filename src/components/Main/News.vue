@@ -1,8 +1,9 @@
 <!-- eslint-disable max-len -->
 <template>
     <div class="page-container">
+      <b-container>
         <div class="content-container mt-2">
-            <div class="news_block">
+          <div class="news_block">
               <h6>◎ 4/26/2024 </h6>
               <p>研究團隊中阮羿寧、林雲貂和歐予恩三位同學，開發本系統第三代「 Le姊家事協商好夥伴 」在Digitimes與人工智慧基金會主辦的2024 Taiwan Al Expo(目前台灣最大的AI展覽會)中，獲得AI Junior Award的金獎與企業實務獎兩項大獎的肯定！ </p>
 
@@ -17,11 +18,11 @@
                 <li><a href="https://hssai-custodiai.phys.nthu.edu.tw/ai_junior_award">參賽作品網站</a></li>
               </ul>
 
-              <ul>參展介紹影片：
-                <div>
-                  <iframe class="img-center" width="560" height="315" src="https://www.youtube.com/embed/Gc0MbP8-i3g?si=J1XoIN5DIolyiFO5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+              <div class="view-vdideo-block">參展介紹影片：
+                <div style="width: 100%; height: 100%;">
+                <iframe class="img-center" width="100%" height="315" src="https://www.youtube.com/embed/Gc0MbP8-i3g?si=-IJEUhDgQoMq-tvj" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 </div>
-              </ul>
+              </div>
             </div>
 
             <div class="news_block">
@@ -65,9 +66,10 @@
                 <li><a href="https://news.cts.com.tw/cts/society/201909/201909251975850.html">華視影音新聞</a></li>
               </ul>
             </div>
-
-
         </div>
+
+      </b-container>
+
 
     </div>
   </template>
@@ -95,7 +97,7 @@ export default {
 @import "~bootstrap/scss/mixins/_breakpoints";
 
 .page-container {
-    width: calc( 95% - 40px );
+    // width: calc( 95% - 40px );
     max-width: 2000px;
     margin: auto;
 }
@@ -130,6 +132,10 @@ export default {
     display: block;
   }
 
+}
+
+.view-vdideo-block {
+  // height: 50vh;
 }
 
 
