@@ -90,7 +90,6 @@ def send_messages():
     model = payload['model']
     messages = prepare_openai_msg(payload['messages'])
     stage = payload['stage']
-    print('>>>input:', messages)
     def stream(model, messages):
         # 使用传入的数据，不依赖请求上下文
         completion = openai.ChatCompletion.create(
