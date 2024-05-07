@@ -4,7 +4,7 @@
       <div class="footer-inner">
         <div class="row align-items-center">
             <div class="col-md-6 col-12 mb-2">
-              聯絡我們：custodyprediction@gmail.com
+              聯絡我們：aifr.general@gmail.com
             </div>
             <div class="col-md-6 col-12 mb-2">
               <div class="row align-items-center">

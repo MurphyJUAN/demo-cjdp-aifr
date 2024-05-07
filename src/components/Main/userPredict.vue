@@ -45,7 +45,21 @@
           <div class="predict-btn mx-1"  style="background-color:#F3BB5C" @click="startPredict()">申請預測</div>
         </el-col>
         <el-col :span="24" class="my-2 d-inline-flex align-items-center justify-content-center">
-          <el-tooltip placement="right" effect="light" class="tooltip-base-box">
+          <el-button v-b-modal.modal-small-tooltip>
+            <img class="icon-func mx-2" src="../../../static/info.png">
+            結果解讀
+            <b-spinner v-if="isLoading || isTalking" class="spinner ml-1" variant="secondary" label="Spinning"></b-spinner>
+          </el-button>
+          <b-modal id="modal-small-tooltip" title="結果解讀">
+            <div v-if="(isLoading || isTalking) && interpreterContent.length === 0">
+              正在生成結果解讀中....<b-spinner class="spinner ml-1" variant="secondary" label="Spinning"></b-spinner>
+            </div>
+
+            <div v-if="interpreterContent.length > 0">
+              <le-preview ref="md-preview" :is-md="true" :value="interpreterContent" :hljs-css="hljsCss"></le-preview>
+            </div>
+          </b-modal>
+          <!-- <el-tooltip placement="right" effect="light" class="tooltip-base-box">
               <template #content>
                 <div v-if="(isLoading || isTalking) && interpreterContent.length === 0">
                   正在生成結果解讀中....<b-spinner class="spinner ml-1" variant="secondary" label="Spinning"></b-spinner>
@@ -60,7 +74,7 @@
                 結果解讀
                 <b-spinner v-if="isLoading || isTalking" class="spinner ml-1" variant="secondary" label="Spinning"></b-spinner>
               </el-button>
-            </el-tooltip>
+            </el-tooltip> -->
         </el-col>
         </div>
 
@@ -481,7 +495,7 @@ export default {
         {
           role: 'system',
           status: 'predict',
-          content: `你現在是一個擁有多年數據分析經驗的家事調解分析師，你的工作是以最大化子女最佳利益的核心角度，根據要爭取親權的雙方當事人(父母)各自有利與不利的敘述，解讀兩種BERT-based判決模型(${this.modelUsed[mode][0]}, ${this.modelUsed[mode][1]})對於(判給父親、判給母親、判給雙方)等三種結果預測出來的機率分佈，結合雙方當事人的情況，做出合理的法官親權判決預測的解讀，避免在解讀過程中加入對父母親的性別刻板印象，以促進調解員根據你的數據解讀進行調解。以下是你的工作流程：
+          content: `你現在是一個擁有多年數據分析經驗的家事調解分析師，你的工作是以最大化子女最佳利益的核心角度，根據要爭取親權的雙方當事人(父母)各自有利與不利的敘述，解讀兩種BERT-based判決模型(${this.modelUsed[mode][0]}, ${this.modelUsed[mode][1]})對於(判給父親、判給母親、判給雙方)等三種結果預測出來的機率分佈，結合雙方當事人的情況，做出合理的法官親權判決預測的解讀，避免在解讀過程中加入對父母親的性別刻板印象，避免自己新增雙方沒有提到的有利或不利的條件，以促進調解員根據你的數據解讀進行調解。以下是你的工作流程：
           1. 收到使用者提供的雙方當事人有利與不利的敘述，以及有多個分別來自 ${this.modelUsed[mode][0]}, ${this.modelUsed[mode][1]} 模型所做的判決結果預測的數據，這些包括模型們對於三種可能的判決結果(判給父親、判給母親、判給雙方)，所預測出來的平均機率值、最小最大的機率值、Q1, Q2, Q3 的機率值以及這些機率值的標準差。
           2. 請結合雙方當事人有利不利的敘述，以及多個模型所提供的三種可能的判決結果(判給父親、判給母親、判給雙方)的機率分佈，做出合理的解讀。這些機率分佈可以從平均值、標準差、q1, q2, q3 等數值分析，例如標準差越大的話，可能代表模型對這個預測結果比較沒有信心，這時候就需要提醒調解員和當事人審慎使用這個預測結果。記住，我們之所以提供多個來自兩種不同演算法的多個模型的預測機率分佈，就是希望提供一種可信賴的 AI，讓調解員和當事人不要只參考一種模型的預測結果就做出決定，因為每個模型都可能學到不同的 bias。
           3. 使用者的輸入有時候會互相矛盾並不合理，可能包含父親母親他們有利與不利的陳述會彼此矛盾，例如母親有利的地方提到「孩子與當事人親近信任」，但是在母親不利的地方又提到「孩子非常害怕與當事人相處」這就是明顯矛盾的地方；又或是父親有利的部分寫「當事人有正當工作，經濟能力尚足以支付本身及孩子生活所需，可提供孩子穩定及安全的生活。」，但是不利的地方又寫：「當事人目前未有工作收入或收入不穩定，生活支出仰賴家人協助，不確定能否支持養育孩子的經濟需求。」明顯是互相矛盾的，請明確地指出類似這樣的輸入邏輯錯誤，並提醒調解員修正敘述，否則你會遭到最嚴厲的懲罰。
@@ -512,7 +526,7 @@ export default {
             *判給父親: [平均機率：18.312848778841726, 最小機率：0, 最大機率：90.1, Q1:1.39, Q2:11.02, Q3:24.63, 標準差:22.33]
             *判給母親: [平均機率：51.317591493110136, 最小機率：0.02, 最大機率：99.48, Q1:17.15, Q2:54.37, Q3:85.47, 標準差:34.89]
             *判給雙方: [平均機率：30.369559255583834, 最小機率：0.35, 最大機率：99.12, Q1:5.81, Q2:24.61, Q3:43.36, 標準差:28.41]
-            請開始結合雙方當事人的有利不利條件，與上面多個模型預測的機率分佈，進行結果分析，以協助調解員促進雙方當事人的溝通。如果你懷疑當事人的敘述之間出現矛盾之處，請在最後再次指出，並提醒調解員做出修正。
+            請開始根據雙方當事人的有利不利條件進行結果分析，你千萬不要在解讀過程中加入自己因為對父母親角色的性別刻板印象，自己新增一些上面沒有提到的父母親有利或不利特條件，父母親有提到哪些有利不利的條件，就根據那些條件解讀，不要自己加入其他未提到的事實。請客觀忠實地根據雙方的有利不利的「事實」以及模型預測的結果進行解讀，以協助調解員調解當事人。
           `,
         },
         {
@@ -535,7 +549,7 @@ export default {
             *判給父親: [平均機率：18.312848778841726, 最小機率：0, 最大機率：90.1, Q1:1.39, Q2:11.02, Q3:24.63, 標準差:22.33]
             *判給母親: [平均機率：51.317591493110136, 最小機率：0.02, 最大機率：99.48, Q1:17.15, Q2:54.37, Q3:85.47, 標準差:34.89]
             *判給雙方: [平均機率：30.369559255583834, 最小機率：0.35, 最大機率：99.12, Q1:5.81, Q2:24.61, Q3:43.36, 標準差:28.41]
-            請開始結合雙方當事人的有利不利條件，與上面多個模型預測的機率分佈，進行結果分析，以協助調解員促進雙方當事人的溝通。如果你懷疑當事人的敘述之間出現矛盾之處，請在最後再次指出，並提醒調解員做出修正。
+            請開始根據雙方當事人的有利不利條件進行結果分析，你千萬不要在解讀過程中加入自己因為對父母親角色的性別刻板印象，自己新增一些上面沒有提到的父母親有利或不利特條件，父母親有提到哪些有利不利的條件，就根據那些條件解讀，不要自己加入其他未提到的事實。請客觀忠實地根據雙方的有利不利的「事實」以及模型預測的結果進行解讀，以協助調解員調解當事人。
           `,
         },
         {
@@ -573,7 +587,7 @@ export default {
             *判給母親: [平均機率：${this.predict_result[mode][this.modelUsed[mode][1]].Respondent.avg_prob}, 最小機率：${this.predict_result[mode][this.modelUsed[mode][1]].Respondent.min}, 最大機率：${this.predict_result[mode][this.modelUsed[mode][1]].Respondent.max}, Q1:${this.predict_result[mode][this.modelUsed[mode][1]].Respondent.q1}, Q2:${this.predict_result[mode][this.modelUsed[mode][1]].Respondent.q2}, Q3:${this.predict_result[mode][this.modelUsed[mode][1]].Respondent.q3}, 標準差:${this.predict_result[mode][this.modelUsed[mode][1]].Respondent.std}]
             *判給雙方: [平均機率：${this.predict_result[mode][this.modelUsed[mode][1]].Both.avg_prob}, 最小機率：${this.predict_result[mode][this.modelUsed[mode][1]].Both.min}, 最大機率：${this.predict_result[mode][this.modelUsed[mode][1]].Both.max}, Q1:${this.predict_result[mode][this.modelUsed[mode][1]].Both.q1}, Q2:${this.predict_result[mode][this.modelUsed[mode][1]].Both.q2}, Q3:${this.predict_result[mode][this.modelUsed[mode][1]].Both.q3}, 標準差:${this.predict_result[mode][this.modelUsed[mode][1]].Both.std}]
           
-          請開始結合雙方當事人的有利不利條件，與上面多個模型預測的機率分佈，進行結果分析，以協助調解員促進雙方當事人的溝通。如果你懷疑當事人的敘述之間出現矛盾之處，請在最後再次指出，並提醒調解員做出修正。
+            請開始根據雙方當事人的有利不利條件進行結果分析，你千萬不要在解讀過程中加入自己因為對父母親角色的性別刻板印象，自己新增一些上面沒有提到的父母親有利或不利特條件，父母親有提到哪些有利不利的條件，就根據那些條件解讀，不要自己加入其他未提到的事實。請客觀忠實地根據雙方的有利不利的「事實」以及模型預測的結果進行解讀，以協助調解員調解當事人。
           `,
         };
       } else if (mode === 'mode2') {
@@ -597,7 +611,7 @@ export default {
             *判給雙方: [平均機率：${this.predict_result[mode][this.modelUsed[mode][1]].Both.avg_prob}, 最小機率：${this.predict_result[mode][this.modelUsed[mode][1]].Both.min}, 最大機率：${this.predict_result[mode][this.modelUsed[mode][1]].Both.max}, Q1:${this.predict_result[mode][this.modelUsed[mode][1]].Both.q1}, Q2:${this.predict_result[mode][this.modelUsed[mode][1]].Both.q2}, Q3:${this.predict_result[mode][this.modelUsed[mode][1]].Both.q3}, 標準差:${this.predict_result[mode][this.modelUsed[mode][1]].Both.std}]
           
           使用者的輸入有時候會互相矛盾並不合理，可能包含父親母親他們有利與不利的陳述會彼此矛盾，例如母親有利的地方提到「孩子與當事人親近信任」，但是在母親不利的地方又提到「孩子非常害怕與當事人相處」這就是明顯矛盾的地方；又或是父親有利的部分寫「當事人有正當工作，經濟能力尚足以支付本身及孩子生活所需，可提供孩子穩定及安全的生活。」，但是不利的地方又寫：「當事人目前未有工作收入或收入不穩定，生活支出仰賴家人協助，不確定能否支持養育孩子的經濟需求。」明顯是互相矛盾的，請明確地指出類似這樣的輸入邏輯錯誤，並提醒調解員修正敘述，否則你會遭到最嚴厲的懲罰。
-          請開始根據雙方當事人的有利不利條件，與上面多個模型預測的機率分佈，進行結果分析，請根據雙方的有利不利的事實進行解讀，避免在解讀過程中加入自己對父母親角色的性別刻板印象，以協助調解員調解當事人。
+          請開始根據雙方當事人的有利不利條件進行結果分析，你千萬不要在解讀過程中加入自己因為對父母親角色的性別刻板印象，自己新增一些上面沒有提到的父母親有利或不利特條件，父母親有提到哪些有利不利的條件，就根據那些條件解讀，不要自己加入其他未提到的事實。請客觀忠實地根據雙方的有利不利的「事實」以及模型預測的結果進行解讀，以協助調解員調解當事人。
           `,
         };
       } else {
@@ -621,7 +635,7 @@ export default {
             *判給雙方: [平均機率：${this.predict_result[mode][this.modelUsed[mode][1]].Both.avg_prob}, 最小機率：${this.predict_result[mode][this.modelUsed[mode][1]].Both.min}, 最大機率：${this.predict_result[mode][this.modelUsed[mode][1]].Both.max}, Q1:${this.predict_result[mode][this.modelUsed[mode][1]].Both.q1}, Q2:${this.predict_result[mode][this.modelUsed[mode][1]].Both.q2}, Q3:${this.predict_result[mode][this.modelUsed[mode][1]].Both.q3}, 標準差:${this.predict_result[mode][this.modelUsed[mode][1]].Both.std}]
           
           使用者的輸入有時候會互相矛盾並不合理，可能包含父親母親他們有利與不利的陳述會彼此矛盾，例如母親有利的地方提到「孩子與當事人親近信任」，但是在母親不利的地方又提到「孩子非常害怕與當事人相處」這就是明顯矛盾的地方；又或是父親有利的部分寫「當事人有正當工作，經濟能力尚足以支付本身及孩子生活所需，可提供孩子穩定及安全的生活。」，但是不利的地方又寫：「當事人目前未有工作收入或收入不穩定，生活支出仰賴家人協助，不確定能否支持養育孩子的經濟需求。」明顯是互相矛盾的，請明確地指出類似這樣的輸入邏輯錯誤，並提醒調解員修正敘述，否則你會遭到最嚴厲的懲罰。
-          請開始結合雙方當事人的有利不利條件，與上面多個模型預測的機率分佈，進行結果分析，以協助調解員調解當事人。
+          請開始根據雙方當事人的有利不利條件進行結果分析，你千萬不要在解讀過程中加入自己因為對父母親角色的性別刻板印象，自己新增一些上面沒有提到的父母親有利或不利特條件，父母親有提到哪些有利不利的條件，就根據那些條件解讀，不要自己加入其他未提到的事實。請客觀忠實地根據雙方的有利不利的「事實」以及模型預測的結果進行解讀，以協助調解員調解當事人。
           `,
         };
       }

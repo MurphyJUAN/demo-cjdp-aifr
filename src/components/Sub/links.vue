@@ -1,6 +1,7 @@
 <!-- eslint-disable max-len -->
 <template>
   <div class="page-container">
+  <b-container>
     <div class="content-container mt-2">
       <div class="intro-text-container rounded">使用說明：本網頁蒐集國內各縣市中，親權裁判當事人所可能會需要使用或參考的社會服務資源。請先從左方地圖上點選所要查詢的縣市，右方即會呈現該縣市目前相關資源之網頁連結。使用者可以直接點入即連結到該機構的網頁，進一步查詢相關資訊。</div>
       <el-row :gutter="20" class="links-container">
@@ -57,6 +58,8 @@
         </el-col>
       </el-row>
     </div>
+  </b-container>
+
   </div>
 </template>
 

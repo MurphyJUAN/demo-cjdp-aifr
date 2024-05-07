@@ -192,7 +192,7 @@ export default {
     };
   },
   mounted() {
-    alert('網站維護中，如需使用，請聯絡我們：custodyprediction@gmail.com');
+    alert('網站維護中，如需使用，請聯絡我們：aifr.general@gmail.com');
     window.addEventListener('scroll', this.handleScroll);
     if (!this.checkMobileType()) {
       this.skrollrInstance = skrollr.init({

@@ -250,17 +250,6 @@ export default {
           status: 'initial',
           content: '調解委員您好！我是Le姊，一個專門設計來協助處理家事調解相關問題的對話機器人。我可以使用適當的法律用語以及親權相關的法律概念，協助您逐步釐清當事人的情況，並提供親權判決結果預測與專業建議以及推薦適合當事人的的友善資源，以協助您促進雙方達成共識。當然，若在對話過程中，您的問題已超出我程式設計所涵蓋的範圍，我也會建議您直接尋求專業的法律諮詢。現在，你準備好開始對話了嗎？',
         },
-      // Debug
-      // {
-      //   role: 'assistant',
-      //   status: 'summary',
-      //   content: '對母親有利的敘述：當事人與孩子的親子互動自然，具有良好的親職能力。能適時的指正孩子的不良行為，具有基本的教養能力。母親阿霞歷來是孩子的主要照顧者，孩子與母親建立了深厚的感情依附關係，並且對孩子的日常起居提供了充分的照顧。母親已規劃具體且階段性的未來教養計畫，突顯其對孩子教育和情感發展的長期承諾。 對母親不利的敘述：當事人目前無穩定工作和收入來源，經濟狀況可能影響其提供孩子更廣泛的教育和生活資源的能力。母親缺乏較高的教育背景，且在台灣沒有其他親友可以協助照顧孩子，這可能對其提供孩子全面支持造成困難。 對父親有利的敘述：當事人有穩定及較高的經濟狀況，可以為孩子提供更充足的教育和生活資源。父親表現出對孩子的關懷，定期通過通話了解孩子的日常生活和學習情況，顯示其對與孩子保持聯繫的高度意願。 對父親不利的敘述：當事人過去曾有將孩子獨留家中的情形，沒有充分注意孩子的日常需要，這可能對孩子的安全形成風險。儘管有積極的態度，但目前對於如何具體教養孩子仍缺乏明確的規劃和準備，這可能影響他作為主要照顧者的能力。 <SUMMARY>',
-      // },
-      // {
-      //   role: 'assistant',
-      //   status: 'summary',
-      //   content: '對母親有利的敘述：當事人無明顯有利的敘述。 對母親不利的敘述：當事人目前吸毒神智不清，又患有精神病，不利於孩子的教養。 對父親有利的敘述：當事人對孩子極其負責並且關係密切。 對父親不利的敘述：當事人無明顯不利的敘述。 <SUMMARY>',
-      // },
       ],
 
     };
@@ -391,7 +380,7 @@ export default {
           *判給父親: [平均機率：${this.predict_result.mode2.S2.Applicant.avg_prob}, 最小機率：${this.predict_result.mode2.S2.Applicant.min}, 最大機率：${this.predict_result.mode2.S2.Applicant.max}, Q1:${this.predict_result.mode2.S2.Applicant.q1}, Q2:${this.predict_result.mode2.S2.Applicant.q2}, Q3:${this.predict_result.mode2.S2.Applicant.q3}, 標準差:${this.predict_result.mode2.S2.Applicant.std}]
           *判給母親: [平均機率：${this.predict_result.mode2.S2.Respondent.avg_prob}, 最小機率：${this.predict_result.mode2.S2.Respondent.min}, 最大機率：${this.predict_result.mode2.S2.Respondent.max}, Q1:${this.predict_result.mode2.S2.Respondent.q1}, Q2:${this.predict_result.mode2.S2.Respondent.q2}, Q3:${this.predict_result.mode2.S2.Respondent.q3}, 標準差:${this.predict_result.mode2.S2.Respondent.std}]
           *判給雙方: [平均機率：${this.predict_result.mode2.S2.Both.avg_prob}, 最小機率：${this.predict_result.mode2.S2.Both.min}, 最大機率：${this.predict_result.mode2.S2.Both.max}, Q1:${this.predict_result.mode2.S2.Both.q1}, Q2:${this.predict_result.mode2.S2.Both.q2}, Q3:${this.predict_result.mode2.S2.Both.q3}, 標準差:${this.predict_result.mode2.S1.Both.std}]
-        請開始結合雙方當事人的有利不利條件，與上面多個模型預測的機率分佈，進行結果分析，以協助調解員調解當事人。
+          請開始根據雙方當事人的有利不利條件，與上面多個模型預測的機率分佈，進行結果分析，請根據雙方的有利不利的事實進行解讀，避免在解讀過程中加入自己對父母親角色的性別刻板印象，以協助調解員調解當事人。
         `,
         },
 
