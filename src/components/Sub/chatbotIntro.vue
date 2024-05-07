@@ -6,12 +6,14 @@
         <div  v-if="!isSmallScreen">
           <section id="intro-and-chatbot-section">
             <img src="../../../static/negotiate.png" class="background-img">
-            <div class="background-hint"><img src="../../../static/lightbulb.png" class="icon" >基於<span class="text-bold">「可信賴之AI」</span>的開發原則，本系統提供三種資料輸入模式且各兩種AI預測結果來對照比較。對本系統尚不熟悉者可藉由右側的Le姊家事協商好夥伴來協助，並歡迎參考網頁上方各欄位的資訊。</div>
+            <div class="background-hint"><img src="../../../static/lightbulb.png" class="icon" >
+              基於<span class="text-bold">「可信賴之AI」</span>的開發原則，本系統提供三種資料輸入模式(請見上方各模式的分頁)。對本系統尚不熟悉者可藉由右側的Le姊家事協商好夥伴來協助輸入資訊，並歡迎參考上方分頁的說明與資訊。
+            </div>
             <b-container fluid>
               <b-row>
                 <b-col class="intro-block" cols="6">
                   <p><span class="text-bold">系統說明：</span>本系統是國立清華大學人文社會AI應用與發展研究中心之成果展示與社會服務。所使用的AI模型是以司法院少家廳所公開的家事裁判書為訓練資料，按使用者所輸入的個案狀況提供親權酌定結果的機率預測來作家事調解的參考。建議使用者由家事調解員或法律專業人士協助，多方測試比較來對結果作合適的解讀，並以法院實際審理結果為最後依據。</p>
-                  <p><span class="text-bold">子女最佳利益：</span>親權酌定所依據的「子女最佳利益」明列於《民法》第 1055-1 條，條文如下：</p>
+                  <p>親權酌定所依據的「子女最佳利益」明列於《民法》第 1055-1 條，條文如下：</p>
                   <div class="text-bold text-italic">
                       <p>法院為前條裁判時，應依子女之最佳利益，審酌一切情狀，尤應注意下列事項：</p>
                       <p>一、子女之年齡、性別、人數及健康情形。</p>
@@ -30,7 +32,7 @@
                   <div class="chabot-container-block">
                     <div class="chatbot-container">
                       <div class="header d-flex px-3 align-items-center">
-                        <div class="header-title d-inline-flex"><div class="circle mx-2"></div>Le姊家事協商好夥伴 (限以家事調解員的身分來使用)</div>
+                        <div class="header-title d-inline-flex"><div class="circle mx-2"></div>Le姊家事協商好夥伴 (限以家事調解員的身分來使用)限時試用至5/31</div>
                         <img class="icon" src="../../../static/edit.png" @click="exportPDF()">
                       </div>
 
@@ -97,7 +99,7 @@
                     <b-modal id="modal-1" title="說明">
                       <img src="../../../static/negotiate.png" class="background-img">
                       <p><span class="text-bold">系統說明：</span>本系統是國立清華大學人文社會AI應用與發展研究中心之成果展示與社會服務。所使用的AI模型是以司法院少家廳所公開的家事裁判書為訓練資料，按使用者所輸入的個案狀況提供親權酌定結果的機率預測來作家事調解的參考。建議使用者由家事調解員或法律專業人士協助，多方測試比較來對結果作合適的解讀，並以法院實際審理結果為最後依據。</p>
-                  <p><span class="text-bold">子女最佳利益：</span>親權酌定所依據的「子女最佳利益」明列於《民法》第 1055-1 條，條文如下：</p>
+                  <p>親權酌定所依據的「子女最佳利益」明列於《民法》第 1055-1 條，條文如下：</p>
                   <div class="text-bold text-italic">
                       <p>法院為前條裁判時，應依子女之最佳利益，審酌一切情狀，尤應注意下列事項：</p>
                       <p>一、子女之年齡、性別、人數及健康情形。</p>
@@ -109,12 +111,14 @@
                       <p>七、各族群之傳統習俗、文化及價值觀。</p>
                       <p>前項子女最佳利益之審酌，法院除得參考社工人員之訪視報告或家事調查官之調查報告外，並得依囑託警察機關、稅捐機關、金融機構、學校及其他有關機關、團體或具有相關專業知識之適當人士就特定事項調查之結果認定之。</p>
                   </div>
-                  <p><img src="../../../static/lightbulb.png" class="icon" >基於<span class="text-bold">「可信賴之AI」</span>的開發原則，本系統提供三種資料輸入模式且各兩種AI預測結果來對照比較。對本系統尚不熟悉者可藉由右側的Le姊家事協商好夥伴來協助，並歡迎參考網頁上方各欄位的資訊。</p>
+                  <p><img src="../../../static/lightbulb.png" class="icon" >
+                    基於<span class="text-bold">「可信賴之AI」</span>的開發原則，本系統提供三種資料輸入模式(請見上方各模式的分頁)。對本系統尚不熟悉者可藉由右側的Le姊家事協商好夥伴來協助輸入資訊，並歡迎參考上方分頁的說明與資訊。
+                  </p>
                     </b-modal>
                     <div class="chabot-container-block">
                       <div class="chatbot-container">
                         <div class="header d-flex px-3 align-items-center">
-                          <div class="header-title d-inline-flex"><div class="circle mx-2"></div>Le姊家事協商好夥伴 (限以家事調解員的身分來使用)</div>
+                          <div class="header-title d-inline-flex"><div class="circle mx-2"></div>Le姊家事協商好夥伴 (限以家事調解員的身分來使用)限時試用至5/31</div>
                           <div class="d-inline-flex">
                             <img v-b-modal.modal-1 class="icon-func mx-2" src="../../../static/info.png">
                             <img class="icon-func" src="../../../static/edit.png" @click="exportPDF()">
@@ -765,9 +769,9 @@ padding-right: 50px;
 }
 
 .background-img {
-width: 30rem;
+width: 25rem;
 position: absolute;
-bottom: 0;
+bottom: 2rem;
 left: 0;
 opacity: 0.3;
 }
@@ -790,7 +794,7 @@ background: #F0E9FE;
 opacity: 1;
 box-shadow: 10px 10px 20px 0 rgba(0, 0, 0, 0.5);
 position: relative;
-border-radius: 50px;
+border-radius: 15px;
 }
 
 .chabot-container-block {
@@ -857,7 +861,7 @@ font-weight: bold;
 justify-content: space-between;
 border-bottom: 1px solid #E5E8E9;
 font-size: 1rem;
-border-radius: 50px 50px 0px 0px;
+border-radius: 15px 15px 0px 0px;
 }
 
 .conversation-container {
@@ -899,7 +903,7 @@ border: 1px solid white;
   width: 100%;
   height: 100%;
   border:  1px solid white;
-  border-radius: 5px;
+  border-radius: 10px;
   background: transparent;
   padding: 0.5rem;
 }
@@ -920,7 +924,7 @@ border: 1px solid white;
   position: absolute;
   bottom: 0;
   height: 60px;
-  padding: 1.5rem;
+  padding: 0 0 1.5rem 1rem;
 }
 
 .navbar-toggler {

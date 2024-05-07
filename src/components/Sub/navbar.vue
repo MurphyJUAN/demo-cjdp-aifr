@@ -1,9 +1,9 @@
 <!-- eslint-disable max-len -->
 <template>
   <div>
-    <b-navbar v-if="!isSmallScreen" toggleable="lg" fixed="top" class="navbarDefault">
+    <b-navbar v-if="!isSmallScreen" toggleable="lg" fixed="top" class="navbarDefault navbar-padding-x">
         <b-navbar-nav>
-          <b-nav-item href="/"><div>AI輔助親權裁判預測系統</div></b-nav-item>
+          <b-nav-item href="/"><div class="web-title-font">AI輔助親權裁判預測系統</div></b-nav-item>
         </b-navbar-nav>
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
         <!-- <b-navbar-nav :to="/ai_junior_award">AIFRxAI Junior Award 2024</b-navbar-nav> -->
@@ -26,7 +26,7 @@
     <b-navbar v-if="isSmallScreen" class="navbarDefault" toggleable="lg" fixed="top">
       <b-container>
         <b-navbar-nav>
-          <b-nav-item href="'/'">AI輔助親權裁判預測系統</b-nav-item>
+          <b-nav-item href="'/'" class="web-title-font">AI輔助親權裁判預測系統</b-nav-item>
         </b-navbar-nav>
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
         <!-- <b-navbar-nav :to="/ai_junior_award">AIFRxAI Junior Award 2024</b-navbar-nav> -->
@@ -76,6 +76,8 @@ export default {
 
 
 <style lang="scss" scoped>
+@import url(https://fonts.googleapis.com/css?family=Noto+Serif+TC&amp);
+
 @charset "UTF-8";
 * {
   font-family: 宋體-繁;
@@ -97,5 +99,16 @@ export default {
   color: rgba(0, 0, 0, 0.7);
   // font-weight: bold;
   border-top: 1px solid #FF6F39;
+}
+
+.navbar-padding-x {
+  padding-left: calc(2rem + 15px);
+  padding-right: 2rem;
+}
+
+.web-title-font {
+  font-weight: bold !important;
+  // color: black;
+  font-family: 'Noto Serif TC', serif !important;
 }
 </style>

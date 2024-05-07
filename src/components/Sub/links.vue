@@ -111,14 +111,14 @@ export default {
       return !cities.some(city => city.status === false);
     },
     selectAll() {
-      let allCity = [];
+      const allCity = [];
       Object.keys(Resources).forEach((key) => {
         allCity.push({ name: key, status: true });
       });
       this.cities = allCity;
     },
     clearAll() {
-      let allCity = [];
+      const allCity = [];
       Object.keys(Resources).forEach((key) => {
         allCity.push({ name: key, status: false });
       });
@@ -191,7 +191,7 @@ export default {
 }
 .intro-text-container {
   width: 90%;
-  background-color: #FFD286;
+  background-color: #EBE9EB;
   margin: 10px auto;
   padding: 10px 20px;
   font-size: 1rem;
