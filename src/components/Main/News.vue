@@ -39,13 +39,13 @@
             </div>
 
             <div class="news_block">
-              <h6>◎ 2023年以前的報導</h6>
+              <h6>◎ 2023</h6>
               <p>研究團隊阮羿寧同學以親權裁判的標註資料，開發ISST (Intermediate Self-Supervised Training)演算法，提升除了父母雙方以外，雙方共任親權的準確率。獲得國際會議論文口頭報告的肯定。</p>
               <p>CustodiAI: A System for Predicting Child Custody Outcomes, Yining Juan, Chung-Chi Chen, Hsin-Hsi Chen, and Daw-Wei Wang*, in System Demonstrations, pages 10–16, Bali, Indonesia. Asian Federation of Natural Language Processing. (Proceedings of the 13th International Joint Conference on Natural Language Processing and the 3rd Conference of the Asia-Pacific Chapter of the Association for Computational Linguistics ( JCNLP-AACL 2023)).</p>
             </div>
 
             <div class="news_block">
-              <h6>◎ 2023年</h6>
+              <h6>◎ 2023年以前的報導</h6>
               <p>本系統的第一代是2019年由清華大學物理系王道維教授與清華大學科法所林昀嫺教授合作發表。參與的同學可見於<a href='contactUs'>「開發團隊」</a>的網頁。相關報導可見於下方連結：</p>
               <img class="img-center img-50" src="../../../static/team.png">
               <ul>相關報導：
