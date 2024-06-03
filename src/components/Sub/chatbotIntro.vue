@@ -32,7 +32,7 @@
                   <div class="chabot-container-block">
                     <div class="chatbot-container">
                       <div class="header d-flex px-3 align-items-center">
-                        <div class="header-title d-inline-flex"><div class="circle mx-2"></div>Le姊家事協商好夥伴 (限以家事調解員的身分來使用)限時試用至5/31</div>
+                        <div class="header-title d-inline-flex"><div class="circle mx-2"></div>Le姊家事協商好夥伴 (請使用者以家事調解員的身分來使用，儘量公允地提供父母雙方相關資訊)</div>
                         <img class="icon" src="../../../static/edit.png" @click="exportPDF()">
                       </div>
 
@@ -118,7 +118,7 @@
                     <div class="chabot-container-block">
                       <div class="chatbot-container">
                         <div class="header d-flex px-3 align-items-center">
-                          <div class="header-title d-inline-flex"><div class="circle mx-2"></div>Le姊家事協商好夥伴 (限以家事調解員的身分來使用)限時試用至5/31</div>
+                          <div class="header-title d-inline-flex"><div class="circle mx-2"></div>Le姊家事協商好夥伴 (請使用者以家事調解員的身分來使用，儘量公允地提供父母雙方相關資訊)</div>
                           <div class="d-inline-flex">
                             <img v-b-modal.modal-1 class="icon-func mx-2" src="../../../static/info.png">
                             <img class="icon-func" src="../../../static/edit.png" @click="exportPDF()">
@@ -540,7 +540,7 @@ export default {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ model: 'gpt-4-turbo', messages: messageList, stage }),
+          body: JSON.stringify({ model: 'gpt-4o', messages: messageList, stage }),
         });
         console.log('>>>Start to fetch');
         return response;
