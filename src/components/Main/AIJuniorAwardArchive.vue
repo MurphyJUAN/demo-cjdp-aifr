@@ -76,7 +76,7 @@
                 <h5>調解員</h5>
               </div>
               <div class="button-block">
-                <b-button variant="warning" class="start-button"><a>網站維護中...</a></b-button>
+                <b-button variant="warning" class="start-button"><a href="#intro-and-chatbot-section">開始使用&nbsp↓</a></b-button>
               </div>
             </div>
           </header>
@@ -105,23 +105,206 @@
                 <h5>調解員</h5>
               </div>
               <div class="button-block">
-                <b-button variant="warning" class="start-button"><a>網站維護中...</a></b-button>
+                <b-button variant="warning" class="start-button"><a href="#intro-and-chatbot-section-small">開始使用&nbsp↓</a></b-button>
               </div>
             </div>
           </header>
         </div>
+
+        <!-- 首頁 -->
+
+        <!-- 說明文字 -->
+          <!-- 大螢幕 -->
+          <div  v-if="!isSmallScreen">
+            <section id="intro-and-chatbot-section">
+              <img src="../../../static/negotiate.png" class="background-img" data-300="transform: translateX(-200px)" data-700="transform: translateX(0px)">
+              <b-container fluid>
+                <b-row>
+                  <b-col class="intro-block" cols="5" data-300="opacity:0" data-700="opacity:1">
+                    <h6>一、說明</h6>
+                    <p>透過家事調解員與「Le（Legel）姊家事商談好夥伴」的合作，GPT4模型會為當事人整理出符合民法第1055-1條子女最佳利益的條件，進而以親權判決模型進行獲得親權判決的預測分析，讓家事商談服務，從法庭走入家庭，促進雙方調解成功達成共識，陪伴無助的當事人解開離婚法庭上的搶子難題。</p>
+                    <h6>[親權酌定法條：民法第 1055-1 條]</h6>
+                    <div class="text-bold">
+                        <p>法院為前條裁判時，應依子女之最佳利益，審酌一切情狀，尤應注意下列事項：</p>
+                        <p>一、子女之年齡、性別、人數及健康情形。</p>
+                        <p>二、子女之意願及人格發展之需要。</p>
+                        <p>三、父母之年齡、職業、品行、健康情形、經濟能力及生活狀況。</p>
+                        <p>四、父母保護教養子女之意願及態度。</p>
+                        <p>五、父母子女間或未成年子女與其他共同生活之人間之感情狀況。</p>
+                        <p>六、父母之一方是否有妨礙他方對未成年子女權利義務行使負擔之行為。</p>
+                        <p>七、各族群之傳統習俗、文化及價值觀。</p>
+                        <p>前項子女最佳利益之審酌，法院除得參考社工人員之訪視報告或家事調查官之調查報告外，並得依囑託警察機關、稅捐機關、金融機構、學校及其他有關機關、團體或具有相關專業知識之適當人士就特定事項調查之結果認定之。</p>
+                    </div>
+
+                    <p>如果調解員已熟悉本套系統，可直接點選模式一、二、三，逕行為當事人輸入雙方資訊以獲得判決結果預測。</p>
+                  </b-col>
+
+                  <b-col cols="7" data-300="opacity:0" data-700="opacity:1">
+                    <div class="chabot-container-block">
+                      <div class="chatbot-container">
+                        <div class="header d-flex px-3 align-items-center">
+                          <div class="header-title d-inline-flex"><div class="circle mx-2"></div>Le姐</div>
+                          <img class="icon" src="../../../static/edit.png" @click="exportPDF()">
+                        </div>
+
+                        <div ref="scrollContainer" class="conversation-container">
+                            <div class="" v-for="item of messageList.filter((v) => v.role !== 'system')">
+                                <div class="conversation-card px-4 py-3">
+                                  <div class="d-inline-flex">
+                                    <img :src="roleAlias[item.role].src" class="icon mr-2 circle-icon">
+                                    <div class="font-weight-bold">{{ roleAlias[item.role].name }}：</div>
+                                  </div>
+
+                                  <div v-if="item.status === 'predict'">
+                                    <div class="justify-content-center mt-4" :span="24" :xs="24" :sm="24" :md="12" :lg="12" :xl="12" v-for="model in models" :key="model">
+                                      <!-- <OnlyViolinPlot :predict_result="predict_result" :model_used="model"></OnlyViolinPlot> -->
+                                      <violinPlotChat :predict_result="predict_result['mode2']" :model_used="model"></violinPlotChat>
+                                    </div>
+                                    <p></p>
+                                  </div>
+
+                                  <div>{{ item.content }}</div>
+
+                                  <div v-if="item.status === 'initial'" class="w-100 d-flex justify-content-end">
+                                    <b-button class="function-btn" @click="handleInitialTalk()" variant="light">好</b-button>
+                                  </div>
+
+                                  <div v-if="item.status === 'summary'" class="w-100 d-flex justify-content-end">
+                                    如果不需修改，請點擊按鈕：
+                                    <b-button class="function-btn" @click="handleStartPredict()" variant="light">開始預測判決結果...</b-button>
+                                  </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="le-foot d-inline-flex w-100">
+                          <div class="bottom-input">
+                              <textarea rows="1" style="height:auto;" placeholder="請輸入..."
+                              :disabled="isTalking"
+                              v-model="inputMessageContent" @keydown.enter="handleEnter"
+                              @compositionstart="compositionStart"
+                              @compositionend="compositionEnd"> </textarea>
+                          </div>
+                            <div class="bottom-send">
+                              <img src="../../../static/send.png" class="icon" @click="handleSendMessage()">
+                            </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </b-col>
+                </b-row>
+              </b-container>
+            </section>
+          </div>
+
+          <!-- 大螢幕 -->
+
+            <div   v-if="isSmallScreen">
+              <section id="intro-and-chatbot-section-small">
+                <b-container fluid>
+                  <b-row>
+                    <div class="w-100">
+                      <b-modal id="modal-1" title="說明">
+                        <img src="../../../static/negotiate.png" class="background-img">
+                        <p>透過家事調解員與「Le（Legel）姊家事商談好夥伴」的合作，GPT4模型會為當事人整理出符合民法第1055-1條子女最佳利益的條件，進而以親權判決模型進行獲得親權判決的預測分析，讓家事商談服務，從法庭走入家庭，促進雙方調解成功達成共識，陪伴無助的當事人解開離婚法庭上的搶子難題。</p>
+                        <h6>[親權酌定法條：民法第 1055-1 條]</h6>
+                        <div class="text-bold">
+                            <p>法院為前條裁判時，應依子女之最佳利益，審酌一切情狀，尤應注意下列事項：</p>
+                            <p>一、子女之年齡、性別、人數及健康情形。</p>
+                            <p>二、子女之意願及人格發展之需要。</p>
+                            <p>三、父母之年齡、職業、品行、健康情形、經濟能力及生活狀況。</p>
+                            <p>四、父母保護教養子女之意願及態度。</p>
+                            <p>五、父母子女間或未成年子女與其他共同生活之人間之感情狀況。</p>
+                            <p>六、父母之一方是否有妨礙他方對未成年子女權利義務行使負擔之行為。</p>
+                            <p>七、各族群之傳統習俗、文化及價值觀。</p>
+                            <p>前項子女最佳利益之審酌，法院除得參考社工人員之訪視報告或家事調查官之調查報告外，並得依囑託警察機關、稅捐機關、金融機構、學校及其他有關機關、團體或具有相關專業知識之適當人士就特定事項調查之結果認定之。</p>
+                        </div>
+                        <p>如果調解員已熟悉本套系統，可直接點選模式一、二、三，逕行為當事人輸入雙方資訊以獲得判決結果預測。</p>
+                      </b-modal>
+                      <div class="chabot-container-block">
+                        <div class="chatbot-container">
+                          <div class="header d-flex px-3 align-items-center">
+                            <div class="header-title d-inline-flex"><div class="circle mx-2"></div>Le姐</div>
+                            <div class="d-inline-flex">
+                              <img v-b-modal.modal-1 class="icon-func mx-2" src="../../../static/info.png">
+                              <img class="icon-func" src="../../../static/edit.png" @click="exportPDF()">
+                            </div>
+                          </div>
+
+                          <div ref="scrollContainer" class="conversation-container">
+                              <div class="" v-for="item of messageList.filter((v) => v.role !== 'system')">
+                                  <div class="conversation-card px-4 py-3">
+                                    <div class="d-inline-flex">
+                                      <img :src="roleAlias[item.role].src" class="icon mr-2 circle-icon">
+                                      <div class="font-weight-bold">{{ roleAlias[item.role].name }}：</div>
+                                    </div>
+
+                                    <div v-if="item.status === 'predict'">
+                                      <div class="justify-content-center mt-4" :span="24" :xs="24" :sm="24" :md="12" :lg="12" :xl="12" v-for="model in models" :key="model">
+                                        <!-- <OnlyViolinPlot :predict_result="predict_result" :model_used="model"></OnlyViolinPlot> -->
+                                        <violinPlotChat :predict_result="predict_result['mode2']" :model_used="model"></violinPlotChat>
+                                      </div>
+                                      <p></p>
+                                    </div>
+
+                                    <div>{{ item.content }}</div>
+
+                                    <div v-if="item.status === 'initial'" class="w-100 d-flex justify-content-end">
+                                      <b-button class="function-btn" @click="handleInitialTalk()" variant="light">好</b-button>
+                                    </div>
+
+                                    <div v-if="item.status === 'summary'" class="w-100 d-flex justify-content-end">
+                                      如果不需修改，請點擊按鈕：
+                                      <b-button class="function-btn" @click="handleStartPredict()" variant="light">開始預測判決結果...</b-button>
+                                    </div>
+
+
+                                  </div>
+                              </div>
+                          </div>
+
+                          <div class="le-foot d-inline-flex w-100">
+                            <div class="bottom-input">
+                                <textarea rows="1" style="height:auto;" placeholder="請輸入..."
+                                :disabled="isTalking"
+                                v-model="inputMessageContent" @keydown.enter="handleEnter"
+                                @compositionstart="compositionStart"
+                                @compositionend="compositionEnd"> </textarea>
+                            </div>
+                              <div class="bottom-send">
+                                <img src="../../../static/send.png" class="icon" @click="handleSendMessage()">
+                              </div>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                  </b-row>
+                </b-container>
+              </section>
+
+            </div>
+
     </div>
 
 </template>
 
 <script>
+import OpenCC from 'opencc-js';
 import skrollr from 'skrollr';
 import axios from 'axios';
+import violinPlotChat from '../Sub/violinPlotChat';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 export default {
 
-  name: 'aiJuniorAward',
+  name: 'aiJuniorAwardArchive',
   components: {
+    violinPlotChat,
   },
   data() {
     return {
@@ -192,7 +375,6 @@ export default {
     };
   },
   mounted() {
-    alert('網站維護中，如需使用，請聯絡我們：aifr.general@gmail.com');
     window.addEventListener('scroll', this.handleScroll);
     if (!this.checkMobileType()) {
       this.skrollrInstance = skrollr.init({

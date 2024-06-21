@@ -16,7 +16,9 @@ import UserDoc from '@/components/Main/UserDoc';
 import ContactUs from '@/components/Main/contactUs';
 import ChatBotDemo from '@/components/Main/chatBotDemo';
 import VoteMonitor from '@/components/Main/voteMonitor';
-import AIJuniorAward from '@/components/Main/AIJuniorAward.vue';
+import AIJuniorAwardArchive from '@/components/Main/AIJuniorAwardArchive';
+import AIJuniorAward from '@/components/Main/AIJuniorAward';
+import News from '@/components/Main/News';
 
 Vue.use(Router);
 
@@ -91,9 +93,19 @@ export default new Router({
       component: ContactUs,
     },
     {
+      path: '/news',
+      name: 'News',
+      component: News,
+    },
+    {
       path: '/chatbot-contactUs',
       name: 'ContactUs',
       component: ContactUs,
+    },
+    {
+      path: '/ai_junior_award_archive',
+      name: 'AIJuniorAwardArchive',
+      component: AIJuniorAwardArchive,
     },
     {
       path: '/ai_junior_award',

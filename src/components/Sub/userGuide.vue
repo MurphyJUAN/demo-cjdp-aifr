@@ -30,7 +30,7 @@ export default {
 #guide {
   border-radius: 12px;
   padding: 1rem;
-  background-color: rgba(243,187,92,.08);
+  background-color: #583520;
   border: 2px solid #cfbf84;
 }
 
